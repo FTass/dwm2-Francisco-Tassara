@@ -1,0 +1,21 @@
+.bg-custom{
+    background-color: #f3e093;
+}
+.navbar .nav-link{
+    color: rgb(163, 86, 23);
+    font-size: 2vw;
+    text-decoration: wavy;
+}
+ .navbar .navbar-brand{
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: 3.5vw;
+    color: rgb(77, 42, 14);
+    font-weight: 600;
+ }
+
+.navbar  .nav-link:hover {
+    transform: scale(1.1);
+    color: rgb(77, 42, 14);
+
+
+}
