@@ -1,0 +1,8 @@
+.bg-custom{
+    background-color: #f3e093;
+}
+.navbar .nav-link{
+    color: rgb(163, 86, 23);
+    font-size: 2vw;
+    text-decoration: wavy;
+}
