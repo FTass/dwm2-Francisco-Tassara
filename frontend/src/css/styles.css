@@ -8,9 +8,10 @@
     background-color: #f3e093;
 }
 .navbar .nav-link{
-    color: rgb(163, 86, 23);
-    font-size: 2vw;
-    text-decoration: wavy;
+    color: rgb(134, 71, 20);
+    font-size: 1.5vw;
+    font-weight: 500;
+    
 }
  .navbar .navbar-brand{
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
@@ -24,3 +25,5 @@
     color: rgb(77, 42, 14);
 
 }
+
+
