@@ -13,54 +13,56 @@
 </head>
 
 <body class="body-custom">
-    <nav class="navbar navbar-expand-sm bg-custom">
+    <nav class="navbar navbar-expand-sm navbar-light bg-custom">
         <div class="container-fluid">
-
             <a href="#" class="navbar-brand">Queso & Sabor</a>
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="collapsibleNavbar">
-                <ul class="navbar ms- auto nav mt-5">
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            Inicio
-                        </a>
-                    </li>
-                    <li class="nav-item"> 
-                        <a href="" class="nav-link active">
-                            Quesos
-                        </a>
-                    </li>
-                    <li class="nav-item"> 
-                        <a href="" class="nav-link">
-                            Promociones
-                        </a>
-                    </li>
-                    <li class="nav-item"> 
-                        <a href="" class="nav-link">
-                            Destacados
-                        </a>
-                    </li>
-                    <li class="nav-item"> 
-                        <a href="" class="nav-link">
-                            Combos
-                        </a>
-                    </li>
-                    <li class="nav-item"> 
-                        <a href="" class="nav-link">
-                            
-                        </a>
-                    </li>
-                    <li class="nav-item"> 
-                        <a href="" class="nav-link">
 
-                        </a>
-                    </li>
+            <div class="collapse navbar-collapse " id="collapsibleNavbar">
+                <ul class="navbar-nav mx-auto gap-2 mt-5 mb-2 ">
+                    <li class="nav-item"><a href="#" class="nav-link">Inicio</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link">Quesos</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link">Promociones</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link">Destacados</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link">Combos</a></li>
                 </ul>
             </div>
         </div>
     </nav>
+
+    <div class="container my-3">
+        <div id="skeleton" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#skeleton" data-bs-slide-to="0" class="active"
+                    aria-current="true"></button>
+                <button type="button" data-bs-target="#skeleton" data-bs-slide-to="1"></button>
+                <button type="button" data-bs-target="#skeleton" data-bs-slide-to="2"></button>
+            </div>
+
+            <div class="carousel-inner ratio ratio-21x9">
+                <div class="carousel-item active">
+                    <img src="https://picsum.photos/1200/400?1" class="d-block w-150" alt="slide 1">
+                </div>
+                <div class="carousel-item">
+                    <img src="https://picsum.photos/1200/400?2" class="d-block w-150" alt="slide 2">
+                </div>
+                <div class="carousel-item">
+                    <img src="https://picsum.photos/1200/400?3" class="d-block w-150" alt="slide 3">
+                </div>
+            </div>
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#skeleton" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#skeleton" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            </button>
+        </div>
+    </div>
+
 </body>
 
 </html>
