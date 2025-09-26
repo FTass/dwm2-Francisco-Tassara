@@ -33,12 +33,12 @@ h2{
     background-color: #f3e093;
     border-radius: 12px;
     border: solid 2px #eedc94;
-    width: 70%;
+    width: 90%;
     margin-bottom: 1vw;
 }
 
 .btn-c:hover{
-    transform: scale(1.1);
+    transform: scale(1.02);
     background-color: #f1d150;
 
 }
