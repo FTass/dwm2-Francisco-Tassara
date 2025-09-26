@@ -29,4 +29,17 @@ h2{
     font-size: 2vw;
 }
 
+.btn-c {
+    background-color: #f3e093;
+    border-radius: 12px;
+    border: solid 2px #eedc94;
+    width: 70%;
+    margin-bottom: 1vw;
+}
+
+.btn-c:hover{
+    transform: scale(1.1);
+    background-color: #f1d150;
+
+}
 
