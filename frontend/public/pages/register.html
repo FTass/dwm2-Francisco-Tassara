@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/frontend/src/css/styles.css" />
+
+    <title>Registrate</title>
+  </head>
+  <body>
+        <div class="container min-vh-100 d-flex justify-content-center align-items-center">
+            <div class="row w-100">
+                <div class="col-12 col-md-6 mx-auto">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Registrate</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="registerForm" novalidate class="form">
+                            <label for="nombre-form" class="form-label">
+                                <h6>Nombre</h6>
+                            </label>
+                            <input 
+                            type="text"
+                            id="nombre-form"
+                            class="form-control"
+                            placeholder="Marcela Paz"
+                            required
+                            >
+                            <div id="nameHelper" class="invalid-feedback">
+                                Este campo es obligatorio.
+                            </div>
+                            <label for="email-form" class="form-label">
+                                <h6>Email</h6>
+                            </label>
+                            <input 
+                            type="email" 
+                            class="form-control" 
+                            id="email-form"
+                            placeholder="usuario@email.com"
+                            required
+                            >
+                            <div id="emailHelper" class="invalid-feedback">
+                                Este campo es obligatorio.
+                            </div>
+                            
+                            <label for="pwd" class="form-label">
+                                <h6>Contraseña</h6>
+                            </label>
+                            <input 
+                            type="password"
+                            id="pwd"
+                            class="form-control"
+                            maxlength="15"
+                            placeholder="Max 15 caracteres"
+                            required>
+                            
+                            <label for="pwdVal" class="form-label">
+                                <h6>Confirmar Contraseña</h6>
+                            </label>
+                            <input 
+                            type="password"
+                            id="pwdVal"
+                            class="form-control"
+                            required
+                            >
+                            <div id="pwdhelper" class="invalid-feedback">
+                                La contraseña debe coincidir y tener entre 4 y 15 caracteres.
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                Registrarse
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            const form = document.getElementById('registerForm')
+            const pwd = document.getElementById('pwd');
+            const val = document.getElementById('pwdVal')
+            const name = document.getElementById('nombre-form')
+            const email = document.getElementById('email-form')
+            const pwdHelp = document.getElementById('pwdhelper')
+            const nameHelp = document.getElementById('nameHelper')
+            const emailHelp = document.getElementById('emailHelper')
+
+            
+            form.addEventListener('submit', (e) => {
+                name.classList.remove('is-valid', 'is-invalid');
+                email.classList.remove('is-valid', 'is-invalid');
+                if (!name.value) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    name.classList.add('is-invalid')
+                    nameHelp.style.display= ''
+                }
+                if (!email.value) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    email.classList.add('is-invalid')
+                    emailHelp.style.display= ''
+                }
+                
+                const ok = 
+                    val.value.length >=4 && 
+                    val.value.length <= 15 && 
+                    pwd.value === val.value;
+                val.classList.remove('is-valid', 'is-invalid');
+                if (ok){
+                    val.classList.add('is-valid');
+                    pwdHelp.style.display = 'none'
+                } else {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    val.classList.add('is-invalid');
+                    pwdHelp.style.display= '';
+                }
+            });
+        </script>
+  </body>
+</html>

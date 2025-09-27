@@ -72,3 +72,8 @@ footer a{
     transform: scale(1.02);
     background-color: #f1d150;
 }
+
+/* ================== Formulario registro ================== */
+.form .form-control{
+    margin-bottom: 1rem;
+}
