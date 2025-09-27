@@ -55,3 +55,20 @@ footer a{
     text-decoration: dashed;
     
 }
+
+/* ================== seccion vista detallada ================== */
+.modal-img{
+    border: solid 2px lightblue;
+}
+
+.modal-body .btn {
+    border-radius: 12px;
+    border: solid 2px #eedc94;
+    background-color: #f3e093;
+
+}
+
+.modal-body .btn:hover {
+    transform: scale(1.02);
+    background-color: #f1d150;
+}
