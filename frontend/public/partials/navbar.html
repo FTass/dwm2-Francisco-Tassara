@@ -1,30 +1,52 @@
+<nav class="navbar navbar-expand-sm navbar-light bg-custom">
+  <div class="container-fluid">
+    <a href="#" class="navbar-brand">Queso & Sabor</a>
 
-    <nav class="navbar navbar-expand-sm navbar-light bg-custom">
-      <div class="container-fluid">
-        <a href="#" class="navbar-brand">Queso & Sabor</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#collapsibleNavbar"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#collapsibleNavbar"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+      <ul class="navbar-nav mx-auto gap-2 mt-5 mb-2">
+        <li class="nav-item"><a href="#" class="nav-link">Inicio</a></li>
+        <li class="nav-item"><a href="#" class="nav-link">Quesos</a></li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">Promociones</a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">Destacados</a>
+        </li>
+        <li class="nav-item"><a href="#" class="nav-link">Combos</a></li>
+      </ul>
+    </div>
+    <div class="d-flex align-items-center gap-3">
+      <!-- Botón Login -->
+      <a href="./pages/login.html" class="btn btn-login btn-sm">
+        <i class="bi bi-person"></i> Iniciar sesión
+      </a>
 
-        <div class="collapse navbar-collapse" id="collapsibleNavbar">
-          <ul class="navbar-nav mx-auto gap-2 mt-5 mb-2">
-            <li class="nav-item"><a href="#" class="nav-link">Inicio</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">Quesos</a></li>
-            <li class="nav-item">
-              <a href="#" class="nav-link">Promociones</a>
-            </li>
-            <li class="nav-item">
-              <a href="#" class="nav-link">Destacados</a>
-            </li>
-            <li class="nav-item"><a href="#" class="nav-link">Combos</a></li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-
+      <!-- Botón carrito (se inyecta con fetch) -->
+      <div id="cart-btn"></div>
+    </div>
+  </div>
+</nav>
+<div id="cart-content"></div>
+<script>
+  Promise.all([
+    fetch("/frontend/public/partials/carrito-btn.html")
+      .then((r) => r.text())
+      .then((html) => {
+        document.getElementById("cart-btn").innerHTML = html;
+      }),
+    fetch("/frontend/public/partials/carrito-content.html")
+      .then((r) => r.text())
+      .then((html) => {
+        document.getElementById("cart-content").innerHTML = html;
+      }),
+  ]).catch(console.error);
+</script>

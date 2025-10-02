@@ -16,7 +16,20 @@
   color: rgb(77, 42, 14);
   font-weight: 600;
 }
-
+.btn-login {
+  background-color: rgb(148, 86, 36);
+  border-radius: 12px;
+  border: solid 2px #eedc94;
+  margin-top: 0.25rem;
+  font-weight: 700;
+}
+.btn-cart {
+  background-color: #f3e093;
+  border-radius: 12px;
+  border: solid 2px #eedc94;
+  width: 100%;
+  margin-top: 0.25rem;
+}
 .navbar .nav-link:hover {
   transform: scale(1.1);
   color: rgb(77, 42, 14);
@@ -86,6 +99,16 @@ footer a {
   font-size: 1.5vw;
   font-weight: 500;
   text-decoration: dashed;
+}
+
+
+.card.prod:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.card.prod:active {
+  transform: scale(1);
+  box-shadow: none;
 }
 
 /* ================== seccion vista detallada ================== */
