@@ -1,80 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="stylesheet" href="/frontend/src/css/styles.css">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/frontend/src/css/styles.css" />
     <title>Queso & Sabor</title>
-</head>
+  </head>
 
-<body class="body-custom">
-    <nav class="navbar navbar-expand-sm navbar-light bg-custom">
-        <div class="container-fluid">
-            <a href="#" class="navbar-brand">Queso & Sabor</a>
+  <body class="body-custom">
+    <!-- navbar importado -->
+    <div id="navbar-root"></div>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse " id="collapsibleNavbar">
-                <ul class="navbar-nav mx-auto gap-2 mt-5 mb-2 ">
-                    <li class="nav-item"><a href="#" class="nav-link">Inicio</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link">Quesos</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link">Promociones</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link">Destacados</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link">Combos</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
     <!--Carpousel importado-->
-    <div id="carousel-root">
-
-    </div>
+    <div id="carousel-root"></div>
     <!--Destacados importado-->
     <div id="destacados-root"></div>
-    
 
     <!--Catalogo importado-->
     <section>
-        <div id="catalogo-root"></div>
+      <div id="catalogo-root"></div>
     </section>
     <!--Categorias importado-->
     <section>
-        <div id="categorias-root"></div>
+      <div id="categorias-root"></div>
     </section>
 
-    <section >
-        <div id="footer-root"></div>
-
+    <section>
+      <div id="footer-root"></div>
     </section>
     <script>
-  Promise.all([
-    fetch('/frontend/public/partials/carousel.html').then(r=>r.text()).then(html=>{ 
-      document.getElementById('carousel-root').innerHTML = html; 
-    }),
-    fetch('/frontend/public/partials/destacados.html').then(r=> r.text()).then(html=>{
-        document.getElementById('destacados-root').innerHTML=html
-    }),
-    fetch('/frontend/public/partials/catalogo.html').then(r=>r.text()).then(html=>{
-      document.getElementById('catalogo-root').innerHTML = html; 
-    }),
-    fetch('/frontend/public/partials/categorias.html').then(r=>r.text()).then(html=>{
-      document.getElementById('categorias-root').innerHTML = html; 
-    }),
-    fetch('/frontend/public/partials/footer.html').then(r=>r.text()).then(html=>{
-      document.getElementById('footer-root').innerHTML = html; 
-    }),
-    
-  ]).catch(console.error);
-</script>
-    
-</body>
-
+      Promise.all([
+        fetch("/frontend/public/partials/navbar.html")
+          .then((r) => r.text())
+          .then((html) => {
+            document.getElementById("navbar-root").innerHTML = html;
+          }),
+        fetch("/frontend/public/partials/carousel.html")
+          .then((r) => r.text())
+          .then((html) => {
+            document.getElementById("carousel-root").innerHTML = html;
+          }),
+        fetch("/frontend/public/partials/destacados.html")
+          .then((r) => r.text())
+          .then((html) => {
+            document.getElementById("destacados-root").innerHTML = html;
+          }),
+        fetch("/frontend/public/partials/catalogo.html")
+          .then((r) => r.text())
+          .then((html) => {
+            document.getElementById("catalogo-root").innerHTML = html;
+          }),
+        fetch("/frontend/public/partials/categorias.html")
+          .then((r) => r.text())
+          .then((html) => {
+            document.getElementById("categorias-root").innerHTML = html;
+          }),
+        fetch("/frontend/public/partials/footer.html")
+          .then((r) => r.text())
+          .then((html) => {
+            document.getElementById("footer-root").innerHTML = html;
+          }),
+      ]).catch(console.error);
+    </script>
+  </body>
 </html>
-
