@@ -1,31 +1,44 @@
+<!-- Botón para abrir el carrito -->
+<button
+  class="btn-c"
+  data-bs-toggle="offcanvas"
+  data-bs-target="#cartDrawer"
+  aria-controls="cartDrawer"
+>
+  <i class="bi bi-cart3"></i>
+  <span id="cart-count" class="badge bg-danger ms-1">0</span>
+</button>
 
-    <!-- Botón para abrir el carrito -->
-    <button class="btn-c" data-bs-toggle="offcanvas" data-bs-target="#cartDrawer" aria-controls="cartDrawer">
-    <i class="bi bi-cart3"></i> <span id="cart-count" class="badge bg-danger ms-1">0</span>
-    </button>
+<div
+  class="offcanvas offcanvas-end"
+  tabindex="-1"
+  id="cartDrawer"
+  aria-labelledby="cartDrawerLabel"
+>
+  <div class="offcanvas-header">
+    <h5 id="cartDrawerLabel" class="mb-0">Tu carrito</h5>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="offcanvas"
+      aria-label="Cerrar"
+    ></button>
+  </div>
 
+  <div class="offcanvas-body d-flex flex-column">
+    <ul id="cart-items" class="list-group list-group-flush mb-3">
+      <li>Queso Gouda</li>
+    </ul>
 
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="cartDrawer" aria-labelledby="cartDrawerLabel">
-    <div class="offcanvas-header">
-        <h5 id="cartDrawerLabel" class="mb-0">Tu carrito</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
+    <!-- Resumen -->
+    <div class="mt-auto">
+      <div class="d-flex justify-content-between">
+        <span>Subtotal</span><strong id="cart-subtotal">$0</strong>
+      </div>
+      <div class="d-grid gap-2 mt-3">
+        <a href="/cart.html" class="btn btn-outline-primary">Ver carrito</a>
+        <button id="checkout-btn" class="btn btn-primary">Ir a pagar</button>
+      </div>
     </div>
-
-    <div class="offcanvas-body d-flex flex-column">
-        
-        <ul id="cart-items" class="list-group list-group-flush mb-3">
-            <li>Queso Gouda</li>
-        </ul>
-
-        <!-- Resumen -->
-        <div class="mt-auto">
-        <div class="d-flex justify-content-between">
-            <span>Subtotal</span><strong id="cart-subtotal">$0</strong>
-        </div>
-        <div class="d-grid gap-2 mt-3">
-            <a href="/cart.html" class="btn btn-outline-primary">Ver carrito</a>
-            <button id="checkout-btn" class="btn btn-primary">Ir a pagar</button>
-        </div>
-        </div>
-    </div>
-    </div>
+  </div>
+</div>
