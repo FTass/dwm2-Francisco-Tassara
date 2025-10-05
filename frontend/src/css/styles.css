@@ -40,7 +40,7 @@ body {
   transform: scale(1.05);
 }
 
-@media (max-width: 575px) {
+@media (max-width: 767px) {
  
   html,
   body {
@@ -97,9 +97,123 @@ body {
 }
 
 h2 {
-  font-size: 3vw;
+  font-size: 3rem;
 }
 
+/* ================== seccion carrousel================== */
+
+.carousel-caption {
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  border-radius: 10px;
+  padding: 0.75rem 1.5rem;
+}
+.carousel-inner.ratio { 
+  max-height: 65vh;                 
+}
+
+
+@media (max-height: 800px) {
+  .carousel-inner.ratio { 
+    --bs-aspect-ratio: 56.25%;      
+    max-height: 60vh;
+  }
+}
+
+
+@media (max-height: 600px) {
+  .carousel-inner.ratio { 
+    --bs-aspect-ratio: 75%;         
+    max-height: 55vh;
+  }
+}
+
+
+.carousel-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+
+.carousel-wrapper {
+  margin-top: 1.5rem;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+  transition: 0.8s transform ease;
+}
+.carousel-wrapper.hovered {
+  margin-top: 1.5rem;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;  transition: 0.8s transform ease;
+}
+.carousel-wrapper.clicked {
+  margin-top: 1.5rem;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+}
+.carousel-wrapper:active {
+  transform: scale(1.02);
+}
+
+.carousel {
+  background-color: transparent !important;
+}
+
+.carousel-item {
+  transition: transform 1s ease, opacity 1s ease;;
+}
+
+.carousel-item img {
+  height: 67vh;
+  object-fit: cover;
+  display: block;
+  width: 100%;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  filter: invert(100%) grayscale(100%); /* blanco */
+  opacity: 0.8;
+  transition: opacity 0.15s ease;
+}
+
+.carousel-control-prev-icon:hover,
+.carousel-control-next-icon:hover {
+  opacity: 0.9;
+}
+
+.carousel-indicators [data-bs-target] {
+  width: 30px;
+  height: 3px;
+  background-color: rgba(255,255,255,.5);
+  transition: opacity .6s ease;
+}
+
+.carousel-indicators [data-bs-target].active {
+  width: 30px;
+  height: 3px;
+  background-color: white;
+}
+
+.carousel-link {
+  text-decoration: none;
+  color: white;
+  font-size: 2vw;
+  font-weight: 600;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+
+}
+
+
+
+
+
+/* ================== seccion c================== */
 .btn-c {
   background-color: #f3e093;
   border-radius: 12px;
