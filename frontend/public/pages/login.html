@@ -20,60 +20,58 @@
 
     <title>Registrate</title>
   </head>
-  <body>
-        <div class="container min-vh-100 d-flex justify-content-center align-items-center">
-            <div class="row w-100">
-                <div class="col-12 col-md-6 mx-auto">
-                <div class="card">
-                    <div class="card-header">
-                        <h5>Iniciar Sesión</h5>
-                    </div>
-                    <div class="card-body">
-                        <form id="registerForm" novalidate class="form">
-                            
-                             
-                            <label for="email-form" class="form-label">
-                                <h6>Email</h6>
-                            </label>
-                            <input 
-                            type="email" 
-                            class="form-control" 
-                            id="email-form"
-                     
-                            required
-                            >
-                            <div id="emailHelper" class="invalid-feedback">
-                                Este campo es obligatorio.
-                            </div>
-                            
-                            <label for="pwd" class="form-label">
-                                <h6>Contraseña</h6>
-                            </label>
-                            <input 
-                            type="password"
-                            id="pwd"
-                            class="form-control"
-                            maxlength="15"
-                            
-                            required>
-                            
-                            <button type="submit" class="btn btn-primary">
-                                Iniciar Sesión
-                            </button>
-                            <hr>
-                        </form>
-                        <p class="form-label">¿Nuevo Usuario?</p>
-                        <a href="register.html" class="btn btn-primary">
-                            Registrate
-                        </a>
-                        
-                    </div>
-                </div>
-                </div>
+  <body
+    style="
+      background-image: url(https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExbGRlbGtwMHhuYW43N2p2aWk4ZnhpMXF2Mm82N3N6amdmNDN1czBlaSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/SqHhJWGc14LYqag2ce/giphy.gif);
+    "
+  >
+    <div
+      class="container min-vh-100 d-flex justify-content-center align-items-center"
+    >
+      <div class="row w-100">
+        <div class="col-12 col-md-6 mx-auto">
+          <div class="card">
+            <div class="card-header">
+              <h5>Iniciar Sesión</h5>
             </div>
+            <div class="card-body">
+              <form id="registerForm" novalidate class="form">
+                <label for="email-form" class="form-label">
+                  <h6>Email</h6>
+                </label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email-form"
+                  required
+                />
+                <div id="emailHelper" class="invalid-feedback">
+                  Este campo es obligatorio.
+                </div>
+
+                <label for="pwd" class="form-label">
+                  <h6>Contraseña</h6>
+                </label>
+                <input
+                  type="password"
+                  id="pwd"
+                  class="form-control"
+                  maxlength="15"
+                  required
+                />
+
+                <button type="submit" class="btn btn-primary">
+                  Iniciar Sesión
+                </button>
+                <hr />
+              </form>
+              <p class="form-label">¿Nuevo Usuario?</p>
+              <a href="register.html" class="btn btn-primary"> Registrate </a>
+            </div>
+          </div>
         </div>
-        <script>
-            
-        </script>
+      </div>
+    </div>
+    <script></script>
   </body>
 </html>
