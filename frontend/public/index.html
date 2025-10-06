@@ -47,51 +47,70 @@
       <div id="footer-root"></div>
     </section>
     <script>
-      // 1) Inyecta el modal
-  const modalReady = fetch(".../public/partials/product-modal.html")
-    .then(r => r.text())
-    .then(html => {
-      document.body.insertAdjacentHTML("beforeend", html);
-      return document.getElementById("exampleModal");
-    });
+      fetch("/frontend/public/partials/vista-detallada.html")
+  .then(r => r.text())
+  .then(html => {
+    document.body.insertAdjacentHTML("beforeend", html);
 
-  // 2) Cuando el modal esté listo, engancha el click delegado
-  modalReady.then((modalEl) => {
-    if (!modalEl) { console.error("No se encontró #exampleModal"); return; }
+    const modalEl = document.getElementById("exampleModal");
+    if (!modalEl) {
+      console.error("No se encontró #exampleModal");
+      return;
+    }
 
-    // Delegación sobre TODO el body (sirve para contenido cargado por fetch)
-    document.body.addEventListener("click", (e) => {
-      const card = e.target.closest(".card.prod");
-      if (!card) return; // no es una card
+    // 2️⃣ Detectar apertura del modal (evento de Bootstrap)
+    modalEl.addEventListener("show.bs.modal", (event) => {
+      const trigger = event.relatedTarget; // la card o botón que lo abrió
+      if (!trigger) return;
 
-      // Datos desde la card
-      const name  = card.querySelector("h5")?.textContent.trim() || "Producto";
-      const price = card.querySelector("em")?.textContent.trim() || "";
-      const img   = card.querySelector("img")?.src || "https://picsum.photos/500/500";
-      const desc  = "";
+      // Leer datos desde atributos data-*
+      const name  = trigger.getAttribute("data-product-name")  || "Producto";
+      const price = trigger.getAttribute("data-product-price") || "";
+      const img   = trigger.getAttribute("data-product-img")   || "https://picsum.photos/500/500";
+      const desc  = trigger.getAttribute("data-product-desc")  || "";
 
-      // Pinta en el modal (IDs deben existir)
+      // Actualizar contenido del modal
       const $ = (id) => document.getElementById(id);
-      const lbl = $("exampleModalLabel");
-      const pic = $("modalProductImg");
-      const prc = $("modalProductPrice");
-      const dsc = $("modalProductDesc");
+      $("exampleModalLabel").textContent = name;
+      $("modalProductImg").src = img;
+      $("modalProductImg").alt = name;
+      $("modalProductPrice").textContent = price;
+      $("modalProductDesc").textContent = desc;
+
       const qty = $("modalQty");
-      const add = $("addToCartBtn");
-
-      if (lbl) lbl.textContent = name;
-      if (pic) { pic.src = img; pic.alt = name; }
-      if (prc) prc.textContent = price;
-      if (dsc) dsc.textContent = desc;
       if (qty) qty.value = 1;
-      if (add) add.onclick = () =>
-        console.log("Agregar al carrito:", { name, price, img, qty: Number(qty?.value || 1) });
 
-      // Abre el modal (Bootstrap 5)
-      if (!window.bootstrap) { console.error("Bootstrap no cargó"); return; }
-      bootstrap.Modal.getOrCreateInstance(modalEl).show();
+      const addBtn = $("addToCartBtn");
+      if (addBtn) {
+        addBtn.onclick = () => {
+          console.log("Agregar al carrito:", {
+            name,
+            price,
+            img,
+            qty: Number(qty?.value || 1),
+          });
+        };
+      }
     });
-  }).catch(console.error);
+
+    // 3️⃣ Asegura que las cards tengan los atributos necesarios
+    document.querySelectorAll(".card.prod").forEach(card => {
+      card.setAttribute("data-bs-toggle", "modal");
+      card.setAttribute("data-bs-target", "#exampleModal");
+
+      // fallback: si aún no tienen los data-*, se los agrega
+      const h5 = card.querySelector("h5")?.textContent.trim() || "Producto";
+      const em = card.querySelector("em")?.textContent.trim() || "";
+      const img = card.querySelector("img")?.src || "https://picsum.photos/500/500";
+
+      card.setAttribute("data-product-name", h5);
+      card.setAttribute("data-product-price", em);
+      card.setAttribute("data-product-img", img);
+      card.setAttribute("data-product-desc", "");
+    });
+  })
+  .catch(console.error);
+  
       fetch("/frontend/public/partials/navbar.html")
         .then((r) => r.text())
         .then((html) => {
