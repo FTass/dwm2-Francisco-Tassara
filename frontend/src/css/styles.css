@@ -346,4 +346,39 @@ footer a {
   margin-bottom: 1rem;
 }
 
-/* ================== Formulario direccion================== */
+/* ================== Formulario direccion ================== */
+/* ================== Seccion Login       ================== */
+
+.card.login .card-header{
+  box-shadow: 0 2px 6px rgba(0,0,0,.08);
+  background-color:  #f3e093;
+  
+}
+
+.card.login .card-body{
+  background-color: #e8e0c0;;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.card.login a{
+  text-decoration: none;
+  color: rgb(75, 34, 1);
+  font-weight: 600;
+  padding: 0.5rem;
+}
+
+
+.card.login .btn-login-form {
+  background-color: #f3e093;
+  border-radius: 12px;
+  border: solid 2px #eedc94;
+  width: 50%;
+  height: 1.75rem;
+  font-weight: 700;
+  margin-top: 0.25rem;
+  transition: 0.3s ease;
+}
+.card.login .btn-login-form:hover {
+  transform: scale(1.02);
+  background-color: #f1d150;
+}
+
