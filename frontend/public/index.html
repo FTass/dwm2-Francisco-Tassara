@@ -47,13 +47,57 @@
       <div id="footer-root"></div>
     </section>
     <script>
+      // 1) Inyecta el modal
+  const modalReady = fetch(".../public/partials/product-modal.html")
+    .then(r => r.text())
+    .then(html => {
+      document.body.insertAdjacentHTML("beforeend", html);
+      return document.getElementById("exampleModal");
+    });
+
+  // 2) Cuando el modal esté listo, engancha el click delegado
+  modalReady.then((modalEl) => {
+    if (!modalEl) { console.error("No se encontró #exampleModal"); return; }
+
+    // Delegación sobre TODO el body (sirve para contenido cargado por fetch)
+    document.body.addEventListener("click", (e) => {
+      const card = e.target.closest(".card.prod");
+      if (!card) return; // no es una card
+
+      // Datos desde la card
+      const name  = card.querySelector("h5")?.textContent.trim() || "Producto";
+      const price = card.querySelector("em")?.textContent.trim() || "";
+      const img   = card.querySelector("img")?.src || "https://picsum.photos/500/500";
+      const desc  = "";
+
+      // Pinta en el modal (IDs deben existir)
+      const $ = (id) => document.getElementById(id);
+      const lbl = $("exampleModalLabel");
+      const pic = $("modalProductImg");
+      const prc = $("modalProductPrice");
+      const dsc = $("modalProductDesc");
+      const qty = $("modalQty");
+      const add = $("addToCartBtn");
+
+      if (lbl) lbl.textContent = name;
+      if (pic) { pic.src = img; pic.alt = name; }
+      if (prc) prc.textContent = price;
+      if (dsc) dsc.textContent = desc;
+      if (qty) qty.value = 1;
+      if (add) add.onclick = () =>
+        console.log("Agregar al carrito:", { name, price, img, qty: Number(qty?.value || 1) });
+
+      // Abre el modal (Bootstrap 5)
+      if (!window.bootstrap) { console.error("Bootstrap no cargó"); return; }
+      bootstrap.Modal.getOrCreateInstance(modalEl).show();
+    });
+  }).catch(console.error);
       fetch("/frontend/public/partials/navbar.html")
         .then((r) => r.text())
         .then((html) => {
           document.getElementById("navbar-root").innerHTML = html;
         })
         .then(() => {
-          // 2) Una vez montado el navbar, cargar botón y contenido del carrito
           return Promise.all([
             fetch("/frontend/public/partials/carrito-btn.html")
               .then((r) => r.text())
@@ -64,10 +108,8 @@
             fetch("/frontend/public/partials/carrito-content.html")
               .then((r) => r.text())
               .then((html) => {
-                // Opción A: si tienes un div placeholder:
                 let contentSlot = document.getElementById("cart-content");
                 if (!contentSlot) {
-                  // si no existe, lo añadimos al final del body
                   contentSlot = document.createElement("div");
                   contentSlot.id = "cart-content";
                   document.body.appendChild(contentSlot);
