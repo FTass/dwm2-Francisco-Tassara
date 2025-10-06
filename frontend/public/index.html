@@ -47,13 +47,76 @@
       <div id="footer-root"></div>
     </section>
     <script>
+      fetch("/frontend/public/partials/vista-detallada.html")
+  .then(r => r.text())
+  .then(html => {
+    document.body.insertAdjacentHTML("beforeend", html);
+
+    const modalEl = document.getElementById("exampleModal");
+    if (!modalEl) {
+      console.error("No se encontró #exampleModal");
+      return;
+    }
+
+    // 2️⃣ Detectar apertura del modal (evento de Bootstrap)
+    modalEl.addEventListener("show.bs.modal", (event) => {
+      const trigger = event.relatedTarget; // la card o botón que lo abrió
+      if (!trigger) return;
+
+      // Leer datos desde atributos data-*
+      const name  = trigger.getAttribute("data-product-name")  || "Producto";
+      const price = trigger.getAttribute("data-product-price") || "";
+      const img   = trigger.getAttribute("data-product-img")   || "https://picsum.photos/500/500";
+      const desc  = trigger.getAttribute("data-product-desc")  || "";
+
+      // Actualizar contenido del modal
+      const $ = (id) => document.getElementById(id);
+      $("exampleModalLabel").textContent = name;
+      $("modalProductImg").src = img;
+      $("modalProductImg").alt = name;
+      $("modalProductPrice").textContent = price;
+      $("modalProductDesc").textContent = desc;
+
+      const qty = $("modalQty");
+      if (qty) qty.value = 1;
+
+      const addBtn = $("addToCartBtn");
+      if (addBtn) {
+        addBtn.onclick = () => {
+          console.log("Agregar al carrito:", {
+            name,
+            price,
+            img,
+            qty: Number(qty?.value || 1),
+          });
+        };
+      }
+    });
+
+    // 3️⃣ Asegura que las cards tengan los atributos necesarios
+    document.querySelectorAll(".card.prod").forEach(card => {
+      card.setAttribute("data-bs-toggle", "modal");
+      card.setAttribute("data-bs-target", "#exampleModal");
+
+      // fallback: si aún no tienen los data-*, se los agrega
+      const h5 = card.querySelector("h5")?.textContent.trim() || "Producto";
+      const em = card.querySelector("em")?.textContent.trim() || "";
+      const img = card.querySelector("img")?.src || "https://picsum.photos/500/500";
+
+      card.setAttribute("data-product-name", h5);
+      card.setAttribute("data-product-price", em);
+      card.setAttribute("data-product-img", img);
+      card.setAttribute("data-product-desc", "");
+    });
+  })
+  .catch(console.error);
+  
       fetch("/frontend/public/partials/navbar.html")
         .then((r) => r.text())
         .then((html) => {
           document.getElementById("navbar-root").innerHTML = html;
         })
         .then(() => {
-          // 2) Una vez montado el navbar, cargar botón y contenido del carrito
           return Promise.all([
             fetch("/frontend/public/partials/carrito-btn.html")
               .then((r) => r.text())
@@ -64,10 +127,8 @@
             fetch("/frontend/public/partials/carrito-content.html")
               .then((r) => r.text())
               .then((html) => {
-                // Opción A: si tienes un div placeholder:
                 let contentSlot = document.getElementById("cart-content");
                 if (!contentSlot) {
-                  // si no existe, lo añadimos al final del body
                   contentSlot = document.createElement("div");
                   contentSlot.id = "cart-content";
                   document.body.appendChild(contentSlot);
