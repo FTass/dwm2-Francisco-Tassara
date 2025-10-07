@@ -16,50 +16,38 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     />
-    <link rel="stylesheet" href="/frontend/src/css/styles.css" />
+    <link rel="stylesheet" href="../../src/css/styles.css?v=1" />
 
-    <title>Document</title>
+    <title>checkout</title>
   </head>
-  <body>
-    <div class="container-fluid">
-      <div class="row h-100 justify-content-center">
-        <div class="col-12 col-md-8">
-          <div class="card">
-            <div class="col-12"></div>
-            <div class="card-header">
-              <h5>Resumen</h5>
-            </div>
-            <div class="card-body">
-              <ul class="list-group mx-4">
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    Queso Gouda 500g <span>$3.000</span>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    Queso Azul <span>$5.000</span>
-                </li>
-                
-              </ul>
-              <ul class="list-group mx-4 d-flex justify-content-end ">
-                <li class="list-group-item">
-                    <b>Subtotal: </b>
-                </li>
-                <li class="list-group-item">
-                    <b>IVA: </b>
-                </li>
-                <li class="list-group-item">
-                    <b>TOTAL: </b>
-                </li>
-              </ul>
-               <div class="d-flex gap-2 mt-3 justify-content-end mx-4">
-      <a href="#" class="btn btn-outline-secondary btn-sm">Volver al carrito</a>
-      <button class="btn btn-primary btn-sm" disabled>Continuar a pago</button>
-    </div>
-              </div>
-              
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+  <body class="body-custom">
+    <div id="direccion-root"></div>
+    
+    <div id="payment-root"></div>
+
+    <div id="resumen-root"></div>
+    <script>
+      function injectPartial(rootId, url) {
+  fetch(url).then(r => r.text()).then(html => {
+    const root = document.getElementById(rootId);
+    root.innerHTML = html;
+
+    // Re-ejecutar <script> internos del parcial
+    root.querySelectorAll('script').forEach(old => {
+      const s = document.createElement('script');
+      if (old.src) s.src = old.src; else s.textContent = old.textContent;
+      document.body.appendChild(s);
+      old.remove();
+    });
+  });
+}
+
+injectPartial('direccion-root','/frontend/public/partials/direccion.html');
+injectPartial('payment-root','/frontend/public/partials/payment.html');
+injectPartial('resumen-root','/frontend/public/partials/resumen.html');
+
+
+
+    </script>
   </body>
 </html>
