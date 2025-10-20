@@ -1,0 +1,111 @@
+<div class="container my-3">
+  <div
+    class="carousel-wrapper"
+    id="carousel-wrapper"
+    onmouseenter="document.getElementById('carousel-wrapper').classList.add('hovered')"
+    onmouseleave="document.getElementById('carousel-wrapper').classList.remove('hovered')"
+    onmousedown="document.getElementById('carousel-wrapper').classList.add('clicked')"
+    onmouseup="document.getElementById('carousel-wrapper').classList.remove('clicked')"
+  >
+    <div
+      id="skeleton"
+      class="carousel slide"
+      data-bs-ride="carousel"
+      data-bs-theme="dark"
+    >
+      <div class="carousel-indicators">
+        <button
+          type="button"
+          data-bs-target="#skeleton"
+          data-bs-slide-to="0"
+          class="active"
+          aria-current="true"
+        ></button>
+        <button
+          type="button"
+          data-bs-target="#skeleton"
+          data-bs-slide-to="1"
+        ></button>
+        <button
+          type="button"
+          data-bs-target="#skeleton"
+          data-bs-slide-to="2"
+        ></button>
+      </div>
+ 
+      <div class="carousel-inner ratio ratio-21x9">
+        <div class="carousel-item active">
+          <a
+            href="#promociones"
+            class="carousel-link"
+            class="carousel-link"
+            onmouseenter="document.getElementById('carousel-wrapper').classList.add('hovered')"
+            onmouseleave="document.getElementById('carousel-wrapper').classList.remove('hovered')"
+          >
+            <img
+              src="https://portaluchile.uchile.cl//.imaging/default/dam/imagenes/Uchile/imagenes-noticias/155946_1_queso-1-800-l_L/jcr:content.jpg"
+              class="d-block w-100"
+              alt="slide 1"
+            />
+            <div class="carousel-caption bg-dark bg-opacity-50 rounded-3 p-3">
+              <h5 class="text-white">Descuento hasta 25% Cyber Monday</h5>
+            </div>
+          </a>
+        </div>
+        <div class="carousel-item">
+          <a
+            href="#tablas"
+            class="carousel-link"
+            onmouseenter="document.getElementById('carousel-wrapper').classList.add('hovered')"
+            onmouseleave="document.getElementById('carousel-wrapper').classList.remove('hovered')"
+          >
+            <img
+              src="https://alogar.cl/cdn/shop/collections/quesos.png?v=1635456051"
+              class="d-block w-100"
+              alt="slide 2"
+            />
+            
+          </a>
+          <div class="carousel-caption bg-dark bg-opacity-50 rounded-3 p-3">
+            <h5 class="text-white">Conoce nuestras tablas</h5>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <a
+            href="#quesos"
+            class="carousel-link"
+            class="carousel-link"
+            onmouseenter="document.getElementById('carousel-wrapper').classList.add('hovered')"
+            onmouseleave="document.getElementById('carousel-wrapper').classList.remove('hovered')"
+          >
+            <img
+              src="https://portaluchile.uchile.cl//.imaging/default/dam/imagenes/Uchile/imagenes-noticias/155946_2_queso-2-800-l_L/jcr:content.jpg"
+              class="d-block w-100"
+              alt="slide 3"
+            />
+            <div class="carousel-caption bg-dark bg-opacity-50 rounded-3 p-3">
+              <h5 class="text-white">Sorprendete con nuestros quesos</h5>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <button
+        class="carousel-control-prev"
+        type="button"
+        data-bs-target="#skeleton"
+        data-bs-slide="prev"
+      >
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      </button>
+      <button
+        class="carousel-control-next"
+        type="button"
+        data-bs-target="#skeleton"
+        data-bs-slide="next"
+      >
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      </button>
+    </div>
+  </div>
+</div>

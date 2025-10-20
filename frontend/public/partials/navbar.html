@@ -1,0 +1,59 @@
+<nav class="navbar navbar-expand-md navbar-light bg-custom fixed-top shadow-sm py-3">
+  <div class="container-fluid align-items-center">
+
+    <a href="#" class="navbar-brand d-flex align-items-center gap-2">
+      <i class="fa-solid fa-cheese fa-lg"></i>
+      <span>Queso &amp; Sabor</span>
+    </a>
+    
+    
+    <div class="collapse navbar-collapse " id="collapsibleNavbar">
+      <ul class="navbar-nav  mx-auto gap-2  mt-4  mb-2">
+        <li class="nav-item"><a href="#" class="nav-link">Inicio</a></li>
+        <li class="nav-item"><a href="#quesos" class="nav-link">Quesos</a></li>
+        <li class="nav-item"><a href="#promociones" class="nav-link">Promociones</a></li>
+        <li class="nav-item"><a href="#destacados" class="nav-link">Destacados</a></li>
+        <li class="nav-item"><a href="#combos" class="nav-link">Combos</a></li>
+        <li class="nav-item"><a href="#tablas" class="nav-link">Tablas</a></li>
+        <li class="nav-item"><a href="#mas-vendidos" class="nav-link">Mas Vendidos</a></li>
+      </ul>
+    </div>
+    
+    <div class="d-flex align-items-center gap-2 ">
+      
+      <a href="./pages/login.html" class="btn btn-header btn-sm d-inline-flex align-items-center">
+        <i class="bi bi-person"></i> 
+        <span class="ms-2 d-none d-lg-inline">Iniciar sesión</span>
+      </a>
+      
+      
+      <div id="cart-btn"></div>
+      
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#collapsibleNavbar"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+
+<div id="cart-content"></div>
+<script>
+  Promise.all([
+    fetch("/frontend/public/partials/carrito-btn.html")
+      .then((r) => r.text())
+      .then((html) => {
+        document.getElementById("cart-btn").innerHTML = html;
+      }),
+    fetch("/frontend/public/partials/carrito-content.html")
+      .then((r) => r.text())
+      .then((html) => {
+        document.getElementById("cart-content").innerHTML = html;
+      }),
+  ]).catch(console.error);
+</script>
