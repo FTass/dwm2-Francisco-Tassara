@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const addresSchema = mongoose.Schema({ 
+const addressSchema = mongoose.Schema({ 
     street :{ type: String, required : true},
     number: { type: String, required : true},
     apt: String,
@@ -12,4 +12,4 @@ const addresSchema = mongoose.Schema({
     
 });
 
-module.exports = mongoose.model('address', addresSchema);
+module.exports = mongoose.model('address', addressSchema);
