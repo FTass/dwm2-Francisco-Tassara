@@ -22,6 +22,15 @@ class User_Repository {
         }
     }
 
+    async getUserByEmail(email) {
+        const user = await User.findOne({ email: email });
+        if  (!user){
+            return null
+        } else {
+            return user;
+        }
+    }
+
     async getUsersByProfile(profileId) {
         return await User.find({ profile: profileId });
     }
@@ -37,4 +46,4 @@ class User_Repository {
     }
 }
 
-module.exports = User_Repository;
+module.exports = new User_Repository();

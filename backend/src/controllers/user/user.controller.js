@@ -27,6 +27,14 @@ const userGet = async (req = request, res = response) => {
     res.status(200).json({ msg: 'User fetched', data: { id } }); // en realidad se retornaria el usuario obtenido
 
 }
+
+const usersGet = async (req = request, res = response) => {
+    // Llamada a service para obtener todos los usuarios
+
+    res.status(200).json({ msg: 'Users fetched', data: [] }); // en realidad se retornaria la lista de usuarios obtenidos
+
+}
+
 const userPut = async (req = request, res = response) => {
     const { id } = req.params;
     const body = req.body;
