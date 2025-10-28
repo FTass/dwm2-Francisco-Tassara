@@ -1,5 +1,9 @@
 // Nueva capa, aca se interactuara con el controller y el repositorio
 const  repo = require('backend/database/repo/user_repo.js');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '1h';
 
 //CRUD de usuarios
 // requeire el modelo si se va a repositori? 
@@ -53,6 +57,7 @@ const authenticateUser = async (credentials) => {
 
     const token = jwt.sign({ userId: user._id }, 'your_jwt_secret', { expiresIn: '1h' });
     return { token, userId: user._id };
+
 };
 
 const updProfile = async (userId, profileId) =>{

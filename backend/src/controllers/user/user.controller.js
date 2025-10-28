@@ -1,4 +1,17 @@
 const { response, request } = require('express');
+const {
+    // Importar funciones del servicio de usuario
+    addUser,
+    getUser,
+    getUsers,
+    updUser,
+    delUser,
+    authenticateUser,
+    updProfile,
+    getFullName,
+    changepassword,
+    deactivate
+} = require('backend/src/service/user/user.service.js');
 
 //! En esto se derivara a un User.Service.js
 
@@ -8,13 +21,13 @@ const userPost = async (req = request, res = response) => {
     if (!body) {
         return res.status(400).json({ msg: 'No data provided' });
     }
-
+    
     // Llamada a service con body
+    const newUser = await addUser(body);
     
 
-    res.status(201).json({ msg: 'User created', data: body });
+    res.status(201).json({ msg: 'User created', data: newUser });
     
-
 }
 const userGet = async (req = request, res = response) => {
     const { id } = req.params;
@@ -24,14 +37,34 @@ const userGet = async (req = request, res = response) => {
 
     // Llamada a service con id
 
-    res.status(200).json({ msg: 'User fetched', data: { id } }); // en realidad se retornaria el usuario obtenido
+    const user = await getUser(id);
+
+
+    res.status(200).json({ msg: 'User fetched', data: user }); 
+
+}
+
+const userLogin = async (req = request, res = response) => {
+    const { email, password } = req.body;
+    if (!email || !password) {
+        return res.status(400).json({ msg: 'Email and password are required' });
+    }
+
+    try {
+        // Llamada a service para autenticar usuario
+        const authResult = await authenticateUser({ email, password });
+        res.status(200).json({ msg: 'Login successful', data: authResult });
+    } catch (error) {
+        res.status(401).json({ msg: error.message });
+    }
 
 }
 
 const usersGet = async (req = request, res = response) => {
     // Llamada a service para obtener todos los usuarios
-
-    res.status(200).json({ msg: 'Users fetched', data: [] }); // en realidad se retornaria la lista de usuarios obtenidos
+    const users = await getUsers();
+    
+    res.status(200).json({ msg: 'Users fetched', data: users }); 
 
 }
 
@@ -42,7 +75,13 @@ const userPut = async (req = request, res = response) => {
         return res.status(400).json({ msg: 'No ID or data provided' });
     }
     
-    // Llamada a service con id y body
+    const updatedUser = await updUser(id, body);
+
+    if (!updatedUser) {
+        return res.status(404).json({ msg: 'User not found or not updated' });
+    }
+
+    
     res.status(200).json({ msg: 'User updated', data: { id, ...body } });
 
 }
@@ -53,6 +92,10 @@ const userDelete = async (req = request, res = response) => {
     }
     
     // Llamada a service con id
+    const success = await delUser(id);      
+    if (!success) {
+        return res.status(404).json({ msg: 'User not found or not deleted' });
+    }
     res.status(200).json({ msg: 'User deleted', data: { id } });
 }
 
@@ -60,6 +103,8 @@ const userDelete = async (req = request, res = response) => {
 module.exports = {
     userPost,
     userGet,
+    usersGet,
     userPut,
-    userDelete
+    userDelete,
+    userLogin
 }

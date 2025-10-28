@@ -2,15 +2,28 @@ const { Router } = require('express');
 
 const router = Router();
 
-router.get('/', );
+const {
+    userPost,
+    userGet,
+    usersGet,
+    userPut,
+    userDelete,
+    userLogin,
+} = require('backend/src/controllers/user/user.controller.js')
 
-router.get('/:id', );
+router.get('/', usersGet );
 
-router.post('/', );
+router.get('/:id', userGet);
 
-router.put('/:id', );
+// crear un usuario
+router.post('/', userPost);
 
-router.delete('/:id', );
+// Login
+router.post('/login', userLogin);
+
+router.put('/:id',  userPut);
+
+router.delete('/:id', userDelete);
 
 // Direcciones del usuario
 

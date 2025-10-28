@@ -15,7 +15,7 @@ class User_Repository {
     
     async getUserById(id){
         const user = await User.findById(id);
-        if (!user){
+        if (!user){ 
             return null
         } else {
             return user
