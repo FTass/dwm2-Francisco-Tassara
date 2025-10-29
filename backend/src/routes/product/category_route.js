@@ -1,22 +1,22 @@
-const { Router } = require('express');
+// const { Router } = require('express');
 
-const router = Router();
+// const router = Router();
 
-router.get('/', );
+// router.get('/', );
 
-router.get("/:id",    );
+// router.get("/:id",    );
 
-router.post("/",    );
+// router.post("/",    );
 
-router.put("/:id",  );
+// router.put("/:id",  );
 
-router.delete("/:id",   );
+// router.delete("/:id",   );
 
 
-// Obtener subcategorías de una categoría padre
-router.get('/:id/subcategories', /* getSubcategories */);
+// // Obtener subcategorías de una categoría padre
+// router.get('/:id/subcategories', /* getSubcategories */);
 
-// Obtener cantidad de productos (método del modelo)
-router.get('/:id/product-count', /* getProductCount */);
+// // Obtener cantidad de productos (método del modelo)
+// router.get('/:id/product-count', /* getProductCount */);
 
-module.exports = router;
+// module.exports = router;

@@ -9,11 +9,11 @@ const {
 
 const router = Router();
 
-router.get("/{:id}",   profileGetById );
-
 router.get("/",   profilesGet );
 
-router.post("/",   profilePost);
+router.get("/{:id}",   profileGetById );
+
+router.post("",   profilePost);
 
 router.put("/:id",  profilePut);
 

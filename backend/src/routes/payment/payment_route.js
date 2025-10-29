@@ -1,12 +1,12 @@
-const { Router } = require('express');
+// const { Router } = require('express');
 
 
-const router = Router();
+// const router = Router();
 
-router.get("/{:id}",    );
-router.post("/",    );
-router.put("/:id",  );
-router.delete("/:id",   );
+// router.get("/{:id}",    );
+// router.post("/",    );
+// router.put("/:id",  );
+// router.delete("/:id",   );
 
 
-module.exports = router
+// module.exports = router

@@ -1,5 +1,5 @@
 
-const Notification = require('../../../models/user/notification.model.js');
+const Notification = require('../../models/notification/Notification.js');
 
 class NotificationRepo {
     async findByUserId(userId) {

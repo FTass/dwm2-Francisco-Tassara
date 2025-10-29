@@ -19,7 +19,13 @@ const {
     addressesGet
 } = require('../../controllers/user/address.controller.js')
 
-
+const {
+    notificationsGet,
+    notificationGet,
+    notificationPost,
+    notificationPut,
+    notificationDel,
+} = require('../../controllers/user/notification.controller.js')
 
 router.get('/', usersGet );
 
@@ -49,12 +55,18 @@ router.delete('/:userId/addresses/:addressId', addressDel); // Eliminar una dire
 
 // Notificaciones del usuario
 
-router.get('/:userId/notifications', );
+router.get('/:userId/notifications', notificationsGet);
 
-router.post('/:userId/notifications', );
+router.post('/:userId/notifications', notificationPost);
 
-router.put('/:userId/notifications/:notificationId', );
+router.put('/:userId/notifications/:notificationId', notificationPut);
 
-router.delete('/:userId/notifications/:notificationId', );
+router.delete('/:userId/notifications/:notificationId', notificationDel);
+
+
+router.post('/test', (req, res) => {
+    console.log('Body recibido:', req.body);
+    res.json({ received: req.body });
+});
 
 module.exports = router;

@@ -1,5 +1,5 @@
 // Nueva capa, aca se interactuara con el controller y el repositorio
-const  repo = require('backend/database/repo/user_repo.js');
+const  repo = require('../../../database/repo/user/user_repo.js');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -10,10 +10,34 @@ const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '1h';
 
 
 const addUser = async (userData) => {
-    const user = await repo.createUser(userData);
-    return user;
-}
+    try {
+        // Verificar si el email ya existe
+        const existingUser = await repo.getUserByEmail(userData.email);
+        if (existingUser) {
+            throw new Error('Email already registered');
+        }
 
+        // Hashear la contraseña antes de guardar
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(userData.password, salt);
+
+        // Crear usuario con contraseña hasheada
+        const user = await repo.createUser({
+            ...userData,
+            password: hashedPassword,
+            isActive: userData.isActive !== undefined ? userData.isActive : true,
+            failedLoginAttempts: 0
+        });
+
+        // No devolver la contraseña
+        const userResponse = user.toObject();
+        delete userResponse.password;
+
+        return userResponse;
+    } catch (error) {
+        throw new Error(error.message || 'Error creating user');
+    }
+}
 const getUser = async(userId) =>{
     const user = await repo.getUserById(userId);
     if (!user) {
@@ -45,19 +69,46 @@ const delUser = async (userId) => {
 
 
 const authenticateUser = async (credentials) => {
-    const { email, password } = credentials;
-    const user = await repo.getUserByEmail(email);
-    if (!user) {
-        throw new Error('Authentication failed: User not found');
-    }
-    const valid = await bcrypt.compare(password, user.password);
-    if (!valid) {
-        throw new Error('Authentication failed: Incorrect password');
-    }
+    try {
+        const { email, password } = credentials;
 
-    const token = jwt.sign({ userId: user._id }, 'your_jwt_secret', { expiresIn: '1h' });
-    return { token, userId: user._id };
+        // Buscar usuario por email
+        const user = await repo.getUserByEmail(email);
+        if (!user) {
+            throw new Error('Authentication failed: User not found');
+        }
 
+        // Verificar si el usuario está activo
+        if (!user.isActive) {
+            throw new Error('Authentication failed: User is inactive');
+        }
+
+        // Comparar contraseña
+        const isValidPassword = await bcrypt.compare(password, user.password);
+        if (!isValidPassword) {
+            throw new Error('Authentication failed: Incorrect password');
+        }
+
+        // Generar token JWT
+        const token = jwt.sign(
+            { userId: user._id, email: user.email },
+            JWT_SECRET,
+            { expiresIn: JWT_EXPIRES_IN }
+        );
+
+        return {
+            token,
+            user: {
+                _id: user._id,
+                email: user.email,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                profile: user.profile
+            }
+        };
+    } catch (error) {
+        throw new Error(error.message || 'Authentication failed');
+    }
 };
 
 const updProfile = async (userId, profileId) =>{
