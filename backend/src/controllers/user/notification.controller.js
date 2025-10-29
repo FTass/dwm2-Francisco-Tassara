@@ -1,6 +1,5 @@
 const { request, response  } = require('express');
 
-req = request, res = response;
 const {
     listUserNotifications,
     getUserNotification,
