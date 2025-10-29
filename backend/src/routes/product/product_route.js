@@ -1,35 +1,35 @@
-const { Router } = require('express');
+// const { Router } = require('express');
 
-const router = Router();
+// const router = Router();
 
-router.get('/', );
+// router.get('/', );
 
-router.get("/:id",    );
+// router.get("/:id",    );
 
-router.post("/",    );
+// router.post("/",    );
 
-router.put("/:id",  );
+// router.put("/:id",  );
 
-router.delete("/:id",   );
+// router.delete("/:id",   );
 
-// Imagenes de producto
+// // Imagenes de producto
 
-router.get('/:productId/images', );
+// router.get('/:productId/images', );
 
-router.post("/:productId/images",    );
+// router.post("/:productId/images",    );
 
-router.put("/:productId/images/:imageId",  );
+// router.put("/:productId/images/:imageId",  );
 
-router.delete("/:productId/images/:imageId",   );
+// router.delete("/:productId/images/:imageId",   );
 
-// Stock
+// // Stock
 
-router.get('/:productId/stock-movement', );
+// router.get('/:productId/stock-movement', );
 
-router.post("/:productId/stock-movement",    );
+// router.post("/:productId/stock-movement",    );
 
-router.put("/:productId/stock-movement/:movementId",  );
+// router.put("/:productId/stock-movement/:movementId",  );
 
-router.delete("/:productId/stock-movement/:movementId",   );
+// router.delete("/:productId/stock-movement/:movementId",   );
 
-module.exports = router;
+// module.exports = router;

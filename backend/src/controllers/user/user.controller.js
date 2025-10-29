@@ -11,7 +11,7 @@ const {
     getFullName,
     changepassword,
     deactivate
-} = require('backend/src/service/user/user.service.js');
+} = require('../../service/user/user.service.js');
 
 //! En esto se derivara a un User.Service.js
 

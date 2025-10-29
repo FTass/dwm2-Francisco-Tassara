@@ -1,7 +1,13 @@
-const Server = require('./server.js');
-
+// backend/app.js
 require('dotenv').config();
+const Server = require('./server');
 
-const server =  new Server();
-
-server.listen();
+(async () => {
+  try {
+    const server = new Server();
+    await server.listen(); // <-- espera DB + luego levanta HTTP
+  } catch (err) {
+    console.error('Fallo al iniciar la app:', err);
+    process.exit(1);
+  }
+})();
