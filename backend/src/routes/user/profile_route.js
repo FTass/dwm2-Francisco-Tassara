@@ -1,15 +1,23 @@
 const { Router } = require('express');
-
+const { 
+    profilePost,
+    profileGetById,
+    profilesGet,
+    profilePut,
+    profileDel,
+} = require('../../controllers/user/profile.controller.js')
 
 const router = Router();
 
-router.get("/{:id}",    );
+router.get("/{:id}",   profileGetById );
 
-router.post("/",    );
+router.get("/",   profilesGet );
 
-router.put("/:id",  );
+router.post("/",   profilePost);
 
-router.delete("/:id",   );
+router.put("/:id",  profilePut);
+
+router.delete("/:id",  profileDel );
 
 
 module.exports = router
