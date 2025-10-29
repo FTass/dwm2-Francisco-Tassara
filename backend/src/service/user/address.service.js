@@ -6,8 +6,8 @@ const addAddress = async (addressData) => {
     return newAddress
 };
 
-const getAddress = async(addressId) => {
-    const address = await repo.getAddressById(addressId);
+const getAddress = async( userId, addressId ) => {
+    const address = await repo.getAddressByUserAndId(userId, addressId);
     if (!address) {
         throw new Error('Address not found');
     }
@@ -20,21 +20,18 @@ const getAddressesByUserId = async (userId) => {
     
 }
 
-const updAddress = async (addressId, data) => {
-    const updatedAddress = await repo.updateAddress(addressId, data);
-    if ( !updatedAddress ) {
-        throw new Error('Addres not found')
-    }
+const updAddress = async (userId, addressId, data) => {
+    const updatedAddress = await repo.updateAddressForUser(userId, addressId, data);
+    if ( !updatedAddress ) throw new Error('Address not found')
+
     return updatedAddress
 
 }
 
-const delAddress = async ( addressId ) => {
-    const success = await repo.deleteAddress( addressId );
-    if (!success) {
-    throw new Error('Address not found or not deleted');
-    }
-
+const delAddress = async ( userId, addressId ) => {
+    const success = await repo.deleteAddressForUser( userId, addressId );
+    if (!success) throw new Error('Address not found or not deleted');
+    
     return success; 
 }
 
@@ -47,8 +44,8 @@ const delAddress = async ( addressId ) => {
 //    return updatedAddress;
 //}
 
-const getFullAddress = async (addressId) => {
-  const address = await repo.getAddressById(addressId);
+const getFullAddress = async (addressId, userId) => {
+  const address = await repo.getAddressByUserAndId(userId, addressId);
   if (!address) throw new Error('Address not found');
 
   const parts = [
