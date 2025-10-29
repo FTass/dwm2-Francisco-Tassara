@@ -2,17 +2,22 @@ const User = require('../../models/user/User')
 
 class User_Repository {
 
+    // Crear usuario
     async createUser(input){
         const newUser = new User(input)
         await newUser.save();
         return newUser;
     }
 
+    
+
+    // Entrga todos los usuarios
     async getUsers(){
         const users = await User.find();
         return users;
     }
     
+    // Busca usuarrio por su id
     async getUserById(id){
         const user = await User.findById(id);
         if (!user){ 
@@ -22,6 +27,7 @@ class User_Repository {
         }
     }
 
+    // Busca usuario por su correo
     async getUserByEmail(email) {
         const user = await User.findOne({ email: email });
         if  (!user){
@@ -31,6 +37,8 @@ class User_Repository {
         }
     }
 
+        
+    // Retorna todos los usuarios por perfil
     async getUsersByProfile(profileId) {
         return await User.find({ profile: profileId });
     }

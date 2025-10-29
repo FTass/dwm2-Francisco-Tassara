@@ -49,7 +49,7 @@ const addressPost = async (req = request, res = response) => {
     try {
         const { userId } = req.params;
         const body = req.body;
-        if( !body ) return res.status(400).json({msg: 'Missing required data'});
+        if( Object.keys(body).length === 0 ) return res.status(400).json({msg: 'Missing required data'});
         if( !userId ) return res.status(400).json({msg: 'User ID is missing'});
         
         const newAddress = await addAddress( { ...body, userId} );
@@ -65,7 +65,7 @@ const addressPut = async (req = request, res = response) => {
     try {
         const { userId, addressId} = req.params;
         const body = req.body;
-        if ( !body ) {
+        if ( Object.keys(body).length === 0 ) {
             return res.status(400).json({msg: 'missing data'});
         }
         if ( !userId || !addressId) {
