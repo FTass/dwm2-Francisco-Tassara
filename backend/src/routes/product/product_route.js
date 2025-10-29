@@ -1,16 +1,24 @@
-// const { Router } = require('express');
+const { Router } = require('express');
 
-// const router = Router();
+const router = Router();
 
-// router.get('/', );
+const {
+    productDel,
+    productGet,
+    productGetById,
+    productPost,
+    productPut
+} = require('../../controllers/product/product.controller.js')
 
-// router.get("/:id",    );
+router.post("/",  productPost );
 
-// router.post("/",    );
+router.get('/', productGet);
 
-// router.put("/:id",  );
+router.get("/:productId", productGetById );
 
-// router.delete("/:id",   );
+router.put("/:productId", productPut );
+
+router.delete("/:productId", productDel );
 
 // // Imagenes de producto
 
