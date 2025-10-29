@@ -8,28 +8,28 @@ class Address_Repository {
         return newAddress;
     }
     
-    async getAddressById(id){
-        const address = await Address.findById(id);
-        if (!address){ 
-            return null
-        } else {
-            return Address
-        }
-    }
-
     async getAddressesByUser(userId) {
-        return await Address.find({ userId});
+        return await Address.find({ userId });
     }
 
-    async updateAddress(AddressId, input){
-        const address = await Address.findByIdAndUpdate(AddressId, input, {new:true});
-        return address;
+    async getAddressByUserAndId(userId, addressId) {
+        return await Address.findOne({ _id: addressId, userId });
     }
-
-    async deleteAddress(AddressId) {
-        const { deletedCount } = await Address.deleteOne({ _id: AddressId });
+    async updateAddressForUser(userId, addressId, input) {
+        const address = await Address.findOneAndUpdate(
+            { _id: addressId, userId },
+            input,
+            { new: true }
+        );
+        return address; // null si no existe o no pertenece
+    }
+    async deleteAddressForUser(userId, addressId) {
+        const { deletedCount } = await Address.deleteOne({ _id: addressId, userId });
         return deletedCount === 1;
     }
+
 }
 
 module.exports = new Address_Repository();
+
+

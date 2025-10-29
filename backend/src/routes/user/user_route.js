@@ -9,7 +9,17 @@ const {
     userPut,
     userDelete,
     userLogin,
-} = require('backend/src/controllers/user/user.controller.js')
+} = require('../../controllers/user/user.controller.js')
+
+const {
+    addressDel,
+    addressGet,
+    addressPost,
+    addressPut,
+    addressesGet
+} = require('../../controllers/user/address.controller.js')
+
+
 
 router.get('/', usersGet );
 
@@ -27,13 +37,15 @@ router.delete('/:id', userDelete);
 
 // Direcciones del usuario
 
-router.get('/:userId/addresses', );
+router.get('/:userId/addresses', addressesGet);               // Obtener todas las direcciones de un usuario
 
-router.post('/:userId/addresses', );
+router.get('/:userId/addresses/:addressId', addressGet);    // Obtener una dirección específica de un usuario
 
-router.put('/:userId/addresses/:addressId', );
+router.post('/:userId/addresses', addressPost);              // Crear una nueva dirección para un usuario
 
-router.delete('/:userId/addresses/:addressId', );
+router.put('/:userId/addresses/:addressId', addressPut);    // Actualizar una dirección específica
+
+router.delete('/:userId/addresses/:addressId', addressDel); // Eliminar una dirección específica
 
 // Notificaciones del usuario
 
