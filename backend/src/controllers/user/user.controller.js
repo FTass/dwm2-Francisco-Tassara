@@ -82,7 +82,7 @@ const userPut = async (req = request, res = response) => {
     }
 
     
-    res.status(200).json({ msg: 'User updated', data: { id, ...body } });
+    res.status(200).json({ msg: 'User updated', data: updatedUser});
 
 }
 const userDelete = async (req = request, res = response) => {
@@ -96,7 +96,7 @@ const userDelete = async (req = request, res = response) => {
     if (!success) {
         return res.status(404).json({ msg: 'User not found or not deleted' });
     }
-    res.status(200).json({ msg: 'User deleted', data: { id } });
+    res.status(200).json({ msg: 'User deleted'});
 }
 
 
