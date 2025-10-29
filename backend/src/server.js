@@ -68,7 +68,7 @@ class Server {
         // this.app.use(this.paths.sessionTokens, require('./routes/user/sessionTokens_route.js'));
 
         //* Product
-        // this.app.use(this.paths.products, require('./routes/product/product_route'));
+        this.app.use(this.paths.products, require('./routes/product/product_route'));
         // this.app.use(this.paths.categories, require('./routes/product/category_route'));
 
         
