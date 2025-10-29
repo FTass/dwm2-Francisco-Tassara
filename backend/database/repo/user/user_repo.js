@@ -9,6 +9,8 @@ class User_Repository {
         return newUser;
     }
 
+    
+
     // Entrga todos los usuarios
     async getUsers(){
         const users = await User.find();

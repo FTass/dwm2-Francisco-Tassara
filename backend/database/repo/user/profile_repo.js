@@ -12,6 +12,13 @@ class Profile_Repository {
         return await Profile.find().lean();
     }   
 
+    async getProfileByName( profileName) {
+        const profile = await Profile.findOne({ name : profileName});
+        if (!profile) return null;
+        return profile;
+        
+    }
+
     async getProfileById( profileId) {
         const profile = await Profile.findById(profileId);
         return profile ?? null;
