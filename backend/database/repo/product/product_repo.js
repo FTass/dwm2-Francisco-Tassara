@@ -22,13 +22,13 @@ class Product_Repository {
         return product;
     }
 
-    async getCheeseByMilkType ( milkType ) {
+    async getCheesesByMilkType ( milkType ) {
         const product = await Product.find( { milkType });
         if ( !product ) return null;
         return product;
     }
     
-    async getProductByStatus ( status ) {
+    async getProductsByStatus ( status ) {
         const product = await Product.find( {status});
         if ( !product ) return null;
         return product;
