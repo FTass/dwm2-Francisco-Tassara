@@ -7,6 +7,10 @@ class ProductImg_repo {
     return newImg;
   }
 
+  async getImgs ( productId ) {
+    return await ProductImg.find({ productId });
+  }
+
   async getImgByIdAndProductId( imgId, productId ) {
     const img = await ProductImg.findOne({ _id: imgId, productId });
     return img || null;

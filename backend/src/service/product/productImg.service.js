@@ -14,7 +14,7 @@ const getImg = async ( imgId, productId ) => {
 
 const getProductImgs = async ( productId ) => {
     const imgs = await repo.getImgs( productId );
-    return imgs;
+    return imgs; 
 }
 
 const updImg = async ( imgId, productId, data ) => {
