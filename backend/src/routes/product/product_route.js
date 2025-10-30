@@ -41,14 +41,14 @@ router.put("/:productId/images/:imageId", imagesPut );
 
 router.delete("/:productId/images/:imageId", imagesDel );
 
-// // Stock
+// Stock
 
-// router.get('/:productId/stock-movement', );
+router.get('/:productId/stock-movement', );
 
-// router.post("/:productId/stock-movement",    );
+router.post("/:productId/stock-movement",    );
 
-// router.put("/:productId/stock-movement/:movementId",  );
+router.put("/:productId/stock-movement/:movementId",  );
 
-// router.delete("/:productId/stock-movement/:movementId",   );
+router.delete("/:productId/stock-movement/:movementId",   );
 
-// module.exports = router;
+module.exports = router;
