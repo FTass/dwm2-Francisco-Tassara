@@ -7,11 +7,6 @@ class ProductImg_repo {
     return newImg;
   }
 
-  async getImgs ( productId ) {
-    return await ProductImg.find( { productId } )
-  }
-
-
   async getImgByIdAndProductId( imgId, productId ) {
     const img = await ProductImg.findOne({ _id: imgId, productId });
     return img || null;
@@ -31,9 +26,8 @@ class ProductImg_repo {
     return result.deletedCount === 1;
   }
 
-  async setPrimaryImg(productId, imgId) {
+  async unsetAllPrimary(productId) {
     await ProductImg.updateMany({ productId }, { isPrimary: false });
-    return await ProductImg.findByIdAndUpdate(imgId, { isPrimary: true }, { new: true });
   }
 
 }

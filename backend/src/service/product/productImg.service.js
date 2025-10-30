@@ -29,6 +29,7 @@ const delImg = async ( imgId, productId ) => {
 }
 
 const setPrimary = async (imgId, productId) => {
+    await repo.unsetAllPrimary( productId )
   const updatedImg = await repo.setPrimaryImg(productId, imgId);
   if (!updatedImg) throw new Error('Image not found');
   return updatedImg;

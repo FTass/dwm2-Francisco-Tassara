@@ -10,6 +10,15 @@ const {
     productPut
 } = require('../../controllers/product/product.controller.js')
 
+const {
+    imageGetById,
+    imagesDel,
+    imagesGet,
+    imagesPost,
+    imagesPut
+
+} = require('../../controllers/product/product.controller.js')
+
 router.post("/",  productPost );
 
 router.get('/', productGet);
@@ -20,15 +29,17 @@ router.put("/:productId", productPut );
 
 router.delete("/:productId", productDel );
 
-// // Imagenes de producto
+// Imagenes de producto
 
-// router.get('/:productId/images', );
+router.get('/:productId/images', imagesGet );
 
-// router.post("/:productId/images",    );
+router.get("/:productId/images/:imageId", imageGetById );
 
-// router.put("/:productId/images/:imageId",  );
+router.post("/:productId/images",  imagesPost );
 
-// router.delete("/:productId/images/:imageId",   );
+router.put("/:productId/images/:imageId", imagesPut );
+
+router.delete("/:productId/images/:imageId", imagesDel );
 
 // // Stock
 
