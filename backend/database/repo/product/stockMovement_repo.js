@@ -9,11 +9,11 @@ class StockMovement_repo {
 
     // Todos los movimientos de un producto
     async getMovementsByProduct ( productId ) {
-        return await StockMovement.find({ productId });
+        return await StockMovement.find( { productId } ).sort( { createdAt: -1 } );;
     }
     
     async getMovementsByUser ( userId ) {
-        return await StockMovement.find( { userId } );
+        return await StockMovement.find( { userId } ).sort( { createdAt: -1 } );;
     }
 
     async getMovementByIdAndProduct( movementId, productId ) {
@@ -41,3 +41,5 @@ class StockMovement_repo {
     }
 
 }
+
+module.exports = new StockMovement_repo();

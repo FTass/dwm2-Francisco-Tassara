@@ -35,7 +35,7 @@ const updMovementForProduct = async ( movementId, productId, data ) => {
 }
 
 const delMovementForProduct = async ( movementId, productId ) => {
-    const success = await repo.delMovementForProduct ( movementId, productId );
+    const success = await repo.deleteMovementForProduct ( movementId, productId );
     if ( !success ) throw new Error ( 'Movement not found or not deleted' );
     return success
 }
