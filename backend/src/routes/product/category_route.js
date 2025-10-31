@@ -1,22 +1,34 @@
-// const { Router } = require('express');
+const { Router } = require('express');
 
-// const router = Router();
+const router = Router();
 
-// router.get('/', );
+const {
+    getProductCount,
+    categoriesGet,
+    categoryDel,
+    categoryPost,
+    categoryPut,
+    subcategoriesGet,
+    categoryGet
+} = require('../../controllers/product/category.controller.js')
 
-// router.get("/:id",    );
+router.get('/', categoriesGet );
 
-// router.post("/",    );
+router.get("/:categoryId", categoryGet );
 
-// router.put("/:id",  );
+router.get("/:slug",  categoryGet );
 
-// router.delete("/:id",   );
+router.post("/", categoryPost );
+
+router.put("/:categoryId", categoryPut );
+
+router.delete("/:categoryId", categoryDel );
 
 
-// // Obtener subcategorías de una categoría padre
-// router.get('/:id/subcategories', /* getSubcategories */);
+// Obtener subcategorías de una categoría padre
+router.get('/:categoryId/subcategories', subcategoriesGet );
 
-// // Obtener cantidad de productos (método del modelo)
-// router.get('/:id/product-count', /* getProductCount */);
+// Obtener cantdad de productos (método del modelo)
+router.get('/:categoryId/product-count', getProductCount );
 
-// module.exports = router;
+module.exports = router;
