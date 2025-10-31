@@ -21,6 +21,16 @@ class Category_Repo {
         return category || null;
     }
 
+    async getBySlug ( categorySlug) {
+        const category = await Category.findOne(
+            {
+                slug: categorySlug.toLowerCase(),
+            }
+        )
+        return category || null;
+    }   
+
+
     async getCategories () {
         const categories = await Category.find();
         return categories || [];
@@ -42,7 +52,7 @@ class Category_Repo {
         return updatedCategory || null;
     }
 
-    async delCategory( categoryId ) {
+    async deleteCategory( categoryId ) {
         const result = await Category.deleteOne({ _id: categoryId });
         return result.deletedCount === 1;
     }
