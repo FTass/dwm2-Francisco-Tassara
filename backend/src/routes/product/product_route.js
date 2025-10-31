@@ -8,7 +8,7 @@ const {
     productGetById,
     productPost,
     productPut
-} = require('../../controllers/product/product.controller.js')
+} = require('../../controllers/product/product.controller.js');
 
 const {
     imageGetById,
@@ -17,7 +17,15 @@ const {
     imagesPost,
     imagesPut
 
-} = require('../../controllers/product/product.controller.js')
+} = require('../../controllers/product/product.controller.js');
+
+const {
+    movementDelByProductId,
+    movementGetById,
+    movementPost,
+    movementPutByProductId,
+    movementsGetByProduct
+} = require('../../controllers/product/stockMovement.controller.js')
 
 router.post("/",  productPost );
 
@@ -43,12 +51,14 @@ router.delete("/:productId/images/:imageId", imagesDel );
 
 // Stock
 
-router.get('/:productId/stock-movement', );
+router.get('/:productId/stock-movement', movementsGetByProduct );
 
-router.post("/:productId/stock-movement",    );
+router.get('/:productId/stock-movement/:movementId', movementGetById );
 
-router.put("/:productId/stock-movement/:movementId",  );
+router.post("/:productId/stock-movement", movementPost );
 
-router.delete("/:productId/stock-movement/:movementId",   );
+router.put("/:productId/stock-movement/:movementId", movementPutByProductId );
+
+router.delete("/:productId/stock-movement/:movementId", movementDelByProductId  );
 
 module.exports = router;
