@@ -43,6 +43,7 @@ class CategoryService {
     }
 
     async getSubCategories ( parentId ) {
+        if ( !parentId ) throw new Error ('Parent ID is required')
         const categories = await repo.getSubCategories( parentId );
         return categories;
     }
@@ -71,6 +72,17 @@ class CategoryService {
         const success = await repo.deleteCategory( categoryId );
         if (!success) throw new Error('Category not found or could not be deleted');
         return { success: true, message: 'Category deleted successfully' };
+    }
+
+    async getProductCount( categoryId ) {
+        if ( !categoryId ) throw new Error('Category ID is required');
+
+        
+        const cat = await repo.getById( categoryId );
+        if ( !cat ) throw new Error('Category not found');
+
+        const count = await repo.countByCategory( categoryId );
+        return count;
     }
 
 }

@@ -56,6 +56,9 @@ class Category_Repo {
         const result = await Category.deleteOne({ _id: categoryId });
         return result.deletedCount === 1;
     }
+    async countByCategory(categoryId) {
+        return await Product.countDocuments({ categoryId });
+  }
 
 }
 
