@@ -82,7 +82,7 @@ const  imagesDel = async ( req = request, res= response ) => {
         if ( !imageId || !productId) return res.status( 400 ).json( { msg : 'Missing required IDs' } );
         const success = await delImg ( imageId, productId );
         if ( !success ) return res.status( 404 ).json( { msg: 'Image not found or not deleted' } );
-        return res.status( 204 ).send()
+        return res.status( 204 ).send();
     } catch ( error ) {
         console.log( error );
         return res.status(error.status || 500).json({msg: error.message || 'Server error'});
