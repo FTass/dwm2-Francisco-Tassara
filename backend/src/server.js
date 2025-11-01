@@ -69,7 +69,7 @@ class Server {
 
         //* Product
         this.app.use(this.paths.products, require('./routes/product/product_route'));
-        // this.app.use(this.paths.categories, require('./routes/product/category_route'));
+        this.app.use(this.paths.categories, require('./routes/product/category_route'));
 
         
         //* order

@@ -17,14 +17,16 @@ const  productGet = async ( req = request, res = response ) => {
     try {
         const { name, status, milkType, categoryId } = req.query;
 
-        if ( name ) return res.status( 200 ).json( { msg: 'Product fetched', 
-                                                    data:await getByName( name )})
-        if ( status ) return res.status( 200 ).json( { msg: 'Products fetched', 
-                                                    data: await getByStatus( status )})
-        if ( milkType ) return res.status( 200 ).json( {msg: 'Products fetched', 
-                                                        data: await getByMilkType( milkType )})
-        if ( categoryId ) return res.status( 200 ).json( {msg: 'Products fetched', 
-                                                        data: await getByCategory( categoryId )})
+        if ( name ){
+
+            return res.status( 200 ).json( { msg: 'Product fetched', data:await getByName( name )})
+        } else if ( status )  {
+            return res.status( 200 ).json( { msg: 'Products fetched', data: await getByStatus( status )})
+        } else if ( milkType ) {
+            return res.status( 200 ).json( {msg: 'Products fetched', data: await getByMilkType( milkType )})
+        } else if ( categoryId ) {
+            return res.status( 200 ).json( {msg: 'Products fetched', data: await getByCategory( categoryId )})
+        }
 
         const products = await getAll();
         return res.status( 200 ).json( { msg: 'Products fetched', data: products} )

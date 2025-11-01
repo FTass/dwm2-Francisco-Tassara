@@ -36,6 +36,7 @@ class Product_Repository {
 
     async getProducts () {
         const products = await Product.find();
+        return products;
     }
 
     

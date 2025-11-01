@@ -7,7 +7,7 @@ const productSchema = mongoose.Schema ({
     oldPrice :     Number,
     stock :       { type: Number, required : true},
     categoryId :  { type: mongoose.Schema.ObjectId, ref : 'category', required : true},
-    milkType :    { type : String, enum: ['cow', 'goat', 'sheep', 'veggie'], required : true},
+    milkType :    { type : String, enum: ['cow', 'goat', 'sheep', 'veggie']},
     status :      { type: String, enum :['draft', 'published', 'retired'], required : true},
     createdAt:     Date,
     offer:         Boolean,

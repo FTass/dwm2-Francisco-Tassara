@@ -1,7 +1,7 @@
 
 
 const Category = require( '../../models/product/Category.js' );
-
+const Product = require('../../models/product/Product.js')
 
 class Category_Repo {
 
