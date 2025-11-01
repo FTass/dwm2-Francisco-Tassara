@@ -2,6 +2,7 @@ const { Router } = require('express');
 const { ordersGet, orderGet, orderPost, orderPut, orderDel } = require('../../controllers/order/order.controller.js');
 const { itemsGet, itemPost, itemPut, itemDel } = require('../../controllers/order/orderItem.controller.js');
 const { shippingsGet, shippingPost, shippingPut, shippingDel } = require('../../controllers/order/shipping.controller.js');
+const { paymentsGet, paymentGet, paymentPost, paymentVerify, paymentRefund } = require('../../controllers/order/payment.controller.js');
 
 
 const router = Router();
@@ -38,14 +39,14 @@ router.delete("/:orderId/shipping/:shippingId", shippingDel  );
 
 // Payments 
 
-router.get('/:orderId/payments',                   );
+router.get('/:orderId/payments', paymentsGet );
 
-router.get('/:orderId/payments/:paymentId',        );
+router.get('/:orderId/payments/:paymentId',     paymentGet   );
 
-router.post('/:orderId/payments',                 );
+router.post('/:orderId/payments',       paymentPost          );
 
-router.post('/:orderId/payments/:paymentId/verify',);
+router.post('/:orderId/payments/:paymentId/verify',  paymentVerify );
 
-router.post('/:orderId/payments/:paymentId/refund',);
+router.post('/:orderId/payments/:paymentId/refund',  paymentRefund );
 
 module.exports = router;
