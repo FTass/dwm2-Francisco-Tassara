@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const { ordersGet, orderGet, orderPost, orderPut, orderDel } = require('../../controllers/order/order.controller.js');
 const { itemsGet, itemPost, itemPut, itemDel } = require('../../controllers/order/orderItem.controller.js');
+const { shippingsGet, shippingPost, shippingPut, shippingDel } = require('../../controllers/order/shipping.controller.js');
 
 
 const router = Router();
@@ -27,13 +28,13 @@ router.delete("/:orderId/items/:itemId", itemDel );
 
 // Order shipping
 
-router.get("/:orderId/shipping",    );
+router.get("/:orderId/shipping", shippingsGet );
 
-router.post("/:orderId/shipping",   );
+router.post("/:orderId/shipping", shippingPost );
 
-router.put("/:orderId/shipping/:shippingId",  );
+router.put("/:orderId/shipping/:shippingId", shippingPut );
 
-router.delete("/:orderId/shipping/:shippingId",   );
+router.delete("/:orderId/shipping/:shippingId", shippingDel  );
 
 // Payments 
 
