@@ -10,4 +10,4 @@ const shippingSchema = mongoose.Schema({
 });
 
 
-MediaSourceHandle.exports = mongoose.model('shipping', shippingSchema);
+module.exports = mongoose.model('shipping', shippingSchema);

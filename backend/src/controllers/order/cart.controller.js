@@ -1,5 +1,5 @@
 const { request, response } = require('express');
-const service = require('../../service/cart/cart.service.js');
+const service = require('../../service/order/cart.service.js');
 
 const cartsGet = async (req = request, res = response) => {
   try {

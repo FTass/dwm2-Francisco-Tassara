@@ -6,8 +6,8 @@ const orderItemSchema = mongoose.Schema({
     orderId : {type : mongoose.Schema.ObjectId , ref : 'order', required : true},
     productId : {type : mongoose.Schema.ObjectId , ref : 'product', required : true},
     quantity: {type: Number, required : true},
-    unitPrice : {type: Double, required :true},
-    subTotal:  {type: Double, required :true},
+    unitPrice : {type: Number, required :true},
+    subTotal:  {type: Number, required :true},
     createdAt: Date,
 
 });

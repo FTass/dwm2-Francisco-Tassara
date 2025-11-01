@@ -74,9 +74,9 @@ class Server {
         
         //* order
         
-        // this.app.use(this.paths.carts, require('./routes/order/cart_route'));
+        this.app.use(this.paths.carts, require('./routes/order/cart_route'));
         
-        // this.app.use(this.paths.orders, require('./routes/order/order_route'));
+        this.app.use(this.paths.orders, require('./routes/order/order_route'));
         
         //* Payment
         // this.app.use(this.paths.payment, require('./routes/payment/payment_route'));
