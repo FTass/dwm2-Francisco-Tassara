@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const { cartsGet, cartGet, cartPost, cartPut, cartDel } = require('../../controllers/order/cart.controller.js');
+const { cartItemGet, cartItemsGet, cartItemPost, cartItemPut, cartItemDel } = require('../../controllers/order/cartItem.controller.js');
 
 
 const router = Router();
@@ -16,13 +17,15 @@ router.delete("/:cartId", cartDel );
 
 // Items del carrito
 
-router.get('/:cartId/items', );
+router.get('/:cartId/items', cartItemsGet );
 
-router.post("/:cartId/items",    );
+router.get('/:cartId/items/:itemId', cartItemGet)
 
-router.put("/:cartId/items/:itemId",  );
+router.post("/:cartId/items",  cartItemPost);
 
-router.delete("/:cartId/items/:itemId",   );
+router.put("/:cartId/items/:itemId", cartItemPut  );
+
+router.delete("/:cartId/items/:itemId",  cartItemDel );
 
 
 module.exports = router;
