@@ -6,7 +6,7 @@ class NotificationRepo {
         return await Notification.find({ userId });
     }
 
-    async findOneByIdForUser(notificationId, userId) {
+    async findOneByIdForUser( notificationId, userId ) {
         return await Notification.findOne({ _id: notificationId, userId });
     }
 
