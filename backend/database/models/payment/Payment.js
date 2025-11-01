@@ -5,7 +5,7 @@ const paymentSchema = mongoose.Schema({
     orderId: {type: mongoose.Schema.ObjectId, ref:  'order', required : true},
     amount: {type: Double, required : true},
     status : {type: String , enum: ['pending', 'paid', 'failed']},
-    transactionId: {type : String, reuired : true},
+    transactionId: {type : String, required : true},
     idempotencyKey : {type : String, required: true},
     createdAt: Date,
 });
