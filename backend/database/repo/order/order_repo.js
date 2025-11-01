@@ -5,9 +5,9 @@ const Order = require('../../models/order/Order.js');
 class OrderRepository {
     async create( input ) {
         const now = new Date();
-        data.createdAt = now;
-        data.updatedAt = now;
-        return await Order.create( data );
+        input.createdAt = now;
+        input.updatedAt = now;
+        return await Order.create( input );
     }
 
     async findById( orderId ) {
