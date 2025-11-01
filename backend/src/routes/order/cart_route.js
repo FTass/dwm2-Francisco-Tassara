@@ -1,27 +1,28 @@
-// const { Router } = require('express');
+const { Router } = require('express');
+const { cartsGet, cartGet, cartPost, cartPut, cartDel } = require('../../controllers/order/cart.controller.js');
 
 
-// const router = Router();
+const router = Router();
 
-// router.get('/', );
+router.get('/', cartsGet );
 
-// router.get("/:id",    );
+router.get("/:cartId", cartGet );
 
-// router.post("/",    );
+router.post("/",  cartPost );
 
-// router.put("/:id",  );
+router.put("/:cartId", cartPut );
 
-// router.delete("/:id",   );
+router.delete("/:cartId", cartDel );
 
-// // Items del carrito
+// Items del carrito
 
-// router.get('/:cartId/items', );
+router.get('/:cartId/items', );
 
-// router.post("/:cartId/items",    );
+router.post("/:cartId/items",    );
 
-// router.put("/:cartId/items/:itemId",  );
+router.put("/:cartId/items/:itemId",  );
 
-// router.delete("/:cartId/items/:itemId",   );
+router.delete("/:cartId/items/:itemId",   );
 
 
-// module.exports = router;
+module.exports = router;
