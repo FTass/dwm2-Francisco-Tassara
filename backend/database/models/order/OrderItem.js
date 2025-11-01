@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const addres = require('../user/addres')
+
 
 const orderItemSchema = mongoose.Schema({
     orderNumber: {type : String, unique : true},

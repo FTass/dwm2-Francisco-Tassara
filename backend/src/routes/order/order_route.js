@@ -1,5 +1,6 @@
 const { Router } = require('express');
-const { ordersGet, orderGet, orderPost, orderPut, orderDel } = require('../../controllers/order/order.controller');
+const { ordersGet, orderGet, orderPost, orderPut, orderDel } = require('../../controllers/order/order.controller.js');
+const { itemsGet, itemPost, itemPut, itemDel } = require('../../controllers/order/orderItem.controller.js');
 
 
 const router = Router();
@@ -16,13 +17,13 @@ router.delete("/:id", orderDel );
 
 // Order Items
 
-router.get("/:orderId/items",    );
+router.get("/:orderId/items",  itemsGet );
 
-router.post("/:orderId/items",   );
+router.post("/:orderId/items", itemPost );
 
-router.put("/:orderId/items/:itemId",  );
+router.put("/:orderId/items/:itemId", itemPut );
 
-router.delete("/:orderId/items/:itemId",   );
+router.delete("/:orderId/items/:itemId", itemDel );
 
 // Order shipping
 
