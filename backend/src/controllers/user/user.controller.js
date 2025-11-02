@@ -100,7 +100,7 @@ const userDelete = async (req = request, res = response) => {
 }
 
 
-// PUT /api/users/:userId/password
+
 const changePassword = async (req = request, res = response) => {
   try {
     const { userId } = req.params;

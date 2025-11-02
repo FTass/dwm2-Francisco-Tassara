@@ -58,11 +58,16 @@ router.delete('/:userId/addresses/:addressId', addressDel); // Eliminar una dire
 
 router.get('/:userId/notifications', notificationsGet);
 
+router.get('/:userId/notifications/:notificationId', notificationGet)
+
 router.post('/:userId/notifications', notificationPost);
 
 router.put('/:userId/notifications/:notificationId', notificationPut);
 
 router.delete('/:userId/notifications/:notificationId', notificationDel);
+
+
+
 
 router.put('/:userId/password', changePassword);
 
