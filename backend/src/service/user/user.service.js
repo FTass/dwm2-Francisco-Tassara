@@ -68,7 +68,7 @@ const delUser = async (userId) => {
 }
 
 
-const authenticateUser = async (credentials) => {
+const authenticateUser = async ( credentials ) => {
     try {
         const { email, password } = credentials;
 

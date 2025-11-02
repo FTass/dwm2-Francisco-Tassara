@@ -100,11 +100,37 @@ const userDelete = async (req = request, res = response) => {
 }
 
 
+// PUT /api/users/:userId/password
+const changePassword = async (req = request, res = response) => {
+  try {
+    const { userId } = req.params;
+    const { password } = req.body;
+
+    if (!userId) return res.status(400).json({ msg: 'Missing userId' });
+    if (!password) return res.status(400).json({ msg: 'Missing password' });
+
+    const updatedUser = await changepassword(userId, password);
+    return res.status(200).json({
+      msg: 'Password updated successfully',
+      data: { id: updatedUser._id, email: updatedUser.email }
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(error.status || 500).json({
+      msg: error.message || 'Server error'
+    });
+  }
+};
+
+
+
+
 module.exports = {
     userPost,
     userGet,
     usersGet,
     userPut,
     userDelete,
-    userLogin
+    userLogin,
+    changePassword
 }

@@ -12,4 +12,14 @@ const addressSchema = mongoose.Schema({
     
 });
 
+addressSchema.pre(/^find/, function(next) {
+  this.populate({
+    path: 'userId',
+    select: 'firstName -profile' // 👈 muestra sólo el nombre
+  });
+  next();
+});
+
+
+
 module.exports = mongoose.model('address', addressSchema);

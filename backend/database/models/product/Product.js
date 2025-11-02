@@ -6,14 +6,27 @@ const productSchema = mongoose.Schema ({
     price :       { type: Number, required : true},
     oldPrice :     Number,
     stock :       { type: Number, required : true},
-    categoryId :  { type: mongoose.Schema.ObjectId, ref : 'category', required : true},
+    categoryId :  { type: mongoose.Schema.ObjectId, ref : 'Category', required : true},
     milkType :    { type : String, enum: ['cow', 'goat', 'sheep', 'veggie']},
     status :      { type: String, enum :['draft', 'published', 'retired'], required : true},
-    createdAt:     Date,
+
     offer:         Boolean,
     highlight:      Boolean,
-    updatedAt:    { type: Date, default: Date.now }
+    
 
+}, {
+    timestamps: true 
 });
+
+productSchema.pre(/^find/, function(next) {
+    this.populate({
+        path: 'categoryId',
+        select: 'name' 
+    });
+    next();
+});
+
+
+
 
 module.exports = mongoose.model('product', productSchema);

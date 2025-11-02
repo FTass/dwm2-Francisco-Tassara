@@ -6,4 +6,12 @@ const cartSchema = mongoose.Schema({
     createdAt: Date
 });
 
+cartSchema.pre(/^find/, function(next) {
+    this.populate({
+        path: 'userId',
+        select: 'firstName' 
+    });
+    next();
+});
+
 module.exports = mongoose.model('cart', cartSchema);

@@ -19,4 +19,15 @@ const categorySchema = new mongoose.Schema({
     timestamps: true 
 });
 
+categorySchema.pre(/^find/, function(next) {
+    this.populate({
+        path: 'parentId',
+        select: 'name' 
+    });
+    next();
+});
+
+
+
+
 module.exports = mongoose.model('Category', categorySchema);

@@ -9,5 +9,21 @@ const StockMovementSchema = mongoose.Schema({
     createdAt: Date
 });
 
+StockMovementSchema.pre(/^find/, function(next) {
+    this.populate({
+        path: 'userId',
+        select: 'firtsName lastName' 
+    });
+    next();
+});
+
+StockMovementSchema.pre(/^find/, function(next) {
+    this.populate({
+        path: 'productId',
+        select: 'name' 
+    });
+    next();
+});
+
 
 module.exports = mongoose.model('stockMovement', StockMovementSchema);

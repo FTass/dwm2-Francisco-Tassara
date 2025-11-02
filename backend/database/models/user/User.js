@@ -13,4 +13,18 @@ const userSchema = mongoose.Schema({
     updatedAt: { type: Date, default: Date.now }
 });
 
+userSchema.pre(/^find/, function(next) {
+    this.populate({
+        path: 'profile',
+        select: 'name' 
+    });
+    next();
+});
+
+userSchema.methods.toJSON = function() {
+    const user = this.toObject();
+    delete user.password;
+    return user;
+};
+
 module.exports = mongoose.model('user', userSchema);

@@ -8,8 +8,15 @@ class Address_Repository {
         return newAddress;
     }
     
-    async getAddressesByUser(userId) {
-        return await Address.find({ userId });
+    async  getAddressesByUser(userId) {
+        const out = await Address.find({ userId })
+            .populate({ path: 'userId', select: 'firstName profile' }) 
+
+        out.forEach(a => {
+            if (a.userId && a.userId.profile) delete a.userId.profile;
+        });
+
+        return out;
     }
 
     async getAddressByUserAndId(userId, addressId) {
@@ -29,6 +36,11 @@ class Address_Repository {
     }
 
 }
+
+
+
+
+
 
 module.exports = new Address_Repository();
 

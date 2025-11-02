@@ -9,5 +9,12 @@ const shippingSchema = mongoose.Schema({
     deliveredAt : {type: Date, required :true},
 });
 
+shippingSchema.pre(/^find/, function(next) {
+    this.populate({
+        path: 'orderId',
+        select: 'number' 
+    });
+    next();
+});
 
 module.exports = mongoose.model('shipping', shippingSchema);

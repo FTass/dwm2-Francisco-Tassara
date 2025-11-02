@@ -14,4 +14,21 @@ const orderSchema = mongoose.Schema({
 
 });
 
+orderSchema.pre(/^find/, function(next) {
+    this.populate({
+        path: 'userId',
+        select: 'firstName' 
+    });
+    next();
+});
+
+orderSchema.pre(/^find/, function(next) {
+    this.populate({
+        path: 'addresId',
+        select: 'street number' 
+    });
+    next();
+});
+
+
 module.exports = mongoose.model('order', orderSchema);

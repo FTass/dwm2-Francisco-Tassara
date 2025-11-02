@@ -9,6 +9,7 @@ const {
     userPut,
     userDelete,
     userLogin,
+    changePassword
 } = require('../../controllers/user/user.controller.js')
 
 const {
@@ -62,6 +63,8 @@ router.post('/:userId/notifications', notificationPost);
 router.put('/:userId/notifications/:notificationId', notificationPut);
 
 router.delete('/:userId/notifications/:notificationId', notificationDel);
+
+router.put('/:userId/password', changePassword);
 
 
 router.post('/test', (req, res) => {

@@ -10,4 +10,13 @@ const productImageSchema = mongoose.Schema({
 
 });
 
+productImageSchema.pre(/^find/, function(next) {
+    this.populate({
+        path: 'productId',
+        select: 'name' 
+    });
+    next();
+});
+
+
 module.exports = mongoose.model('productImage', productImageSchema);
