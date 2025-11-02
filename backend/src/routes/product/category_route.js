@@ -2,6 +2,10 @@ const { Router } = require('express');
 
 const router = Router();
 
+const requireAuth = require('../../middlewares/auth.js')
+const requireRole = require('../../middlewares/authorize.js')
+
+
 const {
     getProductCount,
     categoriesGet,
@@ -18,11 +22,11 @@ router.get("/:categoryId", categoryGet );
 
 router.get("/:slug",  categoryGet );
 
-router.post("/", categoryPost );
+router.post("/",  requireAuth, requireRole('admin'), categoryPost );
 
-router.put("/:categoryId", categoryPut );
+router.put("/:categoryId", requireAuth, requireRole('admin'), categoryPut );
 
-router.delete("/:categoryId", categoryDel );
+router.delete("/:categoryId", requireAuth, requireRole('admin'), categoryDel );
 
 
 // Obtener subcategorías de una categoría padre

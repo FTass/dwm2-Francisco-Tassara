@@ -14,9 +14,19 @@ const orderGet = async (req = request, res = response) => {
     try {
         const { id } = req.params;
         if (!id) return res.status(400).json({ msg: 'Missing ID' });
+
         const order = await service.getOrderById(id);
+        if (!order) return res.status(404).json({ msg: 'Order not found' });
+
+        const isOwner = order.userId?.toString() === req.user?._id?.toString();
+        const isAdmin = req.user?.profile?.name === 'admin';
+
+        if (!isOwner && !isAdmin)
+            return res.status(403).json({ msg: 'Forbidden: you cannot access this order' });
+
         return res.status(200).json({ msg: 'Order fetched', data: order });
     } catch (error) {
+        console.error(error);
         return res.status(error.status || 500).json({ msg: error.message || 'Server error' });
     }
 };
