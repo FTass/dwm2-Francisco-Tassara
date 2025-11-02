@@ -8,11 +8,9 @@ const orderSchema = mongoose.Schema({
     status : {type : String, enum : ['pending_payment', 'paid', 'shipped', 'delivered', 'cancelled']},
     subTotal : {type : Number , required: true},
     tax : {type : Number , required: true},
-    total : {type : Number },
-    createdAt: Date,
-    updatedAt: Date
+    total : {type : Number }, 
 
-});
+}, { timestamps: true });
 
 orderSchema.pre(/^find/, function(next) {
     this.populate({

@@ -8,8 +8,8 @@ const orderItemSchema = mongoose.Schema({
     quantity: {type: Number, required : true},
     unitPrice : {type: Number, required :true},
     subTotal:  {type: Number, required :true},
-    createdAt: Date,
 
-});
+
+}, { timestamps: true });
 
 module.exports = mongoose.model('orderitem', orderItemSchema);

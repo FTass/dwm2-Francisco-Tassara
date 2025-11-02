@@ -6,6 +6,7 @@ const { paymentsGet, paymentGet, paymentPost, paymentVerify, paymentRefund } = r
 
 const requireAuth = require('../../middlewares/auth');
 const requireRole = require('../../middlewares/authorize');
+const { checkout } = require('../../controllers/order/checkout.controller.js');
 
 const router = Router();
 
@@ -52,5 +53,9 @@ router.post('/:orderId/payments',       paymentPost          );
 router.post('/:orderId/payments/:paymentId/verify',  paymentVerify );
 
 router.post('/:orderId/payments/:paymentId/refund',  paymentRefund );
+
+
+router.post('/checkout', checkout);
+
 
 module.exports = router;
