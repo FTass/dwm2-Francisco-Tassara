@@ -7,4 +7,14 @@ const cartItemSchema = mongoose.Schema({
     addedAt: Date
 });
 
+cartItemSchema.pre(/^find/, function(next) {
+    this.populate({
+        path: 'productId',
+        select: 'name' 
+    });
+    next();
+});
+
+
+
 module.exports = mongoose.model('cartItem', cartItemSchema);
