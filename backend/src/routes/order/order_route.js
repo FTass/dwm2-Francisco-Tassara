@@ -4,8 +4,12 @@ const { itemsGet, itemPost, itemPut, itemDel } = require('../../controllers/orde
 const { shippingsGet, shippingPost, shippingPut, shippingDel } = require('../../controllers/order/shipping.controller.js');
 const { paymentsGet, paymentGet, paymentPost, paymentVerify, paymentRefund } = require('../../controllers/order/payment.controller.js');
 
+const requireAuth = require('../../middlewares/auth');
+const requireRole = require('../../middlewares/authorize');
 
 const router = Router();
+
+router.use(requireAuth);
 
 router.get("/", ordersGet );
 

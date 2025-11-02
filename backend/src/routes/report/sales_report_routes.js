@@ -1,6 +1,14 @@
 const { Router } = require('express');
 const { reportsGet, reportGet, reportPost, reportPut, reportDel, reportPdf, reportSummary } = require('../../controllers/report/salesReport.controller.js');
+
+const requireAuth = require('../../middlewares/auth');
+const requireRole = require('../../middlewares/authorize');
+
+
 const router = Router();
+
+router.use(requireAuth, requireRole('admin'));
+
 
 router.get('/', reportsGet );             
 router.get('/:id', reportGet );          
