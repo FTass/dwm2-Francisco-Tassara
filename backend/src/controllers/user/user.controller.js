@@ -9,7 +9,7 @@ const {
     changepassword
 } = require('../../service/user/user.service.js');
 
-const { ensureOwnerAdmin, isAdmin } = require('../../utils/access.js');
+const { ensureOwnerOrAdmin, isAdmin } = require('../../utils/access.js');
 
 const userPost = async (req = request, res = response) => {
     const body = req.body;
@@ -29,7 +29,7 @@ const userGet = async (req = request, res = response) => {
     if (!user) {
         return res.status(404).json({ msg: 'User not found' });
     }
-    if (!ensureOwnerAdmin(res, user._id, req.user)) return;
+    if (!ensureOwnerOrAdmin(res, user._id, req.user)) return;
     return res.status(200).json({ msg: 'User fetched', data: user });
 };
 
@@ -64,7 +64,7 @@ const userPut = async (req = request, res = response) => {
     if (!target) {
         return res.status(404).json({ msg: 'User not found or not updated' });
     }
-    if (!ensureOwnerAdmin(res, target._id, req.user)) return;
+    if (!ensureOwnerOrAdmin(res, target._id, req.user)) return;
     const updatedUser = await updUser(id, body);
     if (!updatedUser) {
         return res.status(404).json({ msg: 'User not found or not updated' });
@@ -93,7 +93,7 @@ const changePassword = async (req = request, res = response) => {
         const { password } = req.body;
         if (!userId) return res.status(400).json({ msg: 'Missing userId' });
         if (!password) return res.status(400).json({ msg: 'Missing password' });
-        if (!ensureOwnerAdmin(res, userId, req.user)) return;
+        if (!ensureOwnerOrAdmin(res, userId, req.user)) return;
         const updatedUser = await changepassword(userId, password);
         return res.status(200).json({
             msg: 'Password updated successfully',

@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 const orderSchema = mongoose.Schema({
     orderNumber: {type : String, unique : true},
     userId : {type : mongoose.Schema.ObjectId , ref : 'user', required : true},
-    addresId : {type : mongoose.Schema.ObjectId , ref : 'addres', required : true},
+    addressId : {type : mongoose.Schema.ObjectId , ref : 'address', required : true},
     status : {type : String, enum : ['pending_payment', 'paid', 'shipped', 'delivered', 'cancelled']},
     subTotal : {type : Number , required: true},
     tax : {type : Number , required: true},
@@ -24,8 +24,8 @@ orderSchema.pre(/^find/, function(next) {
 
 orderSchema.pre(/^find/, function(next) {
     this.populate({
-        path: 'addresId',
-        select: 'street number' 
+        path: 'addressId',
+        select: 'street firstName name' 
     });
     next();
 });
