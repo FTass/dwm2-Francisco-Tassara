@@ -21,24 +21,25 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     />
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"
+    ></script>
     <title>Queso & Sabor</title>
   </head>
 
   <body class="body-custom">
-    <!-- navbar importado -->
     <div id="navbar-root"></div>
 
-    <!--Carpousel importado-->
     <div id="carousel-root"></div>
-    <!--Destacados importado-->
+
     <div id="destacados-root"></div>
 
-    <!--Catalogo importado-->
     <section>
       <div id="catalogo-root"></div>
     </section>
-    <!--Categorias importado-->
+
     <section>
       <div id="categorias-root"></div>
     </section>
@@ -46,71 +47,79 @@
     <section>
       <div id="footer-root"></div>
     </section>
+
+    <!-- HANDLER CATÁLOGO + PRODUCT IMAGES -->
+    <script src="/frontend/public/js/handlers/product.js"></script>
+
+    <!-- CARGA DE PARTIALS Y LLAMADA A initCatalogoProductos -->
     <script>
       fetch("/frontend/public/partials/vista-detallada.html")
-  .then(r => r.text())
-  .then(html => {
-    document.body.insertAdjacentHTML("beforeend", html);
+        .then((r) => r.text())
+        .then((html) => {
+          document.body.insertAdjacentHTML("beforeend", html);
+          const modalEl = document.getElementById("exampleModal");
+          if (!modalEl) {
+            console.error("No se encontró #exampleModal");
+            return;
+          }
 
-    const modalEl = document.getElementById("exampleModal");
-    if (!modalEl) {
-      console.error("No se encontró #exampleModal");
-      return;
-    }
+          modalEl.addEventListener("show.bs.modal", (event) => {
+            const trigger = event.relatedTarget;
+            if (!trigger) return;
 
-    // 2️⃣ Detectar apertura del modal (evento de Bootstrap)
-    modalEl.addEventListener("show.bs.modal", (event) => {
-      const trigger = event.relatedTarget; // la card o botón que lo abrió
-      if (!trigger) return;
+            const name =
+              trigger.getAttribute("data-product-name") || "Producto";
+            const price =
+              trigger.getAttribute("data-product-price") || "";
+            const img =
+              trigger.getAttribute("data-product-img") ||
+              "https://picsum.photos/500/500";
+            const desc =
+              trigger.getAttribute("data-product-desc") || "";
 
-      // Leer datos desde atributos data-*
-      const name  = trigger.getAttribute("data-product-name")  || "Producto";
-      const price = trigger.getAttribute("data-product-price") || "";
-      const img   = trigger.getAttribute("data-product-img")   || "https://picsum.photos/500/500";
-      const desc  = trigger.getAttribute("data-product-desc")  || "";
+            const $ = (id) => document.getElementById(id);
+            $("exampleModalLabel").textContent = name;
+            $("modalProductImg").src = img;
+            $("modalProductImg").alt = name;
+            $("modalProductPrice").textContent = price;
+            $("modalProductDesc").textContent = desc;
 
-      // Actualizar contenido del modal
-      const $ = (id) => document.getElementById(id);
-      $("exampleModalLabel").textContent = name;
-      $("modalProductImg").src = img;
-      $("modalProductImg").alt = name;
-      $("modalProductPrice").textContent = price;
-      $("modalProductDesc").textContent = desc;
+            const qty = $("modalQty");
+            if (qty) qty.value = 1;
 
-      const qty = $("modalQty");
-      if (qty) qty.value = 1;
-
-      const addBtn = $("addToCartBtn");
-      if (addBtn) {
-        addBtn.onclick = () => {
-          console.log("Agregar al carrito:", {
-            name,
-            price,
-            img,
-            qty: Number(qty?.value || 1),
+            const addBtn = $("addToCartBtn");
+            if (addBtn) {
+              addBtn.onclick = () => {
+                console.log("Agregar al carrito:", {
+                  name,
+                  price,
+                  img,
+                  qty: Number(qty?.value || 1),
+                });
+              };
+            }
           });
-        };
-      }
-    });
 
-    // 3️⃣ Asegura que las cards tengan los atributos necesarios
-    document.querySelectorAll(".card.prod").forEach(card => {
-      card.setAttribute("data-bs-toggle", "modal");
-      card.setAttribute("data-bs-target", "#exampleModal");
+          document.querySelectorAll(".card.prod").forEach((card) => {
+            card.setAttribute("data-bs-toggle", "modal");
+            card.setAttribute("data-bs-target", "#exampleModal");
 
-      // fallback: si aún no tienen los data-*, se los agrega
-      const h5 = card.querySelector("h5")?.textContent.trim() || "Producto";
-      const em = card.querySelector("em")?.textContent.trim() || "";
-      const img = card.querySelector("img")?.src || "https://picsum.photos/500/500";
+            const h5 =
+              card.querySelector("h5")?.textContent.trim() || "Producto";
+            const em =
+              card.querySelector("em")?.textContent.trim() || "";
+            const img =
+              card.querySelector("img")?.src ||
+              "https://picsum.photos/500/500";
 
-      card.setAttribute("data-product-name", h5);
-      card.setAttribute("data-product-price", em);
-      card.setAttribute("data-product-img", img);
-      card.setAttribute("data-product-desc", "");
-    });
-  })
-  .catch(console.error);
-  
+            card.setAttribute("data-product-name", h5);
+            card.setAttribute("data-product-price", em);
+            card.setAttribute("data-product-img", img);
+            card.setAttribute("data-product-desc", "");
+          });
+        })
+        .catch(console.error);
+
       fetch("/frontend/public/partials/navbar.html")
         .then((r) => r.text())
         .then((html) => {
@@ -137,6 +146,21 @@
               }),
           ]);
         });
+
+      const catalogoPromise = fetch("/frontend/public/partials/catalogo.html")
+        .then((r) => r.text())
+        .then((html) => {
+          document.getElementById("catalogo-root").innerHTML = html;
+        })
+        .then(() => {
+          if (typeof initCatalogoProductos === "function") {
+            console.log("Llamando a initCatalogoProductos...");
+            initCatalogoProductos();
+          } else {
+            console.error("initCatalogoProductos no definida");
+          }
+        });
+
       Promise.all([
         fetch("/frontend/public/partials/carousel.html")
           .then((r) => r.text())
@@ -148,11 +172,7 @@
           .then((html) => {
             document.getElementById("destacados-root").innerHTML = html;
           }),
-        fetch("/frontend/public/partials/catalogo.html")
-          .then((r) => r.text())
-          .then((html) => {
-            document.getElementById("catalogo-root").innerHTML = html;
-          }),
+        catalogoPromise,
         fetch("/frontend/public/partials/categorias.html")
           .then((r) => r.text())
           .then((html) => {
