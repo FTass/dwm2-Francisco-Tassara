@@ -1,24 +1,23 @@
 console.log("handler cargado");
-const API_BASE_URL = "http://localhost:3000";
 
-function initProd() {
-  initCatalogoProductos( 'cow', 'row-quesos-vaca');
-  initCatalogoProductos('goat', 'row-quesos-cabra');
+function initOffers() {
+  initPromociones( 'row-promociones' );
+  
 }
 
-function initCatalogoProductos(milkType, containerId) {
-  console.log("initCatalogoProductos ejecutado");
+function initPromociones( containerId ) {
+  console.log("initPromociones ejecutado");
 
   $.get(`${API_BASE_URL}/api/products`, {
-    milkType,
+    offer : 'true',
     status : 'published'
     
   })
-    .done(function (response) {
+    .done(function ( response ) {
       console.log("respuesta API productos:", response);
       renderProductos( response, containerId );
     })
-    .fail(function (err) {
+    .fail(function ( err ) {
       console.error("Error al cargar productos", err);
     });
 }

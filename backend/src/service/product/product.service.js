@@ -30,10 +30,10 @@ const getByStatus = async ( status ) => {
     return products || [];
 }
 
-const getAll = async () => {
-    const products = await repo.getProducts();
-    return products || [];
-}
+const getAll = async (filters = {}) => {
+  const products = await repo.getAllProducts(filters);
+  return products;
+};
 
 const getByCategory = async ( categoryId ) => {
     const products = await repo.getProductsByCategory( categoryId );
