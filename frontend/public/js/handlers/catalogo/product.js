@@ -4,6 +4,8 @@ const API_BASE_URL = "http://localhost:3000";
 function initProd() {
   initCatalogoProductos( 'cow', 'row-quesos-vaca');
   initCatalogoProductos('goat', 'row-quesos-cabra');
+  initCatalogoProductos('sheep', 'row-quesos-oveja');
+  initCatalogoProductos('veggie', 'row-quesos-veggie');
 }
 
 function initCatalogoProductos(milkType, containerId) {
@@ -58,7 +60,8 @@ function renderProductos(response, containerId) {
              data-product-desc="${
                p.description || "Sin descripción disponible"
              }"
-             data-product-stock="${stock}">
+             data-product-stock="${stock}"
+             data-product-img="${placeholder}">
           <div class="ratio ratio-4x3">
             <img class="card-img-top product-img" 
                  src="${placeholder}" 
@@ -90,6 +93,7 @@ function renderProductos(response, containerId) {
 
           if (primary?.url) {
             $col.find(".product-img").attr("src", primary.url);
+            $col.find(".card").attr("data-product-img", primary.url)
           } else {
             $col
               .find(".product-img")
