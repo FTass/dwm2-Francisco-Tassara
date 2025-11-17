@@ -22,6 +22,11 @@ class Product_Repository {
         return product;
     }
 
+    async getAllProducts(filter = {}) {
+        return await Product.find(filter);
+    }
+
+
     async getCheesesByMilkType ( milkType ) {
         const product = await Product.find( { milkType });
         if ( !product ) return null;

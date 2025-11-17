@@ -30,33 +30,44 @@
   </head>
 
   <body class="body-custom">
+    <!-- navbar importado -->
     <div id="navbar-root"></div>
 
+    <!--Carrousel importado-->
     <div id="carousel-root"></div>
 
+    <!--Destacados importado-->
     <div id="destacados-root"></div>
 
+    <!--Catálogo importado-->
     <section>
       <div id="catalogo-root"></div>
     </section>
 
+    <!--Categorías importado-->
     <section>
       <div id="categorias-root"></div>
     </section>
 
+    <!--Footer importado-->
     <section>
       <div id="footer-root"></div>
     </section>
 
-    <!-- HANDLER CATÁLOGO + PRODUCT IMAGES -->
+    <!-- Handlers -->
     <script src="/frontend/public/js/handlers/product.js"></script>
+    <script src="/frontend/public/js/handlers/offers.js"></script>
+    <script src="/frontend/public/js/handlers/highlight.js"></script>
 
-    <!-- CARGA DE PARTIALS Y LLAMADA A initCatalogoProductos -->
     <script>
+      // ==========================
+      // MODAL DE VISTA DETALLADA
+      // ==========================
       fetch("/frontend/public/partials/vista-detallada.html")
         .then((r) => r.text())
         .then((html) => {
           document.body.insertAdjacentHTML("beforeend", html);
+
           const modalEl = document.getElementById("exampleModal");
           if (!modalEl) {
             console.error("No se encontró #exampleModal");
@@ -69,13 +80,11 @@
 
             const name =
               trigger.getAttribute("data-product-name") || "Producto";
-            const price =
-              trigger.getAttribute("data-product-price") || "";
+            const price = trigger.getAttribute("data-product-price") || "";
             const img =
               trigger.getAttribute("data-product-img") ||
               "https://picsum.photos/500/500";
-            const desc =
-              trigger.getAttribute("data-product-desc") || "";
+            const desc = trigger.getAttribute("data-product-desc") || "";
 
             const $ = (id) => document.getElementById(id);
             $("exampleModalLabel").textContent = name;
@@ -100,17 +109,16 @@
             }
           });
 
+          // fallback por si hay cards ya renderizadas en el HTML estático
           document.querySelectorAll(".card.prod").forEach((card) => {
             card.setAttribute("data-bs-toggle", "modal");
             card.setAttribute("data-bs-target", "#exampleModal");
 
             const h5 =
               card.querySelector("h5")?.textContent.trim() || "Producto";
-            const em =
-              card.querySelector("em")?.textContent.trim() || "";
+            const em = card.querySelector("em")?.textContent.trim() || "";
             const img =
-              card.querySelector("img")?.src ||
-              "https://picsum.photos/500/500";
+              card.querySelector("img")?.src || "https://picsum.photos/500/500";
 
             card.setAttribute("data-product-name", h5);
             card.setAttribute("data-product-price", em);
@@ -120,6 +128,9 @@
         })
         .catch(console.error);
 
+      // ==========================
+      // NAVBAR + CARRITO
+      // ==========================
       fetch("/frontend/public/partials/navbar.html")
         .then((r) => r.text())
         .then((html) => {
@@ -145,44 +156,73 @@
                 contentSlot.innerHTML = html;
               }),
           ]);
-        });
+        })
+        .catch(console.error);
 
+      // ==========================
+      // RESTO DE PARCIALES + INIT
+      // ==========================
+
+      // Catálogo: cuando se cargue el HTML, llamamos a initProd() (vaca/cabra)
       const catalogoPromise = fetch("/frontend/public/partials/catalogo.html")
         .then((r) => r.text())
         .then((html) => {
           document.getElementById("catalogo-root").innerHTML = html;
         })
         .then(() => {
-          if (typeof initCatalogoProductos === "function") {
-            console.log("Llamando a initCatalogoProductos...");
-            initCatalogoProductos();
+          if (typeof initProd === "function") {
+            console.log("Llamando a initProd (catálogo vaca/cabra)...");
+            initProd();
+            initOffers();
           } else {
-            console.error("initCatalogoProductos no definida");
+            console.error("initProd no está definida");
           }
         });
 
+      // Promociones: cuando se cargue el HTML, llamamos a initOffers() (promos)
+
+      const destacadosPromise = fetch(
+        "/frontend/public/partials/destacados.html"
+      )
+        .then((r) => r.text())
+        .then((html) => {
+          document.getElementById("destacados-root").innerHTML = html;
+        })
+        .then(() => {
+          if (typeof initOffers === "function") {
+            console.log("Llamando a initOffers (promociones)...");
+            initHighlight();
+          } else {
+            console.error("initOffers no está definida");
+          }
+        });
+
+      const carouselPromise = fetch("/frontend/public/partials/carousel.html")
+        .then((r) => r.text())
+        .then((html) => {
+          document.getElementById("carousel-root").innerHTML = html;
+        });
+
+      const categoriasPromise = fetch(
+        "/frontend/public/partials/categorias.html"
+      )
+        .then((r) => r.text())
+        .then((html) => {
+          document.getElementById("categorias-root").innerHTML = html;
+        });
+
+      const footerPromise = fetch("/frontend/public/partials/footer.html")
+        .then((r) => r.text())
+        .then((html) => {
+          document.getElementById("footer-root").innerHTML = html;
+        });
+
       Promise.all([
-        fetch("/frontend/public/partials/carousel.html")
-          .then((r) => r.text())
-          .then((html) => {
-            document.getElementById("carousel-root").innerHTML = html;
-          }),
-        fetch("/frontend/public/partials/destacados.html")
-          .then((r) => r.text())
-          .then((html) => {
-            document.getElementById("destacados-root").innerHTML = html;
-          }),
+        carouselPromise,
+        destacadosPromise,
         catalogoPromise,
-        fetch("/frontend/public/partials/categorias.html")
-          .then((r) => r.text())
-          .then((html) => {
-            document.getElementById("categorias-root").innerHTML = html;
-          }),
-        fetch("/frontend/public/partials/footer.html")
-          .then((r) => r.text())
-          .then((html) => {
-            document.getElementById("footer-root").innerHTML = html;
-          }),
+        categoriasPromise,
+        footerPromise,
       ]).catch(console.error);
     </script>
   </body>
