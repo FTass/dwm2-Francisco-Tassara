@@ -55,9 +55,11 @@
     </section>
 
     <!-- Handlers -->
-    <script src="/frontend/public/js/handlers/product.js"></script>
-    <script src="/frontend/public/js/handlers/offers.js"></script>
-    <script src="/frontend/public/js/handlers/highlight.js"></script>
+    <script src="/frontend/public/js/handlers/catalogo/product.js"></script>
+    <script src="/frontend/public/js/handlers/catalogo/offers.js"></script>
+    <script src="/frontend/public/js/handlers/catalogo/highlight.js"></script>
+    <script src="/frontend/public/js/handlers/catalogo/combos.js"></script>
+    <script src="/frontend/public/js/handlers/catalogo/tables.js"></script>
 
     <script>
       // ==========================
@@ -174,6 +176,8 @@
             console.log("Llamando a initProd (catálogo vaca/cabra)...");
             initProd();
             initOffers();
+            initCombo();
+            initTable();
           } else {
             console.error("initProd no está definida");
           }
