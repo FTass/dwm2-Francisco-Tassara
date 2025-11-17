@@ -60,8 +60,7 @@ function renderProductos(response, containerId) {
              data-product-desc="${
                p.description || "Sin descripción disponible"
              }"
-             data-product-stock="${stock}"
-             data-product-img="${placeholder}">
+             data-product-stock="${stock}" data-product-img="${placeholder}">
           <div class="ratio ratio-4x3">
             <img class="card-img-top product-img" 
                  src="${placeholder}" 
@@ -93,7 +92,7 @@ function renderProductos(response, containerId) {
 
           if (primary?.url) {
             $col.find(".product-img").attr("src", primary.url);
-            $col.find(".card").attr("data-product-img", primary.url)
+            
           } else {
             $col
               .find(".product-img")
