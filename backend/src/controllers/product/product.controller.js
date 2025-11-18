@@ -13,30 +13,49 @@ const {
 
 
 
-const  productGet = async ( req = request, res = response ) => {
-    try {
-        const { name, status, milkType, categoryId } = req.query;
+const productGet = async (req = request, res = response) => {
+  try {
+    const { name, milkType, status, categoryId, offer, highlight } = req.query;
 
-        if ( name ){
+    const filter = {};
 
-            return res.status( 200 ).json( { msg: 'Product fetched', data:await getByName( name )})
-        } else if ( status )  {
-            return res.status( 200 ).json( { msg: 'Products fetched', data: await getByStatus( status )})
-        } else if ( milkType ) {
-            return res.status( 200 ).json( {msg: 'Products fetched', data: await getByMilkType( milkType )})
-        } else if ( categoryId ) {
-            return res.status( 200 ).json( {msg: 'Products fetched', data: await getByCategory( categoryId )})
-        }
-
-        const products = await getAll();
-        return res.status( 200 ).json( { msg: 'Products fetched', data: products} )
-
-    } catch ( error ) {
-        console.log( error );
-        return res.status(error.status || 500).json({msg: error.message || 'Server error'});
+    if (name) {
+      filter.name = new RegExp(name, 'i'); 
     }
-}
 
+    if ( offer ) {
+      filter.offer = offer;
+    }
+    
+    if ( highlight ) {
+      filter.highlight  = highlight;
+    }
+    
+    if (milkType) {
+      filter.milkType = milkType; 
+    }
+
+    if (status) {
+      filter.status = status; 
+    }
+
+    if (categoryId) {
+      filter.categoryId = categoryId;
+    }
+
+    const products = await getAll(filter);
+
+    return res.status(200).json({
+      msg: 'Products retrieved successfully',
+      data: products
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(error.status || 500).json({
+      msg: error.message || 'Server error'
+    });
+  }
+};
 const  productGetById = async ( req = request, res = response ) => {
      try {
         const { productId } = req.params;
