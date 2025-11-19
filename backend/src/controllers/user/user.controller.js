@@ -6,10 +6,23 @@ const {
     updUser,
     delUser,
     authenticateUser,
-    changepassword
+    changepassword,
+    registerUser
 } = require('../../service/user/user.service.js');
 
 const { ensureOwnerOrAdmin, isAdmin } = require('../../utils/access.js');
+
+const userRegister = async ( req = request, res = response) => {
+    const body = req.body;
+    if (Object.keys(body).length === 0) {
+        return res.status(400).json({ msg: 'No data provided' });
+    }
+
+    const registeredUser = await registerUser( body );
+    return res.status( 201 ).json( { msg: 'User registered', data: registeredUser } )
+}
+
+
 
 const userPost = async (req = request, res = response) => {
     const body = req.body;
@@ -113,5 +126,6 @@ module.exports = {
     userPut,
     userDelete,
     userLogin,
-    changePassword
+    changePassword,
+    userRegister
 };

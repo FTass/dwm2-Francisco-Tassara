@@ -17,8 +17,11 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     />
     <link rel="stylesheet" href="/frontend/src/css/styles.css" />
-
-    <title>Registrate</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+        crossorigin="anonymous"></script>
+    <title>Inicia sesion</title>
+    
   </head>
   <body
     style="
@@ -38,7 +41,7 @@
               <h5>Iniciar Sesión</h5>
             </div>
             <div class="card-body">
-              <form id="registerForm" novalidate class="form">
+              <form id="login" novalidate class="form">
                 <label for="email-form" class="form-label">
                   <h6>Email</h6>
                 </label>
@@ -75,6 +78,24 @@
         </div>
       </div>
     </div>
-    <script></script>
+    <script src="/frontend/public/js/handlers/auth/login.js"></script>
   </body>
+  
 </html>
+
+
+<!-- <script>
+        const a = document.getElementById("canceled");
+        a.addEventListener("click", cambiartTexto);
+        function cambiartTexto() {
+            document.getElementById("msg-cancel").innerHTML =`
+                <p> Volviendo al inincio...</p>
+                <div class="spinner-border text-warning" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            `
+            setTimeout(() => {
+                window.location.href = "/frontend/public/index.html";
+            }, 2000);
+        }
+    </script> -->
