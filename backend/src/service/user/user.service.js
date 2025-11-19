@@ -7,6 +7,35 @@ const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '1h';
 
 //CRUD de usuarios
 // requeire el modelo si se va a repositori? 
+const registerUser = async ( userData ) => {
+
+    try {
+        const existingUser = await repo.getUserByEmail(userData.email);
+        if (existingUser) {
+            throw new Error('Email already registered');
+        }
+    
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(userData.password, salt);
+        const user = await repo.createUser({
+            ...userData,
+            profile: '69025c4403fb1ee551b6059b',
+            password: hashedPassword,
+            isActive: userData.isActive !== undefined ? userData.isActive : true,
+            failedLoginAttempts: 0
+        });
+        const userResponse = user.toObject();
+        delete userResponse.password;
+
+        return userResponse;
+    } catch ( error ) {
+        throw new Error(error.message || 'Error creating user');
+    }
+
+}
+
+
+
 
 
 const addUser = async (userData) => {
@@ -24,6 +53,7 @@ const addUser = async (userData) => {
         // Crear usuario con contraseña hasheada
         const user = await repo.createUser({
             ...userData,
+            profile: '69025c4403fb1ee551b6059b',
             password: hashedPassword,
             isActive: userData.isActive !== undefined ? userData.isActive : true,
             failedLoginAttempts: 0
@@ -158,5 +188,6 @@ module.exports = {
     updProfile,
     changepassword,
     deactivate,
-    getFullName
+    getFullName,
+    registerUser
 };

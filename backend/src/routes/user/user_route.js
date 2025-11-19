@@ -11,7 +11,8 @@ const {
     userPut,
     userDelete,
     userLogin,
-    changePassword
+    changePassword,
+    userRegister
 } = require('../../controllers/user/user.controller.js')
 
 const {
@@ -35,7 +36,13 @@ router.get('/', requireAuth, requireRole('admin'), usersGet); ;
 router.get('/:id', requireAuth, userGet); 
 
 // crear un usuario
-router.post('/', userPost);     
+router.post('/', requireAuth, requireRole('admin'),userPost);     
+
+// Endpoint PUBLICO para registros
+
+router.post('/register', userRegister )
+
+
 
 // Login
 router.post('/login', userLogin);  
