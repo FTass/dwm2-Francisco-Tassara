@@ -54,172 +54,27 @@
       <div id="footer-root"></div>
     </section>
 
-    <!-- Handlers -->
+    <!-- Fetchs -->
+    <script src="/frontend/public/js/handlers/order/cart.js"></script>
     <script src="/frontend/public/js/handlers/catalogo/product.js"></script>
+
+
+    <script src="/frontend/public/js/imports/navbar_carrito-import.js"></script>
+    <script src="/frontend/public/js/imports/catalogo-import.js"></script>
+    <script src="/frontend/public/js/imports/destacados-import.js"></script>
+    <script src="/frontend/public/js/imports/modal-import.js"></script>
+    <script src="/frontend/public/js/imports/carousel-import.js"></script>
+    <script src="/frontend/public/js/imports/categorias-import.js"></script>
+    <script src="/frontend/public/js/imports/footer-import.js"></script>
+
+    <!-- Handlers -->
     <script src="/frontend/public/js/handlers/catalogo/offers.js"></script>
     <script src="/frontend/public/js/handlers/catalogo/highlight.js"></script>
     <script src="/frontend/public/js/handlers/catalogo/combos.js"></script>
     <script src="/frontend/public/js/handlers/catalogo/tables.js"></script>
+    <script src="/frontend/public/js/handlers/order/render-cart.js"></script>
 
     <script>
-      // ==========================
-      // MODAL DE VISTA DETALLADA
-      // ==========================
-      fetch("/frontend/public/partials/vista-detallada.html")
-        .then((r) => r.text())
-        .then((html) => {
-          document.body.insertAdjacentHTML("beforeend", html);
-
-          const modalEl = document.getElementById("exampleModal");
-          
-
-          modalEl.addEventListener("show.bs.modal", (event) => {
-            const trigger = event.relatedTarget;
-            if (!trigger) return;
-            const card = trigger.closest(".card") || trigger;
-            const name =
-              card.getAttribute("data-product-name") || "Producto";
-            const price = card.getAttribute("data-product-price") || "";
-            const desc = card.getAttribute("data-product-desc") || "";
-            
-            const img =
-              card.getAttribute("data-product-img") ||
-              card.querySelector(".product-img")?.src ||
-              "https://via.placeholder.com/500x500?text=Sin+imagen";
-
-            const $ = (id) => document.getElementById(id);
-            $("exampleModalLabel").textContent = name;
-            $("modalProductImg").src = img;
-            $("modalProductImg").alt = name;
-            $("modalProductPrice").textContent = price;
-            $("modalProductDesc").textContent = desc;
-
-            const qty = $("modalQty");
-            if (qty) qty.value = 1;
-
-            const addBtn = $("addToCartBtn");
-            if (addBtn) {
-              addBtn.onclick = () => {
-                console.log("Agregar al carrito:", {
-                  name,
-                  price,
-                  img,
-                  qty: Number(qty?.value || 1),
-                });
-              };
-            }
-          });
-
-          // fallback por si hay cards ya renderizadas en el HTML estático
-          document.querySelectorAll(".card.prod").forEach((card) => {
-            card.setAttribute("data-bs-toggle", "modal");
-            card.setAttribute("data-bs-target", "#exampleModal");
-
-            const h5 =
-              card.querySelector("h5")?.textContent.trim() || "Producto";
-            const em = card.querySelector("em")?.textContent.trim() || "";
-            const img =
-              card.querySelector("img")?.src || "https://picsum.photos/500/500";
-
-            card.setAttribute("data-product-name", h5);
-            card.setAttribute("data-product-price", em);
-            card.setAttribute("data-product-img", img);
-            card.setAttribute("data-product-desc", "");
-          });
-        })
-        .catch(console.error);
-
-      // ==========================
-      // NAVBAR + CARRITO
-      // ==========================
-      fetch("/frontend/public/partials/navbar.html")
-        .then((r) => r.text())
-        .then((html) => {
-          document.getElementById("navbar-root").innerHTML = html;
-        })
-        .then(() => {
-          return Promise.all([
-            fetch("/frontend/public/partials/carrito-btn.html")
-              .then((r) => r.text())
-              .then((html) => {
-                const btnSlot = document.getElementById("cart-btn");
-                if (btnSlot) btnSlot.innerHTML = html;
-              }),
-            fetch("/frontend/public/partials/carrito-content.html")
-              .then((r) => r.text())
-              .then((html) => {
-                let contentSlot = document.getElementById("cart-content");
-                if (!contentSlot) {
-                  contentSlot = document.createElement("div");
-                  contentSlot.id = "cart-content";
-                  document.body.appendChild(contentSlot);
-                }
-                contentSlot.innerHTML = html;
-              }),
-          ]);
-        })
-        .catch(console.error);
-
-      // ==========================
-      // RESTO DE PARCIALES + INIT
-      // ==========================
-
-      // Catálogo: cuando se cargue el HTML, llamamos a initProd() (vaca/cabra)
-      const catalogoPromise = fetch("/frontend/public/partials/catalogo.html")
-        .then((r) => r.text())
-        .then((html) => {
-          document.getElementById("catalogo-root").innerHTML = html;
-        })
-        .then(() => {
-          if (typeof initProd === "function") {
-            console.log("Llamando a initProd (catálogo vaca/cabra)...");
-            initProd();
-            initOffers();
-            initCombo();
-            initTable();
-          } else {
-            console.error("initProd no está definida");
-          }
-        });
-
-      // Promociones: cuando se cargue el HTML, llamamos a initOffers() (promos)
-
-      const destacadosPromise = fetch(
-        "/frontend/public/partials/destacados.html"
-      )
-        .then((r) => r.text())
-        .then((html) => {
-          document.getElementById("destacados-root").innerHTML = html;
-        })
-        .then(() => {
-          if (typeof initOffers === "function") {
-            console.log("Llamando a initOffers (promociones)...");
-            initHighlight();
-          } else {
-            console.error("initOffers no está definida");
-          }
-        });
-
-      const carouselPromise = fetch("/frontend/public/partials/carousel.html")
-        .then((r) => r.text())
-        .then((html) => {
-          document.getElementById("carousel-root").innerHTML = html;
-        });
-
-      const categoriasPromise = fetch(
-        "/frontend/public/partials/categorias.html"
-      )
-        .then((r) => r.text())
-        .then((html) => {
-          document.getElementById("categorias-root").innerHTML = html;
-        });
-
-      const footerPromise = fetch("/frontend/public/partials/footer.html")
-        .then((r) => r.text())
-        .then((html) => {
-          document.getElementById("footer-root").innerHTML = html;
-        });
-
       Promise.all([
         carouselPromise,
         destacadosPromise,

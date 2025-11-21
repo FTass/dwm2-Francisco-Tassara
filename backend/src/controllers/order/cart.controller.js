@@ -4,7 +4,9 @@ const { ensureOwnerAdmin, isAdmin } = require('../../utils/access.js');
 
 const cartsGet = async (req = request, res = response) => {
   try {
-    const query = isAdmin(req.user) ? req.query : { ...req.query, userId: req.user._id };
+    const query = isAdmin(req.user) 
+      ? req.query // si es admin, admite cualquier parametrod el query
+      : { ...req.query, userId: req.user._id }; // si no, seteamos el userId del logeado
     const carts = await service.getCarts(query);
     return res.status(200).json({ msg: 'Carts fetched', data: carts });
   } catch (error) {

@@ -18,7 +18,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     />
-
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <link rel="stylesheet" href="/frontend/src/css/styles.css" />
   </head>
   <body class="body-custom">
@@ -41,46 +41,7 @@
                   <th class="text-end">Subtotal</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td>
-                    <div class="d-flex align-items-center gap-3">
-                      <img
-                        src="https://picsum.photos/seed/cheese1/80/80"
-                        class="rounded"
-                        style="width: 64px; height: 64px; object-fit: cover"
-                        alt="Queso"
-                      />
-                      <div>
-                        <div class="fw-semibold">Queso Brie</div>
-                        <small class="text-muted">SKU: Q001</small>
-                      </div>
-                    </div>
-                  </td>
-                  <td class="text-center">$4.500</td>
-                  <td class="text-center">3</td>
-                  <td class="text-end fw-semibold">$9.000</td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="d-flex align-items-center gap-3">
-                      <img
-                        src="https://picsum.photos/seed/cheese2/80/80"
-                        class="rounded"
-                        style="width: 64px; height: 64px; object-fit: cover"
-                        alt="Queso"
-                      />
-                      <div>
-                        <div class="fw-semibold">Queso Gauda</div>
-                        <small class="text-muted">SKU: Q002</small>
-                      </div>
-                    </div>
-                  </td>
-                  <td class="text-center">$5.000</td>
-                  <td class="text-center">1</td>
-                  <td class="text-end fw-semibold">$5.000</td>
-                </tr>
-              </tbody>
+              <tbody id="cartTableBody"></tbody>
             </table>
           </div>
         </div>
@@ -92,7 +53,7 @@
               <h5 class="card-title mb-3">Resumen</h5>
               <div class="d-flex justify-content-between mb-2">
                 <span>Subtotal</span>
-                <strong>$14.000</strong>
+                <strong id="cartSubTotal">$0</strong>
               </div>
               <div class="d-flex justify-content-between mb-2">
                 <span>Envío</span>
@@ -101,7 +62,7 @@
               <hr />
               <div class="d-flex justify-content-between fs-5 mb-3">
                 <span>Total</span>
-                <strong>$14.000</strong>
+                <strong id="cartTotal">$0</strong>
               </div>
               <div class="d-grid gap-2">
                 <a href="/frontend/public/index.html#quesos" class="btn btn-outline-secondary">
@@ -121,5 +82,7 @@
     </main>
 
     <footer id="footer-partial" class="mt-5"></footer>
+    <script src="/frontend/public/js/handlers/order/cart-page.js"></script>
+    <script src="/frontend/public/js/handlers/order/cart.js"></script>
   </body>
 </html>
