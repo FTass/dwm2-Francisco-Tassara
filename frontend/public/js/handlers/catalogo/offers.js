@@ -1,4 +1,3 @@
-console.log("handler cargado");
 
 function initOffers() {
   initPromociones( 'row-promociones' );
@@ -6,7 +5,7 @@ function initOffers() {
 }
 
 function initPromociones( containerId ) {
-  console.log("initPromociones ejecutado");
+  
 
   $.get(`${API_BASE_URL}/api/products`, {
     offer : 'true',
@@ -14,7 +13,7 @@ function initPromociones( containerId ) {
     
   })
     .done(function ( response ) {
-      console.log("respuesta API productos:", response);
+      
       renderProductos( response, containerId );
     })
     .fail(function ( err ) {

@@ -1,4 +1,3 @@
-console.log("handler cargado");
 
 function initCombo() {
   initCombos( 'row-combos' );
@@ -6,7 +5,7 @@ function initCombo() {
 }
 
 function initCombos( containerId ) {
-  console.log("initCombos ejecutado");
+  
 
   $.get(`${API_BASE_URL}/api/products`, {
     categoryId : '691a933b2c170f3f94f5cc96',
@@ -14,7 +13,7 @@ function initCombos( containerId ) {
     
   })
     .done(function ( response ) {
-      console.log("respuesta API productos:", response);
+      
       renderProductos( response, containerId );
     })
     .fail(function ( err ) {

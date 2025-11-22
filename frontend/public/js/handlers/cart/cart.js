@@ -8,11 +8,15 @@ async function getOrCreateCartForCurrentUser(  ) {
         return currentCartId;
     }
 
+    console.log(currentCartId);
+    
+
 
     const stored = localStorage.getItem("qs_cartId");
     if (stored) {
         currentCartId = stored;
         return stored;
+        
     }
 
 
@@ -29,7 +33,7 @@ async function getOrCreateCartForCurrentUser(  ) {
             url: API_BASE_URL + "/api/carts",
             method: "GET",
             headers: {
-                Authorization: "Bearer" + token,
+                Authorization: "Bearer " + token,
             },
         });
 
@@ -41,14 +45,14 @@ async function getOrCreateCartForCurrentUser(  ) {
             return cartId;
         }
 
-        const createRes = $.ajax({
+        const createRes = await $.ajax({
 
             url: API_BASE_URL + "/api/carts",
             method: "POST",
             headers: {
                 Authorization: "Bearer " + token,
             },
-            contentType: "aplication/json",
+            contentType: "application/json",
             data: JSON.stringify({}),
         })
 

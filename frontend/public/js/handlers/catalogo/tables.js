@@ -1,4 +1,3 @@
-console.log("handler cargado");
 
 function initTable() {
   initTables( 'row-tables' );
@@ -6,7 +5,7 @@ function initTable() {
 }
 
 function initTables( containerId ) {
-  console.log("initTables ejecutado");
+  
 
   $.get(`${API_BASE_URL}/api/products`, {
     categoryId : '691b4072046cbecc3d27a316',
@@ -14,7 +13,7 @@ function initTables( containerId ) {
     
   })
     .done(function ( response ) {
-      console.log("respuesta API productos:", response);
+      
       renderProductos( response, containerId );
     })
     .fail(function ( err ) {

@@ -1,6 +1,6 @@
 const { request, response } = require('express');
 const service = require('../../service/order/cart.service.js');
-const { ensureOwnerAdmin, isAdmin } = require('../../utils/access.js');
+const { ensureOwnerOrAdmin, isAdmin } = require('../../utils/access.js');
 
 const cartsGet = async (req = request, res = response) => {
   try {
@@ -20,7 +20,7 @@ const cartGet = async (req = request, res = response) => {
     if (!cartId) return res.status(400).json({ msg: 'Missing cartId' });
     const cart = await service.getCartById(cartId);
     if (!cart) return res.status(404).json({ msg: 'Cart not found' });
-    if (!ensureOwnerAdmin(res, cart.userId, req.user)) return;
+    if (!ensureOwnerOrAdmin(res, cart.userId, req.user)) return;
     return res.status(200).json({ msg: 'Cart fetched', data: cart });
   } catch (error) {
     return res.status(error.status || 500).json({ msg: error.message || 'Server error' });
@@ -42,7 +42,7 @@ const cartPut = async (req = request, res = response) => {
     if (!cartId) return res.status(400).json({ msg: 'Missing cartId' });
     const current = await service.getCartById(cartId);
     if (!current) return res.status(404).json({ msg: 'Cart not found' });
-    if (!ensureOwnerAdmin(res, current.userId, req.user)) return;
+    if (!ensureOwnerOrAdmin(res, current.userId, req.user)) return;
     const updated = await service.updateCart(cartId, req.body);
     return res.status(200).json({ msg: 'Cart updated', data: updated });
   } catch (error) {
@@ -56,7 +56,7 @@ const cartDel = async (req = request, res = response) => {
     if (!cartId) return res.status(400).json({ msg: 'Missing cartId' });
     const current = await service.getCartById(cartId);
     if (!current) return res.status(404).json({ msg: 'Cart not found' });
-    if (!ensureOwnerAdmin(res, current.userId, req.user)) return;
+    if (!ensureOwnerOrAdmin(res, current.userId, req.user)) return;
     const deleted = await service.deleteCart(cartId);
     return res.status(200).json({ msg: 'Cart deleted', data: deleted });
   } catch (error) {

@@ -7,7 +7,7 @@ const destacadosPromise = fetch(
         })
         .then(() => {
           if (typeof initOffers === "function") {
-            console.log("Llamando a initOffers (promociones)...");
+            
             initHighlight();
           } else {
             console.error("initOffers no está definida");
@@ -48,11 +48,11 @@ fetch("/frontend/public/partials/vista-detallada.html")
 
             const addBtn = $("addToCartBtn");
             if (addBtn) {
-              // ⚠️ IMPORTANTE: aquí antes solo hacías console.log
+              
               addBtn.onclick = () => {
                 const qty = Number(qtyInput?.value || 1);
 
-                // Llamamos a tu función del carrito 👇
+               
                 addProductToCart(productId, qty, name);
               };
             }

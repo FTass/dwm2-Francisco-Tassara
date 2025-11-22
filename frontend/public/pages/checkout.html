@@ -17,7 +17,9 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     />
     <link rel="stylesheet" href="../../src/css/styles.css?v=1" />
-
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+        crossorigin="anonymous"></script>
     <title>checkout</title>
   </head>
   <body class="body-custom">
@@ -26,28 +28,37 @@
     <div id="payment-root"></div>
 
     <div id="resumen-root"></div>
+
+    <script  src="/frontend/public/js/handlers/order/address.js"></script>
+    <script type="module" src="/frontend/public/js/handlers/order/orders.js"></script>
+    <script type="module" src="/frontend/public/js/handlers/order/checkout.js"></script>
     <script>
-      function injectPartial(rootId, url) {
-  fetch(url).then(r => r.text()).then(html => {
-    const root = document.getElementById(rootId);
-    root.innerHTML = html;
+  function injectPartial(rootId, url) {
+    fetch(url)
+      .then(r => r.text())
+      .then(html => {
+        const root = document.getElementById(rootId);
+        root.innerHTML = html;
 
-    // Re-ejecutar <script> internos del parcial
-    root.querySelectorAll('script').forEach(old => {
-      const s = document.createElement('script');
-      if (old.src) s.src = old.src; else s.textContent = old.textContent;
-      document.body.appendChild(s);
-      old.remove();
-    });
-  });
-}
+        // Re-ejecutar <script> internos del parcial copiando atributos
+        root.querySelectorAll('script').forEach(old => {
+          const s = document.createElement('script');
+          // copiar atributos importantes
+          if (old.src) s.src = old.src;
+          if (old.type) s.type = old.type;
+          if (old.async) s.async = old.async;
+          if (old.defer) s.defer = old.defer;
+          // inline
+          if (!old.src) s.textContent = old.textContent;
+          document.body.appendChild(s);
+          old.remove();
+        });
+      });
+  }
 
-injectPartial('direccion-root','/frontend/public/partials/direccion.html');
-injectPartial('payment-root','/frontend/public/partials/payment.html');
-injectPartial('resumen-root','/frontend/public/partials/resumen.html');
-
-
-
-    </script>
+  injectPartial('direccion-root','/frontend/public/partials/direccion.html');
+  injectPartial('payment-root','/frontend/public/partials/payment.html');
+  injectPartial('resumen-root','/frontend/public/partials/resumen.html');
+</script>
   </body>
 </html>
