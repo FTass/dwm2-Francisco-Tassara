@@ -1,4 +1,5 @@
 import { fetchCartItems } from "../cart/cart-util.js";
+import { handleOrderConfirmed } from "./order.confirmed.js";
 
 const API_BASE_URL = "http://localhost:3000";
 
@@ -10,7 +11,7 @@ $(document).on("click", '[data-bs-target="#confirm"]', async () => {
     if (!token) {
       alert("Debes iniciar sesión para seguir con tu orden");
       setTimeout(() => {
-        window.location.href = "/pages/login.html";
+        window.location.href = "/frontend/public/pages/login.html";
       }, 3000);
       return;
     }
@@ -114,19 +115,15 @@ async function createOrder(items) {
 
     console.log("Order created:", res);
 
-    // Guardar id de la orden si viene en la respuesta
     if (res?.data?._id) {
       localStorage.setItem("qs_orderId", res.data._id);
     }
 
-    // Mostrar el número de orden en la UI (res.data contiene la orden creada)
     if (res?.data?.orderNumber) {
-      $("#order-code").text(` #${res.data.orderNumber}`);
+      $("#order-code").text(`#${res.data.orderNumber}`);
     }
-    // Limpiar montos del localStorage solo si la orden se creó bien
-    localStorage.removeItem("qs_subtotal");
-    localStorage.removeItem("qs_tax");
-    localStorage.removeItem("qs_total");
+
+    await handleOrderConfirmed(res.data, token);
 
     return res;
   } catch (err) {
