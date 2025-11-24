@@ -104,5 +104,7 @@ async function fillResume(items) {
   $("#resumeSubTotal").text(`$${subtotal.toLocaleString("es-CL")}`);
   $("#IVA").text(`$${IVA.toLocaleString("es-CL")}`);
   $("#resumeTotal").text(`$${total.toLocaleString("es-CL")}`);
-
+  localStorage.setItem("qs_subtotal", String(subtotal));
+  localStorage.setItem("qs_tax", String(IVA));
+  localStorage.setItem("qs_total", String(total));
 }

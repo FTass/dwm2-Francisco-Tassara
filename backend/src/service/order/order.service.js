@@ -27,7 +27,7 @@ const addOrder = async (data) => {
   const created = await repo.create(data);
 
   // Recalcula totales iniciales (por si hay subTotal inicial o tax definido)
-  await recalcOrderTotals(created._id);
+  // await recalcOrderTotals(created._id);
 
   return created;
 };

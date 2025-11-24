@@ -13,7 +13,7 @@ module.exports = async function requireAuth(req, res, next) {
     if (!user || user.isActive === false) return res.status(401).json({ msg: 'Invalid user' });
     
     req.user = user; 
-    console.log("USER EN REQ.USER:", req.user);
+    
     next();
   } catch (e) {
     return res.status(401).json({ msg: 'Unauthorized' });

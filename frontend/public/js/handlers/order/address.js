@@ -99,9 +99,19 @@ $(function () {
         Authorization: "Bearer " + localStorage.getItem("qs_token"),
       },
     })
-      .done(function (res) {
-        alert("Direccion guardada");
-      })
+        .done(function (res) {
+          // La API devuelve el documento creado: guardar su id para usarla en el pedido
+          try {
+            const returnedId = res?._id || (res.data && res.data._id) || null;
+            if (returnedId) {
+              localStorage.setItem("qs_addressId", returnedId);
+            }
+          } catch (e) {
+            console.warn('No se pudo extraer el id de la respuesta', e);
+          }
+
+          alert("Direccion guardada");
+        })
       .fail(function (err) {
         alert("Error al guardar direccion: " + (err.responseJSON?.msg || err.statusText));
       });
