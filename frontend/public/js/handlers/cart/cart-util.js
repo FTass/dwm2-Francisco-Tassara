@@ -1,8 +1,7 @@
-// ...existing code...
 const BASE = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : (window.API_BASE_URL || 'http://localhost:3000');
 
 export async function fetchCartItems(cartId, token) {
-    // fallback a localStorage si no se pasan params
+
     const id = cartId || localStorage.getItem("qs_cartId");
     const t = token || localStorage.getItem("qs_token");
 
@@ -24,5 +23,4 @@ export async function fetchCartItems(cartId, token) {
     }
 }
 
-// exponer global para scripts que no usan import
 window.fetchCartItems = fetchCartItems;

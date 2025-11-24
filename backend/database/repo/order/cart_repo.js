@@ -1,6 +1,7 @@
 const Cart = require('../../models/order/Cart.js');
 
 class CartRepository {
+  
   async create(data) {
     data.createdAt = new Date();
     data.updatedAt = new Date();

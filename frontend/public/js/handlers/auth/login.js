@@ -25,11 +25,17 @@ $(function () {
         console.log("Login OK:", res);
 
         const { token, user } = res.data;
+        localStorage.clear();
 
         localStorage.setItem("qs_token", token);
         localStorage.setItem("qs_user", JSON.stringify(user));
 
-        // Redirige al home (ajusta ruta según tu estructura)
+        // Limpiar datos antiguos del carrito y órdenes
+        
+
+        console.log("✓ localStorage cleaned on login");
+
+        // Redirige al home
         window.location.href = "../index.html";
       })
       .fail(function (err) {

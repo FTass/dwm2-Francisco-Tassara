@@ -1,54 +1,55 @@
 import { fetchCartItems } from "../cart/cart-util.js";
 
+const API_BASE_URL = "http://localhost:3000";
 
 const token = localStorage.getItem("qs_token");
 $(document).on("click", '[data-bs-target="#confirm"]', async () => {
-    const items = await fetchCartItems();
-    createOrder ( items );
+  const items = await fetchCartItems();
+  createOrder(items);
 });
 
 
-async function createOrder( data ) {
+async function createOrder(data) {
 
-    if( !token ) {
-        alert("Debes iniciar sesion para seguir con tu orden");
+  if (!token) {
+    alert("Debes iniciar sesion para seguir con tu orden");
 
-        setTimeout(() => {
-            window.location.href = "/pages/login.html";
+    setTimeout(() => {
+      window.location.href = "/pages/login.html";
 
-        },3000)
-        return null;
+    }, 3000);
+    return null;
+  }
+  try {
+    const res = await $.ajax({
+      url: API_BASE_URL + "/api/orders",
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+
+    const orders = res.data || [];
+    if (orders.length > 0) {
+      const orderId = orders[0]._id;
+      currentOrderId = orderId;
+      localStorage.setItem("qs_orderId", currentOrderId);
+      return orderId;
     }
-    try {
-        const res = await $.ajax({
-            url: API_BASE_URL + "/api/orders",
-            method: "GET",
-            headers: {
-                Authorization: "Bearer " + token,
-            },
-        });
 
-        const orders = res.data || [];
-        if ( orders.length > 0) {
-            const orderId = orders[0]._id;
-            currentOrderId = orderId;
-            localStorage.setItem("qs_orderId", currentOrderId);
-            return orderId
-        }
+    const createRes = await $.ajax({
+      url: API_BASE_URL + "/api/orders",
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+      contentType: "application/json",
+      data: JSON.stringify(data),
+    });
 
-        const createRes =  await $.ajax({
-            url: API_BASE_URL + "/api/orders",
-            method: "POST",
-            headers: {
-                Authorization: "Bearer" + token,
-            },
-            contentType:"aplication/json",
-            data: JSON.stringify(data)
-        });
-  
-    } catch ( err ) {
+  } catch (err) {
+    console.error(err);
+  }
 
-     }
 
-    
 }
