@@ -64,7 +64,6 @@ async function createOrder(items) {
     subTotal >= 0 &&
     total >= 0;
 
-  // Fallback: si por alguna razón los totales no son válidos, recalcular desde items
   if (!hasValidTotals && Array.isArray(items) && items.length) {
     subTotal = 0;
 
@@ -88,6 +87,7 @@ async function createOrder(items) {
   const status = "pending_payment";
 
   // Normalizar items al formato mínimo esperado por el backend
+  
   const mappedItems = Array.isArray(items)
     ? items.map((it) => ({
         productId: it.productId?._id || it.productId,
@@ -131,7 +131,32 @@ async function createOrder(items) {
     }
 
     if (res?.data?.orderNumber) {
-      $("#order-code").text(`#${res.data.orderNumber}`);
+      $("#order-code").text(`#${res.data._id}`);
+    }
+
+    const orderId = localStorage.getItem("qs_orderId")
+    // Crear OrderItems llamando al endpoint
+    if (orderId && Array.isArray(mappedItems) && mappedItems.length > 0) {
+      try {
+        for (const item of mappedItems) {
+          await $.ajax({
+            url: API_BASE_URL + `/api/orders/${orderId}/items`,
+            method: "POST",
+            headers: { Authorization: "Bearer " + token },
+            contentType: "application/json",
+            data: JSON.stringify({
+              productId: item.productId,
+              quantity: item.quantity,
+              unitPrice: item.price,
+              subTotal: item.price * item.quantity
+            }),
+          });
+        }
+        console.log("OrderItems created successfully");
+      } catch (err) {
+        console.error("Error creating OrderItems:", err);
+        // No lanzar error; la orden se creó, los items son secundarios
+      }
     }
 
     // Resetear el modal a estado de éxito
