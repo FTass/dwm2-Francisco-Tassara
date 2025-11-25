@@ -89,7 +89,7 @@ export async function handleOrderConfirmed(orderData, token) {
     console.log("Order confirmed workflow completed successfully");
   } catch (err) {
     console.error("Error in handleOrderConfirmed:", err);
-    // Igualmente limpiar localStorage aunque haya errores menore
+   
     cleanupOrderStorage();
   }
 }

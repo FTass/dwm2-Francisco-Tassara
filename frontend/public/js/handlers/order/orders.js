@@ -3,7 +3,7 @@ import { handleOrderConfirmed } from "./order.confirmed.js";
 
 const API_BASE_URL = "http://localhost:3000";
 
-// Click en botón de confirmar compra
+
 $(document).on("click", '[data-bs-target="#confirm"]', async () => {
   try {
     const token = localStorage.getItem("qs_token");
@@ -21,7 +21,18 @@ $(document).on("click", '[data-bs-target="#confirm"]', async () => {
 
     await createOrder(items);
   } catch (err) {
+
     console.error("Error al confirmar orden:", err);
+    $("#icon").attr("class", "fa-solid fa-x")
+    $("#confirmLabel").text("ERROR");
+    $("#modalBodyText").text("Ingresa todos los datos necesarios");
+    $("#received").remove();
+    $("#orderNumber").remove();
+    $("#goBack").text("volver a intentar");
+    $("#goBack").removeAttr("href");
+    $("#goBack").attr("data-bs-dismiss", "modal");
+
+
   }
 });
 
@@ -123,6 +134,28 @@ async function createOrder(items) {
       $("#order-code").text(`#${res.data.orderNumber}`);
     }
 
+    // Resetear el modal a estado de éxito
+    const confirmModal = document.getElementById("confirm");
+    if (confirmModal) {
+      // Limpiar contenido de error si existe
+      const modalContent = confirmModal.querySelector(".modal-content");
+      if (modalContent) {
+        modalContent.innerHTML = `
+          <div class="modal-header">
+            <h5 class="modal-title" id="confirmLabel">Pedido Confirmado</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-center p-4">
+            <i class="fa-solid fa-check fa-3x mb-3 text-success"></i>
+            <h5 class="card-title mb-3">¡Gracias por tu compra!</h5>
+            <p class="card-text mb-4">Tu pedido ha sido recibido y está siendo procesado.</p>
+            <p id="orderNumber">Tu numero de pedido <span id="order-code">${res.data.orderNumber}</span> </p>
+            <a href="/frontend/public/index.html" class="btn btn-primary">Volver al inicio</a>
+          </div>
+        `;
+      }
+    }
+
     await handleOrderConfirmed(res.data, token);
 
     return res;
@@ -130,6 +163,20 @@ async function createOrder(items) {
     console.error("Order create error status:", err.status);
     console.error("Order create error responseText:", err.responseText);
     console.error("Order create error responseJSON:", err.responseJSON);
+    
+    // Mostrar modal de error
+    $("#icon").attr("class", "fa-solid fa-x");
+    $("#confirmLabel").text("ERROR");
+    $("#modalBodyText").text("Ingresa todos los datos necesarios");
+    
+    // Limpiar elementos de éxito si existen
+    $("#received").remove();
+    $("#orderNumber").remove();
+    
+    // Cambiar texto del botón
+    $("#goBack").text("Volver a intentar");
+    $("#goBack").attr("href", "/frontend/public/pages/checkout.html");
+    
     throw err;
   }
 }

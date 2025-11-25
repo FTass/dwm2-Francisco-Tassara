@@ -1,5 +1,6 @@
 // src/service/order/order.service.js
 const repo = require('../../../database/repo/order/order_repo.js');
+const paymentRepo = require('../../../database/repo/order/payment_repo.js');
 const { recalcOrderTotals } = require('./recalcTotals');
 
 const POPULATE_ORDERS = [
@@ -25,6 +26,23 @@ const addOrder = async (data) => {
   }
 
   const created = await repo.create(data);
+
+  // Crear Payment automáticamente con status 'pending'
+  try {
+    const paymentData = {
+      orderId: created._id,
+      method: data.paymentMethod || 'transfer',
+      amount: data.total || data.subTotal,
+      status: 'pending',
+      transactionId: `TXN-${created._id}-${Date.now()}`,
+      idempotencyKey: `IDM-${created._id}-${Date.now()}`,
+    };
+    await paymentRepo.create(paymentData);
+    console.log('Payment created automatically for order:', created._id);
+  } catch (err) {
+    console.error('Error creating automatic payment:', err.message);
+    // No lanzar error; la orden se creó, el payment es secundario
+  }
 
   // Recalcula totales iniciales (por si hay subTotal inicial o tax definido)
   // await recalcOrderTotals(created._id);
