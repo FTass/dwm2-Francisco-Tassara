@@ -3,7 +3,7 @@ const { cartsGet, cartGet, cartPost, cartPut, cartDel } = require('../../control
 const { cartItemGet, cartItemsGet, cartItemPost, cartItemPut, cartItemDel } = require('../../controllers/order/cartItem.controller.js');
 
 const requireAuth = require('../../middlewares/auth');
-const requireRole = require('../../middlewares/authorize');
+// const requireRole = require('../../middlewares/authorize');
 
 const router = Router();
 
@@ -25,7 +25,7 @@ router.get('/:cartId/items', cartItemsGet );
 
 router.get('/:cartId/items/:itemId', cartItemGet)
 
-router.post("/:cartId/items",  cartItemPost);
+router.post("/:cartId/items", cartItemPost);
 
 router.put("/:cartId/items/:itemId", cartItemPut  );
 

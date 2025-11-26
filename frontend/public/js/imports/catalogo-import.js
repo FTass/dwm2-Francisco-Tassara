@@ -5,7 +5,7 @@ const catalogoPromise = fetch("/frontend/public/partials/catalogo.html")
         })
         .then(() => {
           if (typeof initProd === "function") {
-            console.log("Llamando a initProd (catálogo vaca/cabra)...");
+            
             initProd();
             initOffers();
             initCombo();

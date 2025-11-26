@@ -16,47 +16,37 @@
                         <th>Total</th>
                     </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>Queso Gouda</td>
-                            <td>1</td>
-                            <td>$3000</td>
-                            <td>$3000</td>
-                        </tr>
-                        <tr>
-                            <td>Queso Azul</td>
-                            <td>1</td>
-                            <td>$5000</td>
-                            <td>$5000</td>
-                        </tr>
-                        <tfoot>
-                            <tr>
-                                <th colspan="3" class="text-end">Subtotal</th>
-                                <th class="text-end">$8.000</th>
-                            </tr>
-                            <tr>
-                                <th colspan="3" class="text-end">IVA (19%)</th>
-                                <th class="text-end">$1.520</th>
-                            </tr>
-                            <tr class="table-light">
-                                <th colspan="3" class="text-end">Total</th>
-                                <th class="text-end">$9.520</th>
-                            </tr>
-                        </tfoot>
+                    <tbody id="resumeBody">
+                        
+                        
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="3" class="text-end" >Subtotal</th>
+                            <th class="text-end" id="resumeSubTotal">$0</th>
+                        </tr>
+                        <tr>
+                            <th colspan="3" class="text-end">IVA (19%)</th>
+                            <th class="text-end" id="IVA">$0</th>
+                        </tr>
+                        <tr class="table-light">
+                            <th colspan="3" class="text-end">Total</th>
+                            <th class="text-end" id="resumeTotal">$0</th>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
             <h6>Dirección de Entrega</h6>
-            <p>Juan Pérez, Calle Falsa 123, Santiago</p>
+            <p id="address"></p>
             <h6>Método de pago</h6>
-            <li class="list-group-item">WebPay</li>
+            <li class="list-group-item" id="paymentMethod"></li>
             <div class="container buttons">
                 <div class="row mt-5">
                     <div class="col-12 col-md-6 text-center">
                         <button 
                         class="btn btn-primary text-center mb-2"
                         data-bs-toggle="modal"
-                        data-bs-target="#cancel"    >Cancelar y Volver</button>                        
+                        data-bs-target="#cancel">Cancelar y Volver</button>                        
                     </div>
                     <div class="col-12 col-md-6 text-center">
                         <button class="btn btn-primary mb-2"
@@ -66,6 +56,8 @@
                     </div>
                 </div>
             </div>
+            
+
          
       </div>
        
@@ -93,15 +85,18 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <i class="fa-solid fa-check fa-3x mb-3 text-success"></i>
-                    <h5 class="card-title mb-3">¡Gracias por tu compra!</h5>
-                    <p class="card-text mb-4">Tu pedido ha sido recibido y está siendo procesado.</p>
-                    <a href="/index.html" class="btn btn-primary">Volver al inicio</a>
-            
+                    <i class="fa-solid fa-check fa-3x mb-3 text-success" id="icon"></i>
+                    <h5 class="card-title mb-3" id="modalBodyText">¡Gracias por tu compra!</h5>
+                    <p class="card-text mb-4" id="received">Tu pedido ha sido recibido y está siendo procesado.</p>
+                    <p id="orderNumber">Tu numero de pedido <span id="order-code"></span> </p>
+                    <a href="/index.html" class="btn btn-primary" id="goBack">Volver al inicio</a>
+                    
                 </div>
             </div>
         </div>
     </div>
+    <script  type="module" src="/frontend/public/js/handlers/order/orders.js"></script>
+    <script type="module" src="/frontend/public/js/handlers/order/checkout.js"></script>
     <script>
         const a = document.getElementById("canceled");
         a.addEventListener("click", cambiartTexto);

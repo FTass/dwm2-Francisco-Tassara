@@ -1,4 +1,3 @@
-console.log("handler cargado");
 const API_BASE_URL = "http://localhost:3000";
 
 function initProd() {
@@ -9,7 +8,7 @@ function initProd() {
 }
 
 function initCatalogoProductos(milkType, containerId) {
-  console.log("initCatalogoProductos ejecutado");
+  
 
   $.get(`${API_BASE_URL}/api/products`, {
     milkType,
@@ -17,7 +16,7 @@ function initCatalogoProductos(milkType, containerId) {
     
   })
     .done(function (response) {
-      console.log("respuesta API productos:", response);
+      
       renderProductos( response, containerId );
     })
     .fail(function (err) {

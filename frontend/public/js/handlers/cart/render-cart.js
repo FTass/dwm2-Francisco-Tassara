@@ -1,3 +1,4 @@
+import { fetchCartItems } from "./cart-util.js";
 $(document).on("click", '[data-bs-target="#cartDrawer"]', function () {
   loadCart();
 });
@@ -6,21 +7,12 @@ $(document).on("click", '[data-bs-target="#cartDrawer"]', function () {
 async function loadCart() {
   const cartId = await getOrCreateCartForCurrentUser();
   const token = localStorage.getItem("qs_token");
-
+  const items = await fetchCartItems( cartId, token )
+  renderCartTable( items )
   if (!cartId) return;
 
-  $.ajax({
-    url: `${API_BASE_URL}/api/carts/${cartId}/items`,
-    method: "GET",
-    headers: {
-      Authorization: "Bearer " + token,
-    },
-  })
-    .done(async (res) => {
-      await renderCartTable(res.data);
-    })
-    .fail((err) => console.error("Error cargando carrito:", err));
 }
+  
 
 async function renderCartTable(items) {
   if (!items.length) {

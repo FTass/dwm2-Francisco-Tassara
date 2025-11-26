@@ -1,4 +1,3 @@
-console.log("handler cargado");
 
 function initHighlight() {
   initDestacados( 'row-destacados' );
@@ -6,15 +5,14 @@ function initHighlight() {
 }
 
 function initDestacados( containerId ) {
-  console.log("initDestacados ejecutado");
-
+  
   $.get(`${API_BASE_URL}/api/products`, {
     highlight: 'true',
     status : 'published'
     
   })
     .done(function ( response ) {
-      console.log("respuesta API productos:", response);
+      
       renderProductos( response, containerId );
     })
     .fail(function ( err ) {

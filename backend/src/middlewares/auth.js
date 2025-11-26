@@ -9,10 +9,11 @@ module.exports = async function requireAuth(req, res, next) {
     if (!token) return res.status(401).json({ msg: 'Missing token' });
 
     const payload = jwt.verify(token, JWT_SECRET);
-    const user = await User.findById(payload.userId); // ya oculta password por toJSON
+    const user = await User.findById(payload.userId); 
     if (!user || user.isActive === false) return res.status(401).json({ msg: 'Invalid user' });
-
-    req.user = user; // queda en req
+    
+    req.user = user; 
+    
     next();
   } catch (e) {
     return res.status(401).json({ msg: 'Unauthorized' });

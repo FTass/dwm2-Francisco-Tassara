@@ -6,8 +6,8 @@ const destacadosPromise = fetch(
           document.getElementById("destacados-root").innerHTML = html;
         })
         .then(() => {
-          if (typeof initOffers === "function") {
-            console.log("Llamando a initOffers (promociones)...");
+          if (typeof initHighlight === "function") {
+            
             initHighlight();
           } else {
             console.error("initOffers no está definida");
@@ -48,12 +48,10 @@ fetch("/frontend/public/partials/vista-detallada.html")
 
             const addBtn = $("addToCartBtn");
             if (addBtn) {
-              // ⚠️ IMPORTANTE: aquí antes solo hacías console.log
-              addBtn.onclick = () => {
+              // CAMBIO: ahora es async y espera la función
+              addBtn.onclick = async () => {
                 const qty = Number(qtyInput?.value || 1);
-
-                // Llamamos a tu función del carrito 👇
-                addProductToCart(productId, qty, name);
+                await addProductToCart(productId, qty, name);
               };
             }
           });
