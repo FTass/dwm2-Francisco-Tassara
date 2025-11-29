@@ -8,6 +8,7 @@ body {
   background-color: #f3e093;
 }
 
+
 /* ================== seccion header ================== */
 
 .navbar.bg-custom {
@@ -91,6 +92,8 @@ body {
   height: 1.75rem;
   font-weight: 700;
   margin-top: 0.25rem;
+
+  
 }
 
 h1, .h1 { font-size: clamp(2rem, 2.8vw, 2.75rem); line-height: 1.2; }
@@ -105,15 +108,20 @@ h3, .h3 { font-size: clamp(1.125rem, 1.6vw, 1.5rem); line-height: 1.3;  margin-t
   backdrop-filter: blur(4px);
   border-radius: 10px;
   padding: 0.75rem 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 .carousel-inner.ratio {
   max-height: 65vh;
+
+
 }
 
 @media (max-height: 800px) {
   .carousel-inner.ratio {
     --bs-aspect-ratio: 56.25%;
     max-height: 60vh;
+
+
   }
 }
 
@@ -133,6 +141,7 @@ h3, .h3 { font-size: clamp(1.125rem, 1.6vw, 1.5rem); line-height: 1.3;  margin-t
 
 .carousel-wrapper {
   margin-top: 1.5rem;
+
   border-radius: 12px;
   overflow: hidden;
   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
@@ -174,7 +183,7 @@ h3, .h3 { font-size: clamp(1.125rem, 1.6vw, 1.5rem); line-height: 1.3;  margin-t
 
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
-  filter: invert(100%) grayscale(100%); /* blanco */
+  filter: invert(100%) grayscale(100%); 
   opacity: 0.8;
   transition: opacity 0.15s ease;
 }

@@ -2,6 +2,29 @@ import { fetchCartItems } from "./cart-util.js";
 $(document).on("click", '[data-bs-target="#cartDrawer"]', function () {
   loadCart();
 });
+$(async function () {
+    
+    await updateCartQuantity();
+});
+
+async function updateCartQuantity() {
+    try {
+        const cartId = await getOrCreateCartForCurrentUser();
+        const token = localStorage.getItem("qs_token");
+        const items = await fetchCartItems( cartId, token);
+        
+        let cont = 0;
+    for(const item of items) {
+        cont += item?.quantity ?? 1;
+    }
+
+    $("#productQuantity").text(cont)
+  } catch (error) {
+    console.error('Error actualizando cantidad del carrito:', error);
+  }
+}
+
+
 
 
 async function loadCart() {
@@ -57,7 +80,6 @@ async function renderCartTable(items) {
     const price = Number(item.productId?.price ?? 0);
     const qty = Number(item.quantity ?? 1);
     const subtotal = price * qty;
-
     rows += `
       <tr>
         <td style="width: 70px;">
@@ -84,7 +106,7 @@ async function renderCartTable(items) {
         </td>
 
         <td class="text-end" style="width:50px;">
-          <button class="btn btn-sm btn-outline-danger deleteItemBtn"
+          <button id = "deleteItem" class="btn btn-sm btn-outline-danger deleteItemBtn"
                   data-item-id="${item._id}">
             <i class="fa-solid fa-trash"></i>
           </button>
@@ -109,6 +131,7 @@ $(document).on("click", ".deleteItemBtn", function () {
   if (!itemId) return;
 
   deleteItem(itemId);
+  updateCartQuantity();
 });
 
 async function deleteItem(itemId) {
@@ -138,3 +161,4 @@ async function deleteItem(itemId) {
       alert("No se pudo eliminar el producto del carrito.");
     });
 }
+

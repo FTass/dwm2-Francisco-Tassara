@@ -53,8 +53,19 @@
     <section>
       <div id="footer-root"></div>
     </section>
-
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 11000">
+      <div id="logoutToast" class="toast border-0" role="alert">
+        <div class="d-flex align-items-center text-bg-warning p-3 rounded">
+          <div class="toast-body flex-grow-1" id="toastMsg"></div>
+          <div class="spinner-grow spinner-border-sm text-secondary ms-3" role="status" style="display: none;">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <button type="button" class="btn-close btn-close-white ms-3" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      </div>
+    </div>
     <!-- Fetchs -->
+    <script type="module" src="/frontend/public/js/handlers/cart/render-cart-quantity.js"></script>
     <script src="/frontend/public/js/handlers/cart/cart.js"></script>
     <script src="/frontend/public/js/handlers/catalogo/product.js"></script>
 
@@ -66,7 +77,7 @@
     <script src="/frontend/public/js/imports/carousel-import.js"></script>
     <script src="/frontend/public/js/imports/categorias-import.js"></script>
     <script src="/frontend/public/js/imports/footer-import.js"></script>
-
+  <script  src="/frontend/public/js/imports/detailed.js"></script>
     <!-- Handlers -->
     <script src="/frontend/public/js/handlers/catalogo/offers.js"></script>
     <script src="/frontend/public/js/handlers/catalogo/highlight.js"></script>

@@ -13,8 +13,7 @@ async function getOrCreateCartForCurrentUser() {
   const token = localStorage.getItem("qs_token");
 
   if (!token) {
-    alert("Debes iniciar sesion para usar el carrito");
-    window.location.href = "/pages/login.html";
+    console.warn("[getOrCreateCart] No token found");
     return null;
   }
 
@@ -100,8 +99,8 @@ async function addProductToCart(productId, quantity = 1, productName) {
   const token = localStorage.getItem("qs_token");
 
   if (!token) {
-    alert("Debes iniciar sesion para usar el carrito");
-    window.location.href = "/pages/login.html";
+    alert("Debes iniciar sesión para agregar productos al carrito");
+    window.location.href = "/frontend/public/pages/login.html";
     return null;
   }
 
@@ -131,6 +130,9 @@ async function addProductToCart(productId, quantity = 1, productName) {
         console.log("✓ CartItem OK:", res);
         const nameToShow = productName || res?.data?.productId?.name || "producto";
         alert(`${nameToShow} añadido al carrito`);
+        if (window.updateCartQuantity) {
+          window.updateCartQuantity();
+        }
         resolve(res);
       })
       .fail(function (err) {

@@ -79,6 +79,17 @@
       </div>
     </div>
     <script src="/frontend/public/js/handlers/auth/login.js"></script>
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 11000">
+      <div id="loginToast" class="toast align-items-center text-bg-warning border-0" role="alert">
+        <div class="d-flex">
+          <div class="toast-body" id="toastMsg"></div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
   
 </html>

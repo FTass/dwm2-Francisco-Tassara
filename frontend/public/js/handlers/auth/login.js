@@ -31,12 +31,26 @@ $(function () {
         localStorage.setItem("qs_user", JSON.stringify(user));
 
         // Limpiar datos antiguos del carrito y órdenes
-        
+        $("#toastMsg").html(`
+    <strong>Bienvenido, ${res?.data?.firstName}!</strong><br>
+    Estamos preparando todo para ti...
+  `);
+
+  const toastEl = document.getElementById("loginToast");
+  const toast = new bootstrap.Toast(toastEl);
+  toast.show();
+                      
+  setTimeout(() => {
+    window.location.href = "/frontend/public/index.html";
+  }, 5000)
 
         console.log("✓ localStorage cleaned on login");
-
+        
         // Redirige al home
-        window.location.href = "../index.html";
+        // setTimeout( () => {
+        //   window.location.href = "../index.html";
+          
+        // },3000);
       })
       .fail(function (err) {
         console.error("Error en login:", err);
