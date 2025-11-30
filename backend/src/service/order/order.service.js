@@ -1,10 +1,11 @@
 // src/service/order/order.service.js
 const repo = require('../../../database/repo/order/order_repo.js');
 const paymentRepo = require('../../../database/repo/order/payment_repo.js');
+const shippingRepo = require('../../../database/repo/order/shipping_repo.js');
 const { recalcOrderTotals } = require('./recalcTotals');
 
 const POPULATE_ORDERS = [
-  { path: 'userId', select: 'firstName lastName email' }, // sin profile
+  { path: 'userId', select: 'firstName lastName email' },
   { path: 'addressId', populate: { path: 'userId', select: 'firstName' } },
 ];
 
@@ -15,7 +16,6 @@ const addOrder = async (data) => {
   if (typeof data.subTotal !== 'number') throw new Error('Missing subTotal');
   if (typeof data.tax !== 'number') throw new Error('Missing tax');
 
-  // NO setees total aquí; se recalcula con items o via tax-change
   data.status = data.status || 'pending_payment';
 
   const exists = await repo.findByNumber(data.orderNumber);
@@ -25,9 +25,9 @@ const addOrder = async (data) => {
     throw e;
   }
 
+  
   const created = await repo.create(data);
 
-  // Crear Payment automáticamente con status 'pending'
   try {
     const paymentData = {
       orderId: created._id,
@@ -37,15 +37,22 @@ const addOrder = async (data) => {
       transactionId: `TXN-${created._id}-${Date.now()}`,
       idempotencyKey: `IDM-${created._id}-${Date.now()}`,
     };
+    console.log('Creating payment with data:', paymentData);
     await paymentRepo.create(paymentData);
-    console.log('Payment created automatically for order:', created._id);
-  } catch (err) {
-    console.error('Error creating automatic payment:', err.message);
-    // No lanzar error; la orden se creó, el payment es secundario
-  }
+    console.log('✓ Payment created for order:', created._id);
 
-  // Recalcula totales iniciales (por si hay subTotal inicial o tax definido)
-  // await recalcOrderTotals(created._id);
+    const shippingData = {
+      orderId: created._id,
+      status: 'pending',
+    };
+    console.log('Creating shipping with data:', shippingData);
+    await shippingRepo.create(shippingData);
+    console.log('✓ Shipping created for order:', created._id);
+
+  } catch (err) {
+    console.error('⚠ Error creating Payment/Shipping:', err);
+    // No lanzar error; la orden ya se creó
+  }
 
   return created;
 };
@@ -85,7 +92,6 @@ const updateOrder = async (orderId, data) => {
     throw e;
   }
 
-  // Si cambió el tax, recalculamos total con el subTotal actual
   if (data.tax != null) {
     await recalcOrderTotals(orderId);
   }

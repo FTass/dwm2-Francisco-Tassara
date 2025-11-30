@@ -1,18 +1,19 @@
 const mongoose  = require('mongoose');
 
 const shippingSchema = mongoose.Schema({
-    orderId: { type: mongoose.Schema.ObjectId, ref : 'order',required : true },
-    carrier: {type: String, required : true},
-    trackingNUmber: {type: String, required : true},
-    estimatedDelivery : {type: Date, required :true},
-    shippedAt : {type: Date, required :true},
-    deliveredAt : {type: Date, required :true},
-});
+    orderId: { type: mongoose.Schema.ObjectId, ref : 'order', required : true },
+    status: { type: String, enum: ['pending', 'shipped', 'delivered', 'cancelled'], default: 'pending' },
+    carrier: { type: String, default: null },
+    trackingNumber: { type: String, default: null },
+    estimatedDelivery: { type: Date, default: null },
+    shippedAt: { type: Date, default: null },
+    deliveredAt: { type: Date, default: null },
+}, { timestamps: true });
 
 shippingSchema.pre(/^find/, function(next) {
     this.populate({
         path: 'orderId',
-        select: 'number' 
+        select: 'orderNumber' 
     });
     next();
 });
