@@ -153,8 +153,43 @@ async function deleteItem(itemId) {
     },
   })
     .done(function (response) {
-      console.log("Borrado correctamente", response);
-      loadCart();
+      const productName = response.data?.productId?.name || "producto";
+      
+      // Crear toast
+      const toastHTML = `
+        <div role="alert" aria-live="assertive" aria-atomic="true" class="toast" data-bs-autohide="true" data-bs-delay="3000">
+          <div class="toast-header">
+            <strong class="me-auto">Carrito</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+          <div class="toast-body">
+            ${productName} eliminado ✓
+          </div>
+        </div>
+      `;
+      
+      // Crear contenedor si no existe
+      let toastContainer = document.getElementById("toastContainer");
+      if (!toastContainer) {
+        toastContainer = document.createElement("div");
+        toastContainer.id = "toastContainer";
+        toastContainer.className = "toast-container position-fixed bottom-0 end-0 p-3";
+        document.body.appendChild(toastContainer);
+      }
+
+      // Agregar el toast
+      toastContainer.insertAdjacentHTML("beforeend", toastHTML);
+      
+      // Mostrar con Bootstrap
+      const toastElement = toastContainer.lastElementChild;
+      const toast = new bootstrap.Toast(toastElement);
+      toast.show();
+      
+      // Recargar carrito después de mostrar el toast
+      setTimeout(() => {
+        loadCart();
+        updateCartQuantity();
+      }, 500);
     })
     .fail(function (err) {
       console.error("Error al borrar", err);

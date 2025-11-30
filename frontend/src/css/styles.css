@@ -18,13 +18,14 @@ body {
 }
 
 .navbar .nav-link:hover {
+  transition: 0.4s;
   transform: scale(1.1);
   color: rgb(77, 42, 14);
 }
 
 .navbar .nav-link {
   color: rgb(75, 34, 1);
-
+  
   font-size: 1.5vw;
   font-weight: 500;
 }
@@ -36,6 +37,7 @@ body {
   font-weight: 600;
 }
 .navbar .navbar-brand:hover {
+  transition: 0.4s;
   color: rgb(134, 71, 20);
   transform: scale(1.05);
 }

@@ -29,12 +29,12 @@ $(function () {
 
         localStorage.setItem("qs_token", token);
         localStorage.setItem("qs_user", JSON.stringify(user));
-
+        let userName = res.data.user.firstName || "";
         // Limpiar datos antiguos del carrito y órdenes
         $("#toastMsg").html(`
-    <strong>Bienvenido, ${res?.data?.firstName}!</strong><br>
-    Estamos preparando todo para ti...
-  `);
+          <strong>Bienvenido, ${userName}!</strong><br>
+          Estamos preparando todo para ti...
+        `);
 
   const toastEl = document.getElementById("loginToast");
   const toast = new bootstrap.Toast(toastEl);

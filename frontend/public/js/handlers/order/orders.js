@@ -109,7 +109,6 @@ async function createOrder(items) {
     subTotal,
     tax,
     total,
-    items: mappedItems,
     paymentMethod,
   };
 

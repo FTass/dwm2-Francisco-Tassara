@@ -37,21 +37,21 @@ const addOrder = async (data) => {
       transactionId: `TXN-${created._id}-${Date.now()}`,
       idempotencyKey: `IDM-${created._id}-${Date.now()}`,
     };
-    console.log('Creating payment with data:', paymentData);
+   
     await paymentRepo.create(paymentData);
-    console.log('✓ Payment created for order:', created._id);
+    
 
     const shippingData = {
       orderId: created._id,
       status: 'pending',
     };
-    console.log('Creating shipping with data:', shippingData);
+    
     await shippingRepo.create(shippingData);
     console.log('✓ Shipping created for order:', created._id);
 
   } catch (err) {
-    console.error('⚠ Error creating Payment/Shipping:', err);
-    // No lanzar error; la orden ya se creó
+    console.error('Error creating Payment/Shipping:', err);
+    
   }
 
   return created;

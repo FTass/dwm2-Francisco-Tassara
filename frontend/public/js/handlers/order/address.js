@@ -1,24 +1,32 @@
 const API_BASE_URL = "http://localhost:3000";
 
+// Función que espera a que un elemento aparezca en el DOM
+// selector = qué elemento buscar (ej: '#address')
+// timeout = cuánto tiempo esperar antes de abandonar (default 5000ms = 5 segundos)
 function waitForElement(selector, timeout = 5000) {
   return new Promise((resolve, reject) => {
+    // Primero, busco si el elemento ya existe ahora
     const el = document.querySelector(selector);
-    if (el) return resolve(el);
+    if (el) return resolve(el); // Si existe, lo devuelvo inmediatamente
 
+    // Si no existe, creo un observador para vigilar cambios en el DOM
     const observer = new MutationObserver(() => {
       const found = document.querySelector(selector);
+      // Si el elemento aparece en el DOM, lo encuentro
       if (found) {
-        observer.disconnect();
-        resolve(found);
+        observer.disconnect(); // Dejo de vigilar
+        resolve(found); // Lo devuelvo
       }
     });
 
+    // Vigilo cambios en todo el body y sus hijos
     observer.observe(document.body, { childList: true, subtree: true });
 
+    // Si pasan X milisegundos sin encontrar el elemento, cancelo
     if (timeout) {
       setTimeout(() => {
-        observer.disconnect();
-        reject(new Error('timeout'));
+        observer.disconnect(); // Dejo de vigilar
+        reject(new Error('timeout')); // Lanzo error de timeout
       }, timeout);
     }
   });
@@ -30,12 +38,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (savedAddress) {
       const { street, number, apt, commune, city } = savedAddress;
       const text = `${street}, ${number}, ${apt || ""}, ${commune}, ${city}`;
-      // si el elemento aún no está en DOM, esperar a que aparezca
+      
       try {
         const addressEl = await waitForElement('#address', 3000);
         addressEl.textContent = text;
       } catch (e) {
-        // elemento no encontrado dentro del timeout — no es crítico
+        
       }
     }
   } catch (err) {
@@ -71,9 +79,10 @@ $(function () {
       city,
     };
 
-    // validar valores (no las claves)
-    for (const [k, v] of Object.entries(payload)) {
-      if (!v) {
+    // validar valores (no las claves) - apt es opcional
+    const requiredFields = ['street', 'number', 'commune', 'city'];
+    for (const field of requiredFields) {
+      if (!payload[field]) {
         alert("Faltan campos necesarios");
         return;
       }
@@ -82,7 +91,6 @@ $(function () {
     localStorage.setItem("qs_address", JSON.stringify(payload));
 
     const addressText = `${street}, ${number}, ${apt || ""}, ${commune}, ${city}`;
-    // actualizar si existe el elemento de resumen
     const addressElNow = document.getElementById("address");
     if (addressElNow) {
       addressElNow.textContent = addressText;

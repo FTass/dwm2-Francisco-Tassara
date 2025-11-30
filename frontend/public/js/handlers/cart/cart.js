@@ -129,7 +129,38 @@ async function addProductToCart(productId, quantity = 1, productName) {
       .done(function (res) {
         console.log("✓ CartItem OK:", res);
         const nameToShow = productName || res?.data?.productId?.name || "producto";
-        alert(`${nameToShow} añadido al carrito`);
+        
+        // Crear y mostrar toast
+        const toastHTML = `
+          <div role="alert" aria-live="assertive" aria-atomic="true" class="toast" data-bs-autohide="true" data-bs-delay="3000">
+            <div class="toast-header">
+              <i class="fa-solid fa-cart-shopping fa-2x"></i>
+              <strong class="me-auto">Carrito</strong>
+              <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+              ${nameToShow} añadido al carrito ✓
+            </div>
+          </div>
+        `;
+        
+        // Crear contenedor si no existe
+        let toastContainer = document.getElementById("toastContainer");
+        if (!toastContainer) {
+          toastContainer = document.createElement("div");
+          toastContainer.id = "toastContainer";
+          toastContainer.className = "toast-container position-fixed bottom-0 end-0 p-3";
+          document.body.appendChild(toastContainer);
+        }
+        
+        // Agregar el toast
+        toastContainer.insertAdjacentHTML("beforeend", toastHTML);
+        
+        // Mostrar el toast con Bootstrap
+        const toastElement = toastContainer.lastElementChild;
+        const toast = new bootstrap.Toast(toastElement);
+        toast.show();
+        
         if (window.updateCartQuantity) {
           window.updateCartQuantity();
         }
