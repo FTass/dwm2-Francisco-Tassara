@@ -34,16 +34,59 @@ function waitForElement(selector, timeout = 5000) {
 
 document.addEventListener("DOMContentLoaded", async () => {
   try {
+    const savedUser = JSON.parse(localStorage.getItem("qs_user"));
+    const userId = savedUser?._id;
+
+if (userId) {
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/api/users/${userId}/addresses?isDefault=true`,
+      {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("qs_token"),
+        },
+      }
+    );
+    const result = await response.json();
+    
+    const addresses = result.data || [];
+    const defaultAddress = addresses[0]; 
+    if (defaultAddress && defaultAddress._id) {
+      const { street, number, apt, commune, city } = defaultAddress;
+      const text = `${street}, ${number}, ${apt || ""}, ${commune}, ${city}`;
+
+    const payload = {
+      street,
+      number,
+      apt,
+      commune,
+      city,
+    };
+      try {
+        const addressEl = await waitForElement('#address', 3000);
+        addressEl.textContent = text;
+        localStorage.setItem("qs_address", JSON.stringify(payload));
+        localStorage.setItem("qs_addressId", defaultAddress._id);
+      } catch (e) {
+        console.warn('No se encontró elemento #address');
+      }
+    }
+  } catch (err) {
+    console.error('Error obteniendo dirección predeterminada:', err);
+  }
+}
+
+    // Fallback: si no hay dirección predeterminada, cargar del localStorage
     const savedAddress = JSON.parse(localStorage.getItem("qs_address"));
-    if (savedAddress) {
+    if (savedAddress && !document.getElementById("address")?.textContent) {
       const { street, number, apt, commune, city } = savedAddress;
       const text = `${street}, ${number}, ${apt || ""}, ${commune}, ${city}`;
-      
+
       try {
         const addressEl = await waitForElement('#address', 3000);
         addressEl.textContent = text;
       } catch (e) {
-        
+        console.warn('No se encontró elemento #address');
       }
     }
   } catch (err) {
@@ -52,7 +95,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 $(function () {
-  console.log("address.js cargado");
+  
 
   const savedUser = JSON.parse(localStorage.getItem("qs_user"));
   const userId = savedUser?._id;
@@ -70,6 +113,7 @@ $(function () {
     const apt = $("#depto").val().trim();
     const commune = $("#comuna").val().trim();
     const city = $("#ciudad").val().trim();
+    const isDefault = $("#useProfileAddressBtn").is(":checked");
 
     const payload = {
       street,
@@ -77,9 +121,10 @@ $(function () {
       apt,
       commune,
       city,
+      isDefault
     };
 
-    // validar valores (no las claves) - apt es opcional
+    
     const requiredFields = ['street', 'number', 'commune', 'city'];
     for (const field of requiredFields) {
       if (!payload[field]) {
@@ -95,7 +140,7 @@ $(function () {
     if (addressElNow) {
       addressElNow.textContent = addressText;
     } else {
-      waitForElement('#address', 3000).then(el => el.textContent = addressText).catch(()=>{});
+      waitForElement('#address', 3000).then(el => el.textContent = addressText).catch(() => { });
     }
 
     $.ajax({
@@ -107,19 +152,48 @@ $(function () {
         Authorization: "Bearer " + localStorage.getItem("qs_token"),
       },
     })
-        .done(function (res) {
-          // La API devuelve el documento creado: guardar su id para usarla en el pedido
-          try {
-            const returnedId = res?._id || (res.data && res.data._id) || null;
-            if (returnedId) {
-              localStorage.setItem("qs_addressId", returnedId);
-            }
-          } catch (e) {
-            console.warn('No se pudo extraer el id de la respuesta', e);
+      .done(function (res) {
+        // La API devuelve el documento creado: guardar su id para usarla en el pedido
+        try {
+          const returnedId = res?._id || (res.data && res.data._id) || null;
+          if (returnedId) {
+            localStorage.setItem("qs_addressId", returnedId);
           }
+        } catch (e) {
+          console.warn('No se pudo extraer el id de la respuesta', e);
+        }
 
-          alert("Direccion guardada");
-        })
+
+        // Crear y mostrar toast
+        const toastHTML = `
+          <div role="alert" aria-live="assertive" aria-atomic="true" class="toast" data-bs-autohide="true" data-bs-delay="3000">
+            <div class="toast-header">
+              <strong class="me-auto">Direccion</strong>
+              <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+              Dirección guardada ✓
+            </div>
+          </div>
+        `;
+
+        // Crear contenedor si no existe
+        let toastContainer = document.getElementById("toastContainer");
+        if (!toastContainer) {
+          toastContainer = document.createElement("div");
+          toastContainer.id = "toastContainer";
+          toastContainer.className = "toast-container position-fixed bottom-0 end-0 p-3";
+          document.body.appendChild(toastContainer);
+        }
+
+        // Agregar el toast
+        toastContainer.insertAdjacentHTML("beforeend", toastHTML);
+
+        // Mostrar el toast con Bootstrap
+        const toastElement = toastContainer.lastElementChild;
+        const toast = new bootstrap.Toast(toastElement);
+        toast.show();
+      })
       .fail(function (err) {
         alert("Error al guardar direccion: " + (err.responseJSON?.msg || err.statusText));
       });
