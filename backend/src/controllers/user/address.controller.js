@@ -46,6 +46,9 @@ const addressPost = async (req = request, res = response) => {
         if (Object.keys(body).length === 0) return res.status(400).json({ msg: 'Missing required data' });
         if (!userId) return res.status(400).json({ msg: 'User ID is missing' });
         if (!ensureOwnerOrAdmin(res, userId, req.user)) return;
+        if (body.isDefault === undefined) {
+            body.isDefault = false;
+        }
         const newAddress = await addAddress({ ...body, userId });
         return res.status(201).json(newAddress);
     } catch (error) {
