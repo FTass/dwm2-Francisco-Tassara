@@ -13,13 +13,22 @@ const {
 const { ensureOwnerOrAdmin, isAdmin } = require('../../utils/access.js');
 
 const userRegister = async ( req = request, res = response) => {
-    const body = req.body;
-    if (Object.keys(body).length === 0) {
-        return res.status(400).json({ msg: 'No data provided' });
-    }
+    try {
+        const body = req.body;
+        if (Object.keys(body).length === 0) {
+            return res.status(400).json({ msg: 'No data provided' });
+        }
+    
+        const registeredUser = await registerUser( body );
+        return res.status( 201 ).json( { msg: 'User registered', data: registeredUser } )
 
-    const registeredUser = await registerUser( body );
-    return res.status( 201 ).json( { msg: 'User registered', data: registeredUser } )
+    } catch (error) {
+        return res.status(error.status || 500).json({ 
+            msg: error.message || 'Server error',
+            code: error.code || 'UNKNOWN_ERROR',
+            status: error.status || 500
+        });
+    }
 }
 
 

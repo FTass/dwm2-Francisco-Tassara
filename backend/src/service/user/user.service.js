@@ -1,22 +1,48 @@
-// Nueva capa, aca se interactuara con el controller y el repositorio
+
 const  repo = require('../../../database/repo/user/user_repo.js');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '1h';
 
-//CRUD de usuarios
-// requeire el modelo si se va a repositori? 
-const registerUser = async ( userData ) => {
 
+const checkPwd = async ( pwd ) => {
+    const haveSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test( pwd);
+    
+    if ( pwd.length > 15) {
+        const e = new Error('Password is longer than 15 characters');
+        e.status = 400;
+        e.code = 'INVALID_PASSWORD_LENGTH'
+        throw e;
+    }
+
+    if ( !haveSpecialChar ) {
+        const e = new Error('Password require special characters');
+        e.status = 400;
+        e.code = 'REQUIRED_CHAR'
+        throw e;
+    }
+}
+
+
+
+
+//CRUD de usuarios
+const registerUser = async ( userData ) => {
     try {
         const existingUser = await repo.getUserByEmail(userData.email);
         if (existingUser) {
-            throw new Error('Email already registered');
+            const e = new Error('Email already registered')
+            e.code = 'EMAIL_EXISTS'
+            e.status = 409;
+            throw e;
         }
-    
+
+        const password = userData.password;
+        await checkPwd(password);  // ← Pasar el password
+       
         const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(userData.password, salt);
+        const hashedPassword = await bcrypt.hash(password, salt);
         const user = await repo.createUser({
             ...userData,
             profile: '69025c4403fb1ee551b6059b',
@@ -29,9 +55,8 @@ const registerUser = async ( userData ) => {
 
         return userResponse;
     } catch ( error ) {
-        throw new Error(error.message || 'Error creating user');
+        throw error;
     }
-
 }
 
 

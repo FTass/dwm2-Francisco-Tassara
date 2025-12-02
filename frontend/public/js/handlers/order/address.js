@@ -128,7 +128,37 @@ $(function () {
     const requiredFields = ['street', 'number', 'commune', 'city'];
     for (const field of requiredFields) {
       if (!payload[field]) {
-        alert("Faltan campos necesarios");
+        const toastHTML = `
+          <div id="logoutToast" class="toast border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex align-items-center text-bg-danger p-3 rounded">
+              <div class="toast-body flex-grow-1">Falta campos obligatorios</div>
+              <button type="button" class="btn-close btn-close-white ms-3" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+          </div>
+        `;
+
+    // Crear contenedor si no existe
+    let toastContainer = document.getElementById("toastContainer");
+    if (!toastContainer) {
+      toastContainer = document.createElement("div");
+      toastContainer.id = "toastContainer";
+      toastContainer.className = "toast-container position-fixed top-0 end-0 p-3";
+      toastContainer.style.zIndex = "11000";
+      document.body.appendChild(toastContainer);
+    }
+
+    // Agregar el toast
+    toastContainer.insertAdjacentHTML("beforeend", toastHTML);
+
+    // Mostrar el toast con Bootstrap
+    const toastElement = toastContainer.lastElementChild;
+    const toast = new bootstrap.Toast(toastElement);
+    toast.show();
+    
+    // Eliminar el elemento después de que se oculte
+    toastElement.addEventListener('hidden.bs.toast', () => {
+      toastElement.remove();
+    });
         return;
       }
     }
