@@ -71,9 +71,9 @@ $(function () {
         const msg = err.responseJSON?.msg;
   
         if (code === 'EMAIL_EXISTS') {
-          showToast(msg, 'danger');
+          showToast(`El correo '${email}' ya esta registrado`, 'danger');
         } else if (code === 'INVALID_PASSWORD_LENGTH') {
-          showToast(msg, 'warning');
+          showToast('la contraseña es demasiado larga', 'warning');
         } else if (code === 'REQUIRED_CHAR') {
           showToast(msg, 'danger');
         }
