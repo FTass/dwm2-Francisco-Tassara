@@ -64,7 +64,11 @@ const userLogin = async (req = request, res = response) => {
         const authResult = await authenticateUser({ email, password });
         return res.status(200).json({ msg: 'Login successful', data: authResult });
     } catch (error) {
-        return res.status(401).json({ msg: error.message });
+        return res.status(error.status || 500).json({ 
+            msg: error.message || 'Server error',
+            code: error.code || 'UNKNOWN_ERROR',
+            status: error.status || 500
+        });
     }
 };
 

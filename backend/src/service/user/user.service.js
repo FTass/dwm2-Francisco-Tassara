@@ -130,20 +130,58 @@ const authenticateUser = async ( credentials ) => {
         // Buscar usuario por email
         const user = await repo.getUserByEmail(email);
         if (!user) {
-            throw new Error('Authentication failed: User not found');
+            const e = new Error('User not found');
+            e.status = 401 ;
+            e.code = "NOT_FOUND";
+            throw e;
         }
 
+        if (user.lockedUntil && new Date(user.lockedUntil) <= new Date()) {
+            await repo.updateUser(user._id, {
+            lockedUntil: null,
+            failedLoginAttempts : 0,
+            isActive: true
+            });
+            
+        }
+        
         // Verificar si el usuario está activo
         if (!user.isActive) {
-            throw new Error('Authentication failed: User is inactive');
+            
+            const e = new Error(`user is blocked until ${ user.lockedUntil.toLocaleTimeString() }`)
+            e.code = 'USER_TEMPORARILY_BLOCKED';
+            e.status = 429;
+            throw e;
         }
+        
+
 
         // Comparar contraseña
         const isValidPassword = await bcrypt.compare(password, user.password);
         if (!isValidPassword) {
-            throw new Error('Authentication failed: Incorrect password');
-        }
+            let failedLoginAttempts = user.failedLoginAttempts += 1;
 
+            await repo.updateUser(user._id, { failedLoginAttempts })
+            if ( user.failedLoginAttempts >= 5) {
+                const lockedUntil = new Date(Date.now() + 5 * 60 * 1000);
+                const e = new Error('Too many incorrect attempts, account locked until ' + lockedUntil.toLocaleTimeString());
+                await repo.updateUser(user._id,
+                    {
+                        isActive: false,
+                        lockedUntil
+                    })
+                e.status = 429;
+                e.code = 'TOO_MANY_FAILED_ATTEMPTS';
+                throw e;
+            }
+            const e = new Error('Incorrect password');
+            e.status = 401;
+            e.code = 'INCORRECT_PASSWORD';
+            throw e;
+        }
+        if ( user.failedLoginAttempts > 0) {
+            await repo.updateUser(user._id, { failedLoginAttempts: 0})
+        }
         // Generar token JWT
         const token = jwt.sign(
             { userId: user._id, email: user.email },
@@ -162,7 +200,7 @@ const authenticateUser = async ( credentials ) => {
             }
         };
     } catch (error) {
-        throw new Error(error.message || 'Authentication failed');
+        throw error;
     }
 };
 

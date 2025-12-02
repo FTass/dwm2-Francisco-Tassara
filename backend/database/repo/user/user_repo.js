@@ -43,6 +43,8 @@ class User_Repository {
         return await User.find({ profile: profileId });
     }
 
+   
+
     async updateUser(userId, input){
         const user = await User.findByIdAndUpdate(userId, input);
         return user;

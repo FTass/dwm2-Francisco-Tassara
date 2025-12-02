@@ -1,4 +1,6 @@
 const API_BASE_URL = "http://localhost:3000";
+import { showToast } from '../util/toast-util.js'
+
 
 $(function () {
   console.log("login.js cargado");
@@ -11,7 +13,7 @@ $(function () {
     const password = $("#pwd").val().trim();
 
     if (!email || !password) {
-      alert("Debes ingresar email y contraseña");
+      showToast('Debe ingresar correo y contraseña', 'danger')
       return;
     }
 
@@ -36,28 +38,31 @@ $(function () {
           Estamos preparando todo para ti...
         `);
 
-  const toastEl = document.getElementById("loginToast");
-  const toast = new bootstrap.Toast(toastEl);
-  toast.show();
-                      
-  setTimeout(() => {
-    window.location.href = "/frontend/public/index.html";
-  }, 5000)
+        const toastEl = document.getElementById("loginToast");
+        const toast = new bootstrap.Toast(toastEl);
+        toast.show();
+                            
+        setTimeout(() => {
+          window.location.href = "/frontend/public/index.html";
+        }, 5000)
 
-        console.log("✓ localStorage cleaned on login");
-        
-        // Redirige al home
-        // setTimeout( () => {
-        //   window.location.href = "../index.html";
-          
-        // },3000);
+      
       })
       .fail(function (err) {
-        console.error("Error en login:", err);
-        const msg =
-          err.responseJSON?.msg ||
-          "Error al iniciar sesión. Revisa tus datos.";
-        alert(msg);
+        const code = err.responseJSON?.code;
+        const msg = err.responseJSON?.msg;
+        console.log(msg);
+        
+  
+        if (code === 'INCORRECT_PASSWORD') {
+          showToast(msg, 'danger');
+        } else if (code === 'TOO_MANY_FAILED_ATTEMPTS') {
+          showToast(msg, 'warning');
+        } else if (code === 'USER_TEMPORARILY_BLOCKED') {
+          showToast(msg, 'danger');
+        } else if ( code === 'NOT_FOUND') {
+          showToast(msg, 'danger');
+        }
       });
   });
 });

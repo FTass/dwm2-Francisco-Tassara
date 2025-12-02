@@ -100,6 +100,7 @@ async function addProductToCart(productId, quantity = 1, productName) {
 
   if (!token) {
     alert("Debes iniciar sesión para agregar productos al carrito");
+    
     window.location.href = "/frontend/public/pages/login.html";
     return null;
   }

@@ -8,8 +8,8 @@ const userSchema = mongoose.Schema({
     phone: { type : String, required: true},
     profile: {type: mongoose.Schema.ObjectId, ref: 'profile', required : true},
     isActive: Boolean,
-    failedLoginAttempts: Number,
-    lockUntil: Date,
+    failedLoginAttempts: { type: Number, default: 0 },
+    lockedUntil: { type: Date, default: null },
     updatedAt: { type: Date, default: Date.now }
 });
 
