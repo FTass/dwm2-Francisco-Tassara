@@ -2,8 +2,17 @@ const repo = require('../../../database/repo/product/product_repo.js')
 
 
 const addProduct = async ( input ) => {
-    const product = await repo.createProduct( input );
-    return product
+    const discount = input?.discount ?? 0;
+
+    if (input.offer && discount > 0 && discount < 100) {
+        const oldPrice = input.price;
+        const newPrice = oldPrice - (oldPrice * (discount / 100));
+        input.oldPrice = oldPrice;
+        input.price = newPrice;
+    }
+
+    const product = await repo.createProduct(input);
+    return product;
 }
 
 const getById = async ( productId ) => {
@@ -41,7 +50,22 @@ const getByCategory = async ( categoryId ) => {
 }
 
 const updProduct = async ( productId, input ) => {
+    const product = await repo.getProductById( productId );
+    const discount = input?.discount  || product.discount || 0;
+
+
+    if ( input.offer == false ) {
+        input.price = product.oldPrice;
+    }
+    
+    if (input.offer && discount > 0 && discount < 100) {
+        const oldPrice = product.price;
+        const newPrice = oldPrice - (oldPrice * (discount / 100));
+        input.oldPrice = oldPrice;
+        input.price = newPrice;
+    }
     const updatedProduct = await repo.updateProduct( productId, input );
+
     if ( !updatedProduct ) throw new Error('Product not found or not updated');
     return updatedProduct;
 }
