@@ -4,6 +4,37 @@ import { handleOrderConfirmed } from "./order.confirmed.js";
 const API_BASE_URL = "http://localhost:3000";
 
 
+// También escuchar cambios manuales en inputs
+$(document).on("click", "#addressSubmit",  function() {
+  
+  checkIfCanOrder();
+});
+
+$(document).on("change", "input[name='flexRadioDefault']", function() {
+  checkIfCanOrder();
+})
+
+// Función para verificar si ambos están listos
+function checkIfCanOrder() {
+  const addressId = localStorage.getItem("qs_addressId");
+  const paymentMethodRadio = $("input[name='flexRadioDefault']:checked").val();
+  const paymentMethodStorage = localStorage.getItem("qs_paymentMethod");
+  
+ 
+  const paymentMethod = paymentMethodRadio || paymentMethodStorage;
+  
+  if (addressId && paymentMethod) {
+    $("#confirmOrder").prop("disabled", false);
+  } 
+}
+
+
+
+// Verificar al cargar la página por si ya existen
+$(document).ready(function() {
+  checkIfCanOrder();
+});
+
 $(document).on("click", '[data-bs-target="#confirm"]', async () => {
   try {
     const token = localStorage.getItem("qs_token");
@@ -103,6 +134,8 @@ async function createOrder(items) {
 
   const addressId     = localStorage.getItem("qs_addressId") || null;
   const paymentMethod = localStorage.getItem("qs_paymentMethod") || null;
+
+  
 
   const payload = {
     orderNumber,

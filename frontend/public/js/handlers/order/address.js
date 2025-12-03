@@ -188,6 +188,10 @@ $(function () {
           const returnedId = res?._id || (res.data && res.data._id) || null;
           if (returnedId) {
             localStorage.setItem("qs_addressId", returnedId);
+            // Llamar a checkIfCanOrder después de guardar
+            if (typeof window.checkIfCanOrder === 'function') {
+              window.checkIfCanOrder();
+            }
           }
         } catch (e) {
           console.warn('No se pudo extraer el id de la respuesta', e);
