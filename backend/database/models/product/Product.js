@@ -11,6 +11,7 @@ const productSchema = mongoose.Schema ({
     status :      { type: String, enum :['draft', 'published', 'retired'], required : true},
 
     offer:         Boolean,
+    discount:      { type: Number, min: 0, max: 100 },
     highlight:      Boolean,
     
 

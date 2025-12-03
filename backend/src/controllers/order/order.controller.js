@@ -50,7 +50,7 @@ const orderPut = async (req = request, res = response) => {
 
     if (!ensureOwnerOrAdmin(res, current.userId, req.user)) return;
 
-    const updated = await service.updateOrder(id, req.body);
+    const updated = await service.updateOrder(id, req.body, req.user._id);
     return res.status(200).json({ msg: 'Order updated', data: updated });
   } catch (error) {
     return res.status(error.status || 500).json({ msg: error.message || 'Server error' });

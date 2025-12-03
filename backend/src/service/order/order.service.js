@@ -17,6 +17,7 @@ const addOrder = async (data) => {
   if (typeof data.tax !== 'number') throw new Error('Missing tax');
 
   data.status = data.status || 'pending_payment';
+  data.paymentMethod = data.paymentMethod || 'transfer';
 
   const exists = await repo.findByNumber(data.orderNumber);
   if (exists) {
@@ -84,7 +85,9 @@ const getOrderById = async (orderId) => {
   return order;
 };
 
-const updateOrder = async (orderId, data) => {
+const updateOrder = async (orderId, data, userId) => {
+  if (userId) data.lastUpdatedBy = userId;
+  
   const updated = await repo.updateById(orderId, data);
   if (!updated) {
     const e = new Error('Order not found');

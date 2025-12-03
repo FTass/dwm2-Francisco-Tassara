@@ -1,5 +1,5 @@
+import { showToast } from "../util/toast-util.js" 
 const API_BASE_URL = "http://localhost:3000";
-
 // Función que espera a que un elemento aparezca en el DOM
 // selector = qué elemento buscar (ej: '#address')
 // timeout = cuánto tiempo esperar antes de abandonar (default 5000ms = 5 segundos)
@@ -26,7 +26,7 @@ function waitForElement(selector, timeout = 5000) {
     if (timeout) {
       setTimeout(() => {
         observer.disconnect(); // Dejo de vigilar
-        reject(new Error('timeout')); // Lanzo error de timeout
+        reject(new Error("timeout")); // Lanzo error de timeout
       }, timeout);
     }
   });
@@ -36,45 +36,47 @@ document.addEventListener("DOMContentLoaded", async () => {
   try {
     const savedUser = JSON.parse(localStorage.getItem("qs_user"));
     const userId = savedUser?._id;
-
-if (userId) {
-  try {
-    const response = await fetch(
-      `${API_BASE_URL}/api/users/${userId}/addresses?isDefault=true`,
-      {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("qs_token"),
-        },
-      }
-    );
-    const result = await response.json();
-    
-    const addresses = result.data || [];
-    const defaultAddress = addresses[0]; 
-    if (defaultAddress && defaultAddress._id) {
-      const { street, number, apt, commune, city } = defaultAddress;
-      const text = `${street}, ${number}, ${apt || ""}, ${commune}, ${city}`;
-
-    const payload = {
-      street,
-      number,
-      apt,
-      commune,
-      city,
-    };
+    getAddresses(userId);
+    if (userId) {
       try {
-        const addressEl = await waitForElement('#address', 3000);
-        addressEl.textContent = text;
-        localStorage.setItem("qs_address", JSON.stringify(payload));
-        localStorage.setItem("qs_addressId", defaultAddress._id);
-      } catch (e) {
-        console.warn('No se encontró elemento #address');
+        const response = await fetch(
+          `${API_BASE_URL}/api/users/${userId}/addresses?isDefault=true`,
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("qs_token"),
+            },
+          }
+        );
+        const result = await response.json();
+
+        const addresses = result.data || [];
+        const defaultAddress = addresses[0];
+        if (defaultAddress && defaultAddress._id) {
+          const { street, number, apt, commune, city } = defaultAddress;
+          const text = `${street}, ${number}, ${
+            apt || ""
+          }, ${commune}, ${city}`;
+
+          const payload = {
+            street,
+            number,
+            apt,
+            commune,
+            city,
+          };
+          try {
+            const addressEl = await waitForElement("#address", 3000);
+            addressEl.textContent = text;
+            localStorage.setItem("qs_address", JSON.stringify(payload));
+            localStorage.setItem("qs_addressId", defaultAddress._id);
+          } catch (e) {
+            console.warn("No se encontró elemento #address");
+          }
+        }
+      } catch (err) {
+        console.error("Error obteniendo dirección predeterminada:", err);
       }
     }
-  } catch (err) {
-    console.error('Error obteniendo dirección predeterminada:', err);
-  }
-}
 
     // Fallback: si no hay dirección predeterminada, cargar del localStorage
     const savedAddress = JSON.parse(localStorage.getItem("qs_address"));
@@ -83,20 +85,18 @@ if (userId) {
       const text = `${street}, ${number}, ${apt || ""}, ${commune}, ${city}`;
 
       try {
-        const addressEl = await waitForElement('#address', 3000);
+        const addressEl = await waitForElement("#address", 3000);
         addressEl.textContent = text;
       } catch (e) {
-        console.warn('No se encontró elemento #address');
+        console.warn("No se encontró elemento #address");
       }
     }
   } catch (err) {
-    console.error('Error parseando qs_address', err);
+    console.error("Error parseando qs_address", err);
   }
 });
 
 $(function () {
-  
-
   const savedUser = JSON.parse(localStorage.getItem("qs_user"));
   const userId = savedUser?._id;
 
@@ -107,6 +107,7 @@ $(function () {
   $(document).on("submit", "#addressForm", function (e) {
     e.preventDefault();
     e.stopPropagation();
+    getAddresses();
 
     const street = $("#calle").val().trim();
     const number = $("#numero").val().trim();
@@ -121,56 +122,29 @@ $(function () {
       apt,
       commune,
       city,
-      isDefault
+      isDefault,
     };
 
-    
-    const requiredFields = ['street', 'number', 'commune', 'city'];
+    const requiredFields = ["street", "number", "commune", "city"];
     for (const field of requiredFields) {
       if (!payload[field]) {
-        const toastHTML = `
-          <div id="logoutToast" class="toast border-0" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="d-flex align-items-center text-bg-danger p-3 rounded">
-              <div class="toast-body flex-grow-1">Falta campos obligatorios</div>
-              <button type="button" class="btn-close btn-close-white ms-3" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-          </div>
-        `;
-
-    // Crear contenedor si no existe
-    let toastContainer = document.getElementById("toastContainer");
-    if (!toastContainer) {
-      toastContainer = document.createElement("div");
-      toastContainer.id = "toastContainer";
-      toastContainer.className = "toast-container position-fixed top-0 end-0 p-3";
-      toastContainer.style.zIndex = "11000";
-      document.body.appendChild(toastContainer);
-    }
-
-    // Agregar el toast
-    toastContainer.insertAdjacentHTML("beforeend", toastHTML);
-
-    // Mostrar el toast con Bootstrap
-    const toastElement = toastContainer.lastElementChild;
-    const toast = new bootstrap.Toast(toastElement);
-    toast.show();
-    
-    // Eliminar el elemento después de que se oculte
-    toastElement.addEventListener('hidden.bs.toast', () => {
-      toastElement.remove();
-    });
+        showToast('Faltan campos obligatorios', 'danger')
         return;
       }
     }
 
     localStorage.setItem("qs_address", JSON.stringify(payload));
 
-    const addressText = `${street}, ${number}, ${apt || ""}, ${commune}, ${city}`;
+    const addressText = `${street}, ${number}, ${
+      apt || ""
+    }, ${commune}, ${city}`;
     const addressElNow = document.getElementById("address");
     if (addressElNow) {
       addressElNow.textContent = addressText;
     } else {
-      waitForElement('#address', 3000).then(el => el.textContent = addressText).catch(() => { });
+      waitForElement("#address", 3000)
+        .then((el) => (el.textContent = addressText))
+        .catch(() => {});
     }
 
     $.ajax({
@@ -189,47 +163,134 @@ $(function () {
           if (returnedId) {
             localStorage.setItem("qs_addressId", returnedId);
             // Llamar a checkIfCanOrder después de guardar
-            if (typeof window.checkIfCanOrder === 'function') {
+            if (typeof window.checkIfCanOrder === "function") {
               window.checkIfCanOrder();
             }
           }
         } catch (e) {
-          console.warn('No se pudo extraer el id de la respuesta', e);
+          console.warn("No se pudo extraer el id de la respuesta", e);
         }
-
 
         // Crear y mostrar toast
-        const toastHTML = `
-          <div role="alert" aria-live="assertive" aria-atomic="true" class="toast" data-bs-autohide="true" data-bs-delay="3000">
-            <div class="toast-header">
-              <strong class="me-auto">Direccion</strong>
-              <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-            <div class="toast-body">
-              Dirección guardada ✓
-            </div>
-          </div>
-        `;
-
-        // Crear contenedor si no existe
-        let toastContainer = document.getElementById("toastContainer");
-        if (!toastContainer) {
-          toastContainer = document.createElement("div");
-          toastContainer.id = "toastContainer";
-          toastContainer.className = "toast-container position-fixed bottom-0 end-0 p-3";
-          document.body.appendChild(toastContainer);
-        }
-
-        // Agregar el toast
-        toastContainer.insertAdjacentHTML("beforeend", toastHTML);
-
-        // Mostrar el toast con Bootstrap
-        const toastElement = toastContainer.lastElementChild;
-        const toast = new bootstrap.Toast(toastElement);
-        toast.show();
+        
+        showToast('Direccion guardada','success')
       })
       .fail(function (err) {
-        alert("Error al guardar direccion: " + (err.responseJSON?.msg || err.statusText));
+        alert(
+          "Error al guardar direccion: " +
+            (err.responseJSON?.msg || err.statusText)
+        );
       });
   });
+});
+
+function getAddresses() {
+  const savedUser = JSON.parse(localStorage.getItem("qs_user"));
+  const userId = savedUser?._id;
+
+  $.ajax({
+    url: `${API_BASE_URL}/api/users/${userId}/addresses`,
+    method: "GET",
+    headers: {
+      Authorization: "Bearer " + localStorage.getItem("qs_token"),
+    },
+  })
+    .done(function (response) {
+      console.log(response);
+      renderAddressesSelect(response, "addressSelect");
+    })
+    .fail(function (err) {
+      console.error("Error cargando direcciones:", err);
+    });
+}
+
+function renderAddressesSelect(response, containerId) {
+  const addresses = response?.data ?? [];
+  const $container = $("#" + containerId);
+  if ($container.length === 0) {
+    console.warn("No se encontró el contenedor", containerId);
+    return;
+  }
+
+  $container.empty();
+
+  if (!Array.isArray(addresses) || addresses.length === 0) {
+    $container.html(`
+      <option selected> No se encontraron direcciones</option>
+    `);
+    return;
+  }
+
+  addresses.forEach((a) => {
+    const { street, number, apt, commune, city } = a;
+    const opt = document.createElement("option");
+    opt.value = a._id;
+    opt.textContent = `${street}, ${number}, ${apt || ""}, ${commune}, ${city}`;
+    $container.append(opt);
+  });
+}
+
+
+$(document).on('change', '#addressSelect', function() {
+  const selectedAddressId = $(this).val();
+  localStorage.setItem('qs_addressId', selectedAddressId);
+  
+  
+  const selectedText = $(this).find('option:selected').text();
+  $('#address').text(selectedText);
+  
+  
+  const parts = selectedText.split(', ');
+  if (parts.length >= 4) {
+    const payload = {
+      street: parts[0],
+      number: parts[1],
+      apt: parts[2] || '',
+      commune: parts[3],
+      city: parts[4] || parts[3],
+    };
+    localStorage.setItem('qs_address', JSON.stringify(payload));
+  }
+  
+  // Trigger para habilitar botón de confirmar orden
+  if (typeof window.checkIfCanOrder === 'function') {
+    window.checkIfCanOrder();
+  }
+});
+
+$(document).on('click', '#deleteAddressBtn', function() {
+  const savedUser = JSON.parse(localStorage.getItem("qs_user"));
+  const userId = savedUser?._id;
+  const selectedId = $('#addressSelect').val();
+  const currentId = localStorage.getItem('qs_addressId');
+  
+  if (!selectedId) {
+    showToast('Selecciona una direccion', 'warning')
+    return;
+  }
+  
+  if (confirm('¿Eliminar esta dirección?')) {
+    $.ajax({
+      url: `${API_BASE_URL}/api/users/${userId}/addresses/${selectedId}`,
+      method: "DELETE",
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("qs_token"),
+      },
+    })
+    .done(function (res) {
+      showToast('Dirección eliminada', 'success');
+      
+      
+      if (selectedId === currentId) {
+        localStorage.removeItem('qs_addressId');
+        localStorage.removeItem('qs_address');
+        $('#address').text('');
+      }
+      
+      getAddresses();
+    })
+    .fail(function(err) {
+      showToast('Error al eliminar dirección', 'danger');
+    });
+  }
 });

@@ -31,7 +31,7 @@
 
     <div id="resumen-root"></div>
 
-    <script src="/frontend/public/js/handlers/order/address.js"></script>
+    <script type="module" src="/frontend/public/js/handlers/order/address.js"></script>
     <script
       type="module"
       src="/frontend/public/js/handlers/order/orders.js"
@@ -66,7 +66,7 @@
 
       injectPartial(
         "direccion-root",
-        "/frontend/public/partials/direccion.html"
+        "/frontend/public/partials/new-dir.html"
       );
       injectPartial("payment-root", "/frontend/public/partials/payment.html");
       injectPartial("resumen-root", "/frontend/public/partials/resumen.html");

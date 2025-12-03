@@ -8,7 +8,9 @@ const orderSchema = mongoose.Schema({
     status : {type : String, enum : ['pending_payment', 'paid', 'shipped', 'delivered', 'cancelled']},
     subTotal : {type : Number , required: true},
     tax : {type : Number , required: true},
-    total : {type : Number }, 
+    total : {type : Number },
+    paymentMethod : {type : String, enum : ['transfer', 'webpay']},
+    lastUpdatedBy : {type : mongoose.Schema.ObjectId , ref : 'user'},
 
 }, { timestamps: true });
 
