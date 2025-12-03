@@ -1,4 +1,5 @@
 import { fetchCartItems } from "./cart-util.js";
+import { showToast } from "../util/toast-util.js"
 $(document).on("click", '[data-bs-target="#cartDrawer"]', function () {
   loadCart();
 });
@@ -137,7 +138,7 @@ $(document).on("click", ".deleteItemBtn", function () {
 async function deleteItem(itemId) {
   const token = localStorage.getItem("qs_token");
   if (!token) {
-    alert("Debes iniciar sesión nuevamente");
+    showToast('Debes iniciar sesion nuevamente', 'warning');
     window.location.href = "/pages/login.html";
     return;
   }
@@ -193,7 +194,8 @@ async function deleteItem(itemId) {
     })
     .fail(function (err) {
       console.error("Error al borrar", err);
-      alert("No se pudo eliminar el producto del carrito.");
+          showToast('No se pudo eliminar el producto del carrito', 'danger');
+
     });
 }
 

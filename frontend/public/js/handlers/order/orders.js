@@ -7,7 +7,7 @@ const API_BASE_URL = "http://localhost:3000";
 $(document).on("click", '[data-bs-target="#confirm"]', async () => {
   try {
     const token = localStorage.getItem("qs_token");
-
+    
     if (!token) {
       alert("Debes iniciar sesión para seguir con tu orden");
       setTimeout(() => {
@@ -15,11 +15,14 @@ $(document).on("click", '[data-bs-target="#confirm"]', async () => {
       }, 3000);
       return;
     }
-
+    
     const items = await fetchCartItems();
     console.log("Items del carrito al confirmar:", items);
-
+    
     await createOrder(items);
+    if ( paymentMethod === 'transfer') {
+
+    }
   } catch (err) {
 
     console.error("Error al confirmar orden:", err);
@@ -132,7 +135,6 @@ async function createOrder(items) {
     if (res?.data?.orderNumber) {
       $("#order-code").text(`#${res.data._id}`);
     }
-
     const orderId = localStorage.getItem("qs_orderId")
     // Crear OrderItems llamando al endpoint
     if (orderId && Array.isArray(mappedItems) && mappedItems.length > 0) {
@@ -158,25 +160,53 @@ async function createOrder(items) {
       }
     }
 
-    // Resetear el modal a estado de éxito
+    // Mostrar modal según método de pago
     const confirmModal = document.getElementById("confirm");
     if (confirmModal) {
-      // Limpiar contenido de error si existe
       const modalContent = confirmModal.querySelector(".modal-content");
       if (modalContent) {
-        modalContent.innerHTML = `
-          <div class="modal-header">
-            <h5 class="modal-title" id="confirmLabel">Pedido Confirmado</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body text-center p-4">
-            <i class="fa-solid fa-check fa-3x mb-3 text-success"></i>
-            <h5 class="card-title mb-3">¡Gracias por tu compra!</h5>
-            <p class="card-text mb-4">Tu pedido ha sido recibido y está siendo procesado.</p>
-            <p id="orderNumber">Tu numero de pedido <span id="order-code">${res.data.orderNumber}</span> </p>
-            <a href="/frontend/public/index.html" class="btn btn-primary">Volver al inicio</a>
-          </div>
-        `;
+        if (paymentMethod === 'transfer') {
+          // Modal de transferencia
+          modalContent.innerHTML = `
+            <div class="modal-header">
+              <h5 class="modal-title" id="confirmLabel">Instrucciones de Transferencia Bancaria</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center p-4">
+              <ul class="list-group mb-4">
+                <li class="list-group-item"><strong>Nombre del Banco:</strong> Banco Ejemplo</li>
+                <li class="list-group-item"><strong>Número de Cuenta:</strong> 1234567890</li>
+                <li class="list-group-item"><strong>Tipo de Cuenta:</strong> Cuenta Corriente</li>
+                <li class="list-group-item"><strong>Nombre del Titular:</strong> Queso & Sabor S.A.</li>
+                <li class="list-group-item"><strong>RUT:</strong> 30-12345678-9</li>
+                <li class="list-group-item"><strong>Monto:</strong> $${res.data.total.toLocaleString()}</li>
+              </ul>    
+              <h5>Adjunte su comprobante de transferencia</h5>
+              <form id="comprobanteForm" class="py-4">
+                <div class="mb-3">
+                  <label for="comprobante" class="form-label">Subir Comprobante</label>
+                  <input class="form-control" type="file" id="comprobante" accept="image/*,application/pdf" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Enviar Comprobante</button>
+              </form>
+            </div>
+          `;
+        } else {
+          // Modal de éxito (para otros métodos de pago)
+          modalContent.innerHTML = `
+            <div class="modal-header">
+              <h5 class="modal-title" id="confirmLabel">Pedido Confirmado</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center p-4">
+              <i class="fa-solid fa-check fa-3x mb-3 text-success"></i>
+              <h5 class="card-title mb-3">¡Gracias por tu compra!</h5>
+              <p class="card-text mb-4">Tu pedido ha sido recibido y está siendo procesado.</p>
+              <p id="orderNumber">Tu número de pedido: <strong id="order-code">${res.data.orderNumber}</strong></p>
+              <a href="/frontend/public/index.html" class="btn btn-primary">Volver al inicio</a>
+            </div>
+          `;
+        }
       }
     }
 
@@ -189,18 +219,26 @@ async function createOrder(items) {
     console.error("Order create error responseJSON:", err.responseJSON);
     
     // Mostrar modal de error
-    $("#icon").attr("class", "fa-solid fa-x");
-    $("#confirmLabel").text("ERROR");
-    $("#modalBodyText").text("Ingresa todos los datos necesarios");
-    
-    // Limpiar elementos de éxito si existen
-    $("#received").remove();
-    $("#orderNumber").remove();
-    
-    // Cambiar texto del botón
-    $("#goBack").text("Volver a intentar");
-    $("#goBack").attr("href", "/frontend/public/pages/checkout.html");
+    const confirmModal = document.getElementById("confirm");
+    if (confirmModal) {
+      const modalContent = confirmModal.querySelector(".modal-content");
+      if (modalContent) {
+        modalContent.innerHTML = `
+          <div class="modal-header">
+            <h5 class="modal-title" id="confirmLabel">Error en la Orden</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-center p-4">
+            <i class="fa-solid fa-x fa-3x mb-3 text-danger"></i>
+            <h5 class="card-title mb-3">Hubo un problema</h5>
+            <p class="card-text mb-4">Por favor, ingresa todos los datos necesarios e intenta de nuevo.</p>
+            <a href="/frontend/public/pages/checkout.html" class="btn btn-primary">Volver a intentar</a>
+          </div>
+        `;
+      }
+    }
     
     throw err;
   }
 }
+
