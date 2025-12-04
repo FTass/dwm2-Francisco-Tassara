@@ -51,20 +51,29 @@ const getByCategory = async ( categoryId ) => {
 
 const updProduct = async ( productId, input ) => {
     const product = await repo.getProductById( productId );
-    const discount = input?.discount  || product.discount || 0;
+    let payload = {...input}
+    const discount = input?.discount ?? 0;
 
+    const hasDiscount = 
+        typeof input.discount === 'number'&&
+        discount > 0 &&
+        discount < 100;
 
     if ( input.offer == false ) {
-        input.price = product.oldPrice;
+        const basePrice = product.oldPrice ?? product.price;
+        payload.price = basePrice
+        payload.discount = 0;
+        payload.offer = false;
+        payload.oldPrice = undefined;
     }
     
-    if (input.offer && discount > 0 && discount < 100) {
-        const oldPrice = product.price;
-        const newPrice = oldPrice - (oldPrice * (discount / 100));
-        input.oldPrice = oldPrice;
-        input.price = newPrice;
+    if (input.offer === true && hasDiscount) {
+        const basePrice = product.oldPrice ?? product.price;
+        const newPrice = basePrice - (basePrice * (discount / 100));
+        payload.oldPrice = basePrice;
+        payload.price = newPrice;
     }
-    const updatedProduct = await repo.updateProduct( productId, input );
+    const updatedProduct = await repo.updateProduct( productId, payload );
 
     if ( !updatedProduct ) throw new Error('Product not found or not updated');
     return updatedProduct;

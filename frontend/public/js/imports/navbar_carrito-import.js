@@ -11,18 +11,36 @@
           const loginBtn = document.querySelector('a[href="./pages/login.html"]');
 
           if (token && loginBtn) {
+            const user = JSON.parse(localStorage.getItem("qs_user"));
+            
+            const userDropdown = document.createElement('div');
+            userDropdown.className = 'dropdown';
+            
+            const userName = user.firstName
+            
             const logoutBtn = document.createElement('button');
             logoutBtn.className = 'btn btn-header btn-sm d-inline-flex align-items-center';
             logoutBtn.type = 'button';
-            logoutBtn.innerHTML = `
-              <i class="bi bi-box-arrow-right"></i>
-              <span class="ms-2 d-none d-lg-inline">Cerrar sesión</span>
+            
+            userDropdown.innerHTML = `
+            <button class="btn btn-header btn-sm d-inline-flex align-items-center dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-person-circle mx-1" style="font-size: 1rem;"></i>${userName}
+            </button>
+            <ul class="dropdown-menu" id="userActions">
+              
+              <li><hr class="dropdown-divider"></li>
+              <li><button class="dropdown-item" id="logoutBtn">Cerrar Sesion</button></li>
+              
+            </ul>
             `;
 
-            loginBtn.replaceWith(logoutBtn);
-            const user = localStorage.getItem("qs_user")
-            const userName = user.firstName
-            logoutBtn.addEventListener('click', () => {
+            loginBtn.replaceWith(userDropdown);
+            if ( user && user.profile && user.profile.name === 'admin') {
+              $("#userActions").prepend(`<li><a class="dropdown-item" href="/frontend/public/pages/stockManagement.html">Gestionar Stock</a></li>`)
+            }
+            
+            document.getElementById('logoutBtn').addEventListener('click', (e) => {
+              e.preventDefault();
               const user = JSON.parse(localStorage.getItem("qs_user") || "{}");
               const userName = user.firstName || "Usuario";
               

@@ -6,7 +6,9 @@ const StockMovementSchema = mongoose.Schema({
     quantity: Number,
     reason : {type : String, required :  true},
     userId : {type: mongoose.Schema.ObjectId, ref : 'user', required : true},
-    createdAt: Date
+    
+}, {
+    timestamps: true 
 });
 
 StockMovementSchema.pre(/^find/, function(next) {
