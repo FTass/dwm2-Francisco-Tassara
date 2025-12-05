@@ -9,7 +9,7 @@ const orderSchema = mongoose.Schema({
     subTotal : {type : Number , required: true},
     tax : {type : Number , required: true},
     total : {type : Number },
-    paymentMethod : {type : String, enum : ['transfer', 'webpay']},
+    paymentMethod : {type : String, enum : ['transfer', 'WebPay']},
     lastUpdatedBy : {type : mongoose.Schema.ObjectId , ref : 'user'},
 
 }, { timestamps: true });

@@ -38,4 +38,6 @@ router.post('/:orderId/payments/:paymentId/refund', paymentRefund );
 
 router.post('/checkout', checkout);
 
+// router.get('/:orderId/receipt')
+
 module.exports = router;
