@@ -1,5 +1,5 @@
 import { fetchCartItems } from "../cart/cart-util.js";
-import { handleOrderConfirmed } from "./order.confirmed.js";
+import { handleOrderConfirmed, getOrder, getOrderItems } from "./order.confirmed.js";
 
 const API_BASE_URL = "http://localhost:3000";
 
@@ -236,6 +236,7 @@ async function createOrder(items) {
               <h5 class="card-title mb-3">¡Gracias por tu compra!</h5>
               <p class="card-text mb-4">Tu pedido ha sido recibido y está siendo procesado.</p>
               <p id="orderNumber">Tu número de pedido: <strong id="order-code">${res.data.orderNumber}</strong></p>
+              <button class="btn btn-primary" id="downloadReceipt">Descargar Boleta</button>
               <a href="/frontend/public/index.html" class="btn btn-primary">Volver al inicio</a>
             </div>
           `;
@@ -251,7 +252,7 @@ async function createOrder(items) {
     console.error("Order create error responseText:", err.responseText);
     console.error("Order create error responseJSON:", err.responseJSON);
     
-    // Mostrar modal de error
+    
     const confirmModal = document.getElementById("confirm");
     if (confirmModal) {
       const modalContent = confirmModal.querySelector(".modal-content");
@@ -275,3 +276,14 @@ async function createOrder(items) {
   }
 }
 
+
+
+$(document).on('click', '#downloadReceipt',async function() {
+  console.log("descargando boleta");
+  
+  const orderId = localStorage.getItem('qs_orderId');
+  const token = localStorage.getItem("qs_token");
+  
+  const url = `${API_BASE_URL}/api/orders/${orderId}/boleta?token=${token}`;
+  window.open(url, "_blank");
+});

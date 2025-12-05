@@ -12,7 +12,7 @@ class OrderItemRepository {
   }
 
   async findByOrder(orderId) {
-    return await OrderItem.find({ orderId }).sort({ createdAt: -1 });
+    return await OrderItem.find({ orderId }).populate('productId').sort({ createdAt: -1 });
   }
 
   async updateById(id, data) {
