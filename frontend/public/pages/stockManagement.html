@@ -34,7 +34,7 @@
     <div class="container my-5">
       <h1 class="mb-4">Stock Management</h1>
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-4">
           <div class="mb-3">
             <label for="categorySelect" class="form-label"
               >Buscar producto categoria</label
@@ -44,7 +44,7 @@
             </select>
           </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
           <div class="mb-3">
             <label for="milkFilter" class="form-label"
               >Buscar por tipo de leche</label
@@ -53,6 +53,17 @@
               <option value="none">Leches</option>
             </select>
           </div>
+        </div>
+        <div class="col-md-4">
+            <div class="mb-3">
+                <label  class="form-label" for="lowStockFilter">Stock Bajo</label>
+                <select class="form-select" id="lowStockFilter">
+                    <option value="none">Selecciona una opción</option>
+                    <option value="true">Sí</option>
+                    <option value="false">No</option>
+                </select>
+                
+            </div>
         </div>
       </div>
       <div class="mb-4">
@@ -106,10 +117,10 @@
           <div class="modal-body">
             <form class="form" id="productForm">
               <label for="quantity" class="form-label">Cantidad</label>
-              <input id="quantity" type="number" class="form-control" min="1" />
+              <input id="quantity" type="number" class="form-control" min="1" required/>
 
               <label for="isOffer" class="form-label">¿Oferta?</label>
-              <select id="isOffer" type="number" class="form-control">
+              <select id="isOffer" type="number" class="form-control" required>
                 <option value="" selected>Selecciona una opción</option>
                 <option value="true">Oferta</option>
                 <option value="false">No oferta</option>
@@ -127,8 +138,8 @@
                 disabled
               />
 
-              <label for="reason" class="form-label" required>Motivo</label>
-              <textarea id="reason" class="form-control"></textarea>
+              <label for="reason" class="form-label">Motivo</label>
+              <textarea id="reason" class="form-control" required></textarea>
 
               <div class="form-check mt-3"></div>
               <div class="row d-flex justify-content-center m-2">

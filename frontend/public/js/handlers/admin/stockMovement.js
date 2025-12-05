@@ -4,6 +4,7 @@ const token = localStorage.getItem("qs_token");
 let allProducts = [];
 let milkTypeSelected = null;
 let categorySelected = null;
+let lowStockMode = false;
 
 let currentProductId = null;
 function loadCategories() {
@@ -31,7 +32,24 @@ function loadMilkTypes() {
 }
 
 
-
+function checkLowStock() {
+  $.ajax({
+      url: "http://localhost:3000/api/products?lowStock=true",
+      type: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      success: function (response) {
+        const lowStockProducts = response.data || response;
+        if (lowStockProducts.length > 0) {
+          showToast(`${lowStockProducts.length} producto(s) con stock bajo`, 'danger');
+        }
+      },
+      error: function (error) {
+        console.error("Error checking low stock:", error);
+      }
+    });
+}
 
 
 $(document).ready(function () {
@@ -43,6 +61,23 @@ $(document).ready(function () {
     
     loadCategories()
     loadMilkTypes()
+    
+    // Verificar stock bajo al cargar la página
+    checkLowStock();
+    
+    // Select para mostrar solo stock bajo
+    $('#lowStockFilter').on('change', function() {
+      const value = $(this).val();
+      lowStockMode = (value === 'true');
+      
+      // Recargar productos con el nuevo filtro
+      if (categorySelected) {
+        loadProducts({ categoryId: categorySelected });
+      } else if (milkTypeSelected) {
+        loadProducts({ milkType: milkTypeSelected });
+      }
+    });
+    
   // Evento del select
   $("#productSelect").prop('disabled', true)
   $("#productSelect").on("change", function () {
@@ -94,6 +129,12 @@ $('#milkFilter').on('change', function() {
 
 
 function loadProducts( query ) {
+  query = query || {};
+  
+  if (lowStockMode) {
+    query.lowStock = 'true';
+  }
+
   $.ajax({
     url: "http://localhost:3000/api/products",
     type: "GET",
@@ -177,10 +218,10 @@ function showProduct(productId) {
 
     
       
-  $("#quantity").on("change", function () {
-    const newStock = $(this).val();
-    updateStock(productId, newStock);
-  });
+  // $("#quantity").on("change", function () {
+  //   const newStock = $(this).val();
+  //   updateStock(productId, newStock);
+  // });
 }
 
 
@@ -268,6 +309,8 @@ function applyDiscount( productId, payload) {
 
 $(document).on("click", '#editProductSubmit', function () {
   const newStock = $('#quantity').val();
+  const product = allProducts.find((p)=> p._id === currentProductId);
+  
   let quantity = 0;
   const oldStock = parseInt(localStorage.getItem('qs_productStock'));
   let type = 'entry'
@@ -280,20 +323,31 @@ $(document).on("click", '#editProductSubmit', function () {
     quantity =  newStock - oldStock 
   }
 
+  // Validar primero si hay cambio de cantidad
+  if (quantity <= 0) {
+    showToast('Debes ajustar la cantidad del producto', 'danger')
+    return;
+  }
+
   const offer = $("#isOffer").val() === 'true';
   const discount = offer ? parseInt($("#discountPercentage").val()) : 0;
 
-applyDiscount( currentProductId, { offer, discount })
+  applyDiscount( currentProductId, { offer, discount })
   
   const reason = $('#reason').val();
-  updateStock(currentProductId, newStock);
-  console.log(type)
+  
   let payload = {
     userId,
     type,
     quantity,
     reason
   }
+  
+  updateStock(currentProductId, newStock);
   createStockMovement( currentProductId, payload )
+  if ( newStock < 50 ) {
+    showToast(`Producto ${product.name} con bajo stock`, 'danger')
+  }
+  
   
 });

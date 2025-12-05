@@ -15,7 +15,7 @@ const {
 
 const productGet = async (req = request, res = response) => {
   try {
-    const { name, milkType, status, categoryId, offer, highlight } = req.query;
+    const { name, milkType, status, categoryId, offer, highlight, lowStock, threshold } = req.query;
 
     const filter = {};
 
@@ -41,6 +41,12 @@ const productGet = async (req = request, res = response) => {
 
     if (categoryId) {
       filter.categoryId = categoryId;
+    }
+
+    // Filtrar por stock bajo
+    if (lowStock === 'true') {
+      const stockThreshold = parseInt(threshold) || 50;
+      filter.stock = { $lt: stockThreshold };
     }
 
     const products = await getAll(filter);
