@@ -7,15 +7,19 @@ const { paymentsGet, paymentGet, paymentVerify, paymentRefund } = require('../..
 const requireAuth = require('../../middlewares/auth');
 const requireRole = require('../../middlewares/authorize');
 const { checkout } = require('../../controllers/order/checkout.controller.js');
-
+const {downloadReceipt} = require('../../controllers/order/receipt.controller.js')
 const router = Router();
+
+
+router.get('/:orderId/boleta', downloadReceipt);
+
 
 router.use(requireAuth);
 
 // Orders
 router.get("/", ordersGet );
 router.get("/:id", orderGet );
-router.post("/", orderPost );  // Crea Order + Payment + Shipping automáticamente
+router.post("/", orderPost );  
 router.put("/:id", orderPut );
 router.delete("/:id", orderDel );
 
@@ -27,7 +31,7 @@ router.delete("/:orderId/items/:itemId", itemDel );
 
 // Shipping (se crea automáticamente, solo GET/PUT/DELETE)
 router.get("/:orderId/shipping", shippingsGet );
-router.put("/:orderId/shipping/:shippingId", shippingPut );  // Actualizar carrier, tracking, etc.
+router.put("/:orderId/shipping/:shippingId", shippingPut );  
 router.delete("/:orderId/shipping/:shippingId", shippingDel );
 
 // Payments (GET/VERIFY/REFUND, POST es automático)
@@ -37,7 +41,5 @@ router.post('/:orderId/payments/:paymentId/verify', paymentVerify );
 router.post('/:orderId/payments/:paymentId/refund', paymentRefund );
 
 router.post('/checkout', checkout);
-
-// router.get('/:orderId/receipt')
 
 module.exports = router;

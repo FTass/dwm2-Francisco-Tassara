@@ -24,7 +24,7 @@
             <div class="card-body">
                 <h5>Cliente</h5>
                 <p><strong>Nombre:</strong> {{user.firstName}} {{user.lastName}}</p>
-                <p><strong>Dirección:</strong> {{address.street}}, {{address.number}}</p>
+                <p><strong>Dirección:</strong> {{address.street}} {{address.number}}</p>
             </div>
         </div>
 
@@ -40,8 +40,8 @@
             <tbody>
                 {{#each items}}
                 <tr>
-                    <td>{{this.productId.name}}</td>
-                    <td>{{this.quantity}}</td>
+                    <td>{{ this.productId.name}}</td>
+                    <td>{{ this.quantity}}</td>
                     <td>${{this.unitPrice}}</td>
                     <td>${{this.subTotal}}</td>
                 </tr>
@@ -50,7 +50,7 @@
         </table>
 
         <div class="text-end">
-            <p><strong>Subtotal:</strong> ${{subtotal}}</p>
+            <p><strong>Subtotal:</strong> ${{subTotal}}</p>
             <p><strong>Impuestos:</strong> ${{tax}}</p>
             <h5><strong>TOTAL:</strong> ${{total}}</h5>
         </div>

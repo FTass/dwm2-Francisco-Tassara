@@ -35,7 +35,7 @@ const checkout = async (req, res) => {
     }
 
     const subTotal = items.reduce((acc, it) => acc + it.productId.price * it.quantity, 0);
-    const tax   = Math.round(subTotal * 0.19); // o redondeo a 2 decimales
+    const tax   = Math.round(subTotal * 0.19); 
     const total = subTotal + tax;
 
     const [order] = await Order.create([{
@@ -69,7 +69,7 @@ const checkout = async (req, res) => {
       session.endSession();
     }
 
-    // ⇣ devuelve la orden + items listos para UI
+    
     const full = await Order.findById(order._id)
       .populate({ path: 'userId', select: 'firstName' })
       .populate({ path: 'addressId', select: 'street firstName name' });

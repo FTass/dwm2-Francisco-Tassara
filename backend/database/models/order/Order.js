@@ -11,13 +11,16 @@ const orderSchema = mongoose.Schema({
     total : {type : Number },
     paymentMethod : {type : String, enum : ['transfer', 'WebPay']},
     lastUpdatedBy : {type : mongoose.Schema.ObjectId , ref : 'user'},
+    receiptUrl: String, 
+    receiptNumber: String,
+    generatedAt: Date
 
 }, { timestamps: true });
 
 orderSchema.pre(/^find/, function(next) {
     this.populate({
         path: 'userId',
-        select: 'firstName' 
+        select: 'firstName lastName' 
     });
     next();
 });
@@ -25,7 +28,7 @@ orderSchema.pre(/^find/, function(next) {
 orderSchema.pre(/^find/, function(next) {
     this.populate({
         path: 'addressId',
-        select: 'street firstName name' 
+        select: 'street firstName number' 
     });
     next();
 });

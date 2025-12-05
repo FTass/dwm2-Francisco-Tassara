@@ -12,7 +12,7 @@ function cleanupOrderStorage() {
     "qs_subtotal",
     "qs_tax",
     "qs_total",
-    "qs_orderId",
+    // "qs_orderId",
   ];
 
   keysToRemove.forEach((key) => {
@@ -39,5 +39,37 @@ export async function handleOrderConfirmed(orderData, token) {
   } catch (err) {
     console.error("Error in handleOrderConfirmed:", err);
     cleanupOrderStorage();
+  }
+}
+
+export async function getOrder( orderId) {
+  const token = localStorage.getItem("qs_token");
+  try {
+    const res =  await $.ajax({
+    url: API_BASE_URL + `/api/orders/${orderId}`,
+    method: "GET",
+    headers: { Authorization: "Bearer " + token },
+    contentType: "application/json",
+    });
+    return res.data;
+  } catch ( err ){
+    console.error("Error al obtener items:", err);
+    return;
+  }
+}
+
+export async function getOrderItems( orderId ) {
+  const token = localStorage.getItem("qs_token");
+  try {
+    const res = await $.ajax({
+    url: API_BASE_URL + `/api/orders/${orderId}/items`,
+    method: "GET",
+    headers: { Authorization: "Bearer " + token },
+    contentType: "application/json",
+    });
+    return res.data || [];
+  } catch ( err ){
+    console.error("Error al obtener items:", err);
+    return [];
   }
 }
