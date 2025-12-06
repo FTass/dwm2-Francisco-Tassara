@@ -34,46 +34,7 @@
     <div class="container my-5">
       <h1 class="mb-4">Order Management</h1>
       <div class="row">
-        <!-- <div class="col-md-4">
-          <div class="mb-3">
-            <label for="categorySelect" class="form-label"
-              >Buscar producto categoria</label
-            >
-            <select class="form-select" id="categorySelect">
-              <option value="none">Categorias</option>
-            </select>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="mb-3">
-            <label for="milkFilter" class="form-label"
-              >Buscar por tipo de leche</label
-            >
-            <select class="form-select" id="milkFilter">
-              <option value="none">Leches</option>
-            </select>
-          </div>
-        </div>
-        <div class="col-md-4">
-            <div class="mb-3">
-                <label  class="form-label" for="lowStockFilter">Stock Bajo</label>
-                <select class="form-select" id="lowStockFilter">
-                    <option value="none">Selecciona una opción</option>
-                    <option value="true">Sí</option>
-                    <option value="false">No</option>
-                </select>
-                
-            </div>
-        </div>
-      </div>
-      <div class="mb-4">
-        <label for="productSelect" class="form-label"
-          >Selecciona un producto:</label
-        >
-        <select class="form-select" id="productSelect" disabled>
-          <option value="">-- Elige un producto --</option>
-        </select>
-      </div> -->
+      
 
       <table class="table table-responsive table-bordered">
         <thead>
@@ -84,6 +45,7 @@
                 <th>Status</th>
                 <th>Total</th>            
                 <th>Acciones</th>
+                
           </tr>
         </thead>
         <tbody id="order-table-body">
@@ -134,7 +96,6 @@
             <form class="form" id="orderForm">
              
 
-              <label for="status" class="form-label">Status</label>
               <select id="status" type="number" class="form-control" required>
                 <option value="" selected>Selecciona una opción</option>
                 <option value='pending_payment'>pendiente</option>
@@ -226,7 +187,61 @@
         </div>
       </div>
     </div>
+    <div
+      class="modal fade"
+      id="editShippingModal"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Agregar Nueva Dirección</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form class="form" id="shippingForm">
+              <label class="form-label" for="shipping-status">Status del envío</label>
+              <select id="shipping-status" class="form-control" required>
+                <option value="" selected>Selecciona una opción</option>
+                <option value="pending">Pendiente</option>
+                <option value="shipped">Enviado</option>
+                <option value="delivered">Entregado</option>
+                <option value="cancelled">Cancelado</option>
+              </select>
+
+              <label for="carrier" class="form-label">Transportista</label>
+              <input id="carrier" type="text" class="form-control" />
+
+              <label for="trackingNumber" class="form-label">Número de Tracking</label>
+              <input id="trackingNumber" type="text" class="form-control" />
+              
+              <label for="shippedAt" class="form-label">Fecha de envío</label>
+              <input id="shippedAt" type="date" class="form-control" readonly />
+
+              <label for="estimatedDelivery" class="form-label">Fecha estimada de entrega</label>
+              <input id="estimatedDelivery" type="date" class="form-control" />
+
+              <label for="deliveredAt" class="form-label">Fecha real de entrega</label>
+              <input id="deliveredAt" type="date" class="form-control" readonly />
+
+              <div class="row d-flex justify-content-center m-2">
+                <button class="btn btn-login-form" type="submit" id="shippingSubmit">
+                  Guardar envío
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
     <script type="module" src="/frontend/public/js/handlers/admin/orderManagement.js"></script>
+    <script type="module" src="/frontend/public/js/handlers/admin/shippingManagement.js"></script>
+ 
   </body>
   
 </html>

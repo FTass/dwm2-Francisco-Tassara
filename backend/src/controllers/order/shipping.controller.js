@@ -24,9 +24,11 @@ const shippingPut = async (req = request, res = response) => {
   try {
     if (!isAdmin(req.user)) return res.status(403).json({ msg: 'Forbidden: admin only' });
     const { orderId, shippingId } = req.params;
+    console.log('📦 ShippingPut received:', { orderId, shippingId, body: req.body });
     const updated = await service.updateShippingStatus(orderId, shippingId, req.body);
     return res.status(200).json({ msg: 'Shipping updated', data: updated });
   } catch (error) {
+    console.log('❌ ShippingPut error:', error.message);
     return res.status(error.status || 500).json({ msg: error.message || 'Server error' });
   }
 };
