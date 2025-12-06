@@ -1,3 +1,4 @@
+import { showToast } from "../handlers/util/toast-util.js";
  // ==========================
       // NAVBAR + CARRITO
       // ==========================
@@ -37,6 +38,7 @@
             loginBtn.replaceWith(userDropdown);
             if ( user && user.profile && user.profile.name === 'admin') {
               $("#userActions").prepend(`<li><a class="dropdown-item" href="/frontend/public/pages/stockManagement.html">Gestionar Stock</a></li>`)
+              $("#userActions").prepend(`<li><a class="dropdown-item" href="/frontend/public/pages/orderManagement.html">Gestionar Ordenes</a></li>`)
             }
             
             document.getElementById('logoutBtn').addEventListener('click', (e) => {
@@ -45,14 +47,7 @@
               const userName = user.firstName || "Usuario";
               
               localStorage.clear();
-              $("#toastMsg").html(`
-                <strong>Cerrando sesión!</strong><br>
-                
-              `);   
-
-              const toastEl = document.getElementById("logoutToast");
-              const toast = new bootstrap.Toast(toastEl);
-              toast.show();
+              showToast('Cerrando sesion..')
               setTimeout(() => {
                 window.location.href = '/frontend/public/index.html';
               }, 3000);
