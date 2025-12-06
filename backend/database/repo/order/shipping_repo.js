@@ -7,7 +7,7 @@ class ShippingRepository {
     }
 
     async findById(id) {
-        return await Shipping.findById(id);
+        return await Shipping.findById(id).populate('orderId', 'orderNumber');
     }
 
     async findByOrder(orderId) {

@@ -14,7 +14,8 @@ class ShippingService {
       e.status = 400;
       throw e;
     }
-
+    console.log('hasta aca bien');
+    
     // Validar que el shipping pertenece a esta orden
     const shipping = await repo.findById(shippingId);
     if (!shipping) {
@@ -22,7 +23,13 @@ class ShippingService {
       e.status = 404;
       throw e;
     }
-    if (String(shipping.orderId) !== String(orderId)) {
+    
+    const shippingOrderIdStr = (shipping.orderId._id || shipping.orderId).toString();
+    const requestOrderIdStr = String(orderId);
+    
+    
+    
+    if (shippingOrderIdStr !== requestOrderIdStr) {
       const e = new Error("Order mismatch");
       e.status = 409;
       throw e;
@@ -44,12 +51,16 @@ class ShippingService {
 
   async getShipping(orderId, shippingId) {
     const shipping = await repo.findById(shippingId);
+    
+    console.log('hola');
+    
     if (!shipping) {
       const e = new Error("Shipping not found");
       e.status = 404;
       throw e;
     }
-    if (String(shipping.orderId) !== String(orderId)) {
+    
+    if (shipping.orderId.toString() !== String(orderId)) {
       const e = new Error("Order mismatch");
       e.status = 409;
       throw e;

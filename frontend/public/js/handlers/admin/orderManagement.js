@@ -2,6 +2,8 @@
 
 import { showToast } from "../util/toast-util.js";
 
+import { getShipping } from "../util/api/shippingApi.js";
+
 let allOrders = [];
 let userAddresses = [];
 const API_BASE_URL = "http://localhost:3000";
@@ -37,7 +39,7 @@ function buildPages () {
 
 }
 
-function loadOrders( ) {
+export function loadOrders( ) {
     $.ajax({
         url: "http://localhost:3000/api/orders",
         type: "GET",
@@ -61,11 +63,11 @@ function loadOrders( ) {
 
 function loadPages() {
     let nav = $('#pagination');
-    nav.empty(); // Limpiar paginación anterior
+    nav.empty(); 
     let ul = document.createElement('ul');
     ul.className = 'pagination';
     
-    // Botón Anterior
+    
     let previous = document.createElement('li');
     previous.className = 'page-item';
     previous.id = 'prev-page';
@@ -99,7 +101,7 @@ function loadPages() {
     });
 }
 
-function populateTable( pageIndex ) {
+async function populateTable( pageIndex ) {
     currentPage = pageIndex;
     const tableBody = $('#order-table-body');
     tableBody.empty();
@@ -108,35 +110,49 @@ function populateTable( pageIndex ) {
         const row = document.createElement('tr');
         row.innerHTML = `<td colspan ="6">No se encontraron ordenes</td>`
     }
-    pageOrders.forEach( o => {
+    for (const o of pageOrders ) {
+        const response = await getShipping( o._id, token)   
+        const shipping = response.data[0];  
+        const shippingId = shipping._id;
+
+        console.log(shippingId);
+        
+        const shippingBtn = document.createElement('button')
+        shippingBtn.textContent = 'Envío'
+        shippingBtn.className = 'btn btn-sm btn-info'
+        shippingBtn.id = 'toggleEditShipping'
+        shippingBtn.setAttribute('data-bs-toggle', 'modal');
+        shippingBtn.setAttribute('data-bs-target',"#editShippingModal")
+        shippingBtn.setAttribute('data-orderId', o._id)
+        shippingBtn.setAttribute('data-shippingId', shippingId)
+        
         const editBtn = document.createElement('button')
         editBtn.textContent = 'Editar'
         editBtn.className = 'btn btn-sm btn-primary'
         editBtn.id = 'toggleEdit'
         editBtn.setAttribute('data-bs-toggle', 'modal');
         editBtn.setAttribute('data-bs-target',"#editOrderModal")
+        editBtn.setAttribute('data-orderId', o._id)
+        
         const dwldReceiptBtn = document.createElement('button')
         dwldReceiptBtn.textContent = 'Imprimir boleta'
-
         dwldReceiptBtn.className = 'btn btn-sm btn-secondary'
         dwldReceiptBtn.id = 'toggleReceipt'
-        editBtn.setAttribute('data-orderId', o._id)
-        dwldReceiptBtn .setAttribute('data-orderId', o._id)
-        const row = document.createElement('tr');
+        dwldReceiptBtn.setAttribute('data-orderId', o._id)
         
+        const row = document.createElement('tr');
         row.innerHTML = `<td>${o.userId._id}</td><td>${o.orderNumber}</td><td>${new Date(o.createdAt).toLocaleDateString('es-ES')}</td><td>${o.status}</td><td>${o.total}</td>`
         
         const td = document.createElement('td');
         td.appendChild(editBtn);
         td.appendChild(document.createTextNode(' '));
         td.appendChild(dwldReceiptBtn);
+        td.appendChild(document.createTextNode(' '));
+        td.appendChild(shippingBtn);
+        
         row.appendChild(td);
         tableBody.append(row)
-    })
-   
-    
-    
-    console.log(' hasta aca bien')
+    }
 }
 
 $("#prev").click(() => {

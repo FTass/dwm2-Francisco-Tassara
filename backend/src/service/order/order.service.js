@@ -4,6 +4,13 @@ const paymentRepo = require('../../../database/repo/order/payment_repo.js');
 const shippingRepo = require('../../../database/repo/order/shipping_repo.js');
 const { recalcOrderTotals } = require('./recalcTotals');
 
+// Generar tracking number aleatorio con prefijo cx-
+function generateTrackingNumber() {
+  const randomPart = Math.random().toString(36).substring(2, 15).toUpperCase();
+  const timestamp = Date.now().toString(36).toUpperCase();
+  return `cx-${timestamp}${randomPart}`.substring(0, 20); // Limitar a 20 caracteres
+}
+
 const POPULATE_ORDERS = [
   { path: 'userId', select: 'firstName lastName email' },
   { path: 'addressId', populate: { path: 'userId', select: 'firstName' } },
@@ -45,6 +52,7 @@ const addOrder = async (data) => {
     const shippingData = {
       orderId: created._id,
       status: 'pending',
+      trackingNumber: generateTrackingNumber(),
     };
     
     await shippingRepo.create(shippingData);
