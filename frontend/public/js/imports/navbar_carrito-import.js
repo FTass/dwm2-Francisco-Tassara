@@ -39,6 +39,8 @@ import { showToast } from "../handlers/util/toast-util.js";
             if ( user && user.profile && user.profile.name === 'admin') {
               $("#userActions").prepend(`<li><a class="dropdown-item" href="/frontend/public/pages/stockManagement.html">Gestionar Stock</a></li>`)
               $("#userActions").prepend(`<li><a class="dropdown-item" href="/frontend/public/pages/orderManagement.html">Gestionar Ordenes</a></li>`)
+            } else {
+              $('#userActions').prepend(`<li><a class="dropdown-item" href="/frontend/public/pages/user-orders.html">Mis Ordenes<a></li>`)
             }
             
             document.getElementById('logoutBtn').addEventListener('click', (e) => {

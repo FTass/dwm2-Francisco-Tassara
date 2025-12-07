@@ -9,3 +9,15 @@ export async function updOrder( orderId, payload, token ) {
         data: JSON.stringify(payload),
     });
 }
+
+export async function getOrders(token) {
+    return $.ajax({
+        url: `http://localhost:3000/api/orders`,
+        type: "GET",
+        headers: {
+            Authorization: `Bearer ${token}`,
+        }
+    });
+}
+
+

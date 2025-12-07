@@ -35,22 +35,26 @@
       <h1 class="mb-4">My Orders</h1>
       <div class="row">
         
+      <div class="table-responsive">
 
-      <table class="table table-responsive table-bordered">
-        <thead>
-          <tr>
-                
-                <th>Numero</th>
-                <th>Fecha</th>
-                <th>Status</th>
-                <th>Total</th>            
-                <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody id="order-table-body">
-          
-        </tbody>
-      </table>
+        <table class="table table-responsive table-bordered">
+          <thead class="table-warning">
+            <tr>
+                  <th>Numero</th>
+                  <th>Fecha</th>
+                  <th>Status</th>
+                  <th>Total</th>            
+                  <th>Enviado En</th>
+                  <th>Entregado En</th>
+                  <th>Acciones</th>
+                  
+            </tr>
+          </thead>
+          <tbody id="order-table-body">
+            
+          </tbody>
+        </table>
+      </div>
     </div>
     <nav id="pagination">
   <ul class="pagination justify-content-center">
@@ -128,66 +132,11 @@
       </div>
     </div>
 
-    <!-- Formulario para agregar nueva dirección (oculto) -->
-    <div
-      class="modal fade"
-      id="newAddressModal"
-      tabindex="-1"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Agregar Nueva Dirección</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <form class="form" id="addressForm">
-              <label for="calle" class="form-label">Calle</label>
-              <input id="calle" type="text" class="form-control" />
-
-              <label for="numero" class="form-label">Número</label>
-              <input id="numero" type="number" class="form-control" />
-
-              <label for="depto" class="form-label">Depto (opcional)</label>
-              <input id="depto" type="text" class="form-control" />
-
-              <label for="comuna" class="form-label">Comuna</label>
-              <input id="comuna" type="text" class="form-control" />
-
-              <label for="ciudad" class="form-label">Ciudad</label>
-              <input id="ciudad" type="text" class="form-control" />
-              
-              <div class="form-check mt-3">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="useProfileAddressBtn"
-                  value="true"
-                />
-                <label class="form-check-label" for="useProfileAddressBtn">
-                  Marcar como predeterminada
-                </label>
-              </div>
-              
-              <div class="row d-flex justify-content-center m-2">
-                <button class="btn btn-login-form" type="submit" id="addressSubmit">
-                  Guardar Dirección
-                </button>
-              </div>
-            </form>
-          </div>
         </div>
       </div>
     </div>
-        </div>
-      </div>
-    </div>
-    <script type="module" src="/frontend/public/js/handlers/admin/orderManagement.js"></script>
+    <script type="module" src="/frontend/public/js/handlers/order/userOrders.js"></script>
+    
   </body>
   
 </html>
