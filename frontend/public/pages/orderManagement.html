@@ -35,9 +35,9 @@
       <h1 class="mb-4">Order Management</h1>
       <div class="row">
       
-
-      <table class="table table-responsive table-bordered">
-        <thead>
+      <div class="table-responsive">
+        <table class="table table-responsive table-bordered">
+        <thead class="table-warning">
           <tr>
                 <th>User Id</th>
                 <th>Numero</th>
@@ -52,6 +52,8 @@
           
         </tbody>
       </table>
+      </div>
+      
     </div>
     <nav id="pagination">
   <ul class="pagination justify-content-center">
@@ -96,7 +98,7 @@
             <form class="form" id="orderForm">
              
 
-              <select id="status" type="number" class="form-control" required>
+              <select id="status" type="number" class="form-control">
                 <option value="" selected>Selecciona una opción</option>
                 <option value='pending_payment'>pendiente</option>
                 <option value='paid'>pagado</option>
@@ -108,7 +110,7 @@
               <label for="address" class="form-label">
                 Dirección</label
               >
-              <select id="address" class="form-control" required>
+              <select id="address" class="form-control">
                 <option value="" selected>Selecciona una dirección</option>
                 
               </select>
@@ -215,7 +217,7 @@
               </select>
 
               <label for="carrier" class="form-label">Transportista</label>
-              <input id="carrier" type="text" class="form-control" />
+              <input id="carrier" type="text" class="form-control" required />
 
               <label for="trackingNumber" class="form-label">Número de Tracking</label>
               <input id="trackingNumber" type="text" class="form-control" />

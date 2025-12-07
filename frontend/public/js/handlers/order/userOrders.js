@@ -91,6 +91,19 @@ async function populateTable( pageIndex ) {
         const row = document.createElement('tr');
         row.innerHTML = `<td colspan ="6">No se encontraron ordenes</td>`
     }
+    
+    // Función para ajustar fecha a zona horaria de Chile (UTC-3) - solo para shipping
+    const formatDateChile = (dateStr) => {
+        if (!dateStr) return 'N/A';
+        return new Date(dateStr).toLocaleDateString('es-ES');
+    };
+    
+    // Para createdAt que ya viene correctamente
+    const formatDateNormal = (dateStr) => {
+        if (!dateStr) return 'N/A';
+        return new Date(dateStr).toLocaleDateString('es-ES');
+    };
+    
     for (const o of pageOrders ) {
         const  response = await getShipping( o._id, token)
         const shipping = response.data[0];
@@ -118,11 +131,11 @@ async function populateTable( pageIndex ) {
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>${o.orderNumber}</td>
-            <td>${new Date(o.createdAt).toLocaleDateString('es-ES')}</td>
+            <td>${formatDateNormal(o.createdAt)}</td>
             <td>${statusBadge}</td>
             <td>${o.total}</td>
-            <td>${shipping.shippedAt ? new Date(shipping.shippedAt).toLocaleDateString('es-ES') : 'N/A'}</td>
-            <td>${shipping.deliveredAt ? new Date(shipping.deliveredAt).toLocaleDateString('es-ES') : 'N/A'}</td>`
+            <td>${formatDateChile(shipping.shippedAt)}</td>
+            <td>${formatDateChile(shipping.deliveredAt)}</td>`
         
         const td = document.createElement('td');
         

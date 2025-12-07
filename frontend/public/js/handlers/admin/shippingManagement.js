@@ -57,13 +57,24 @@ $(document).on('change', '#shipping-status', function() {
     }
 });
 
-$(document).on('click', '#shippingSubmit', async function() {
+$(document).on('click', '#shippingSubmit', async function(e) {
+    
+    e.preventDefault();
     const status = $('#shipping-status').val();
     const carrier = $('#carrier').val();
     const trackingNumber = $('#trackingNumber').val();
-    const shippedAt = $('#shippedAt').val() || null;
-    const estimatedDelivery = $('#estimatedDelivery').val() || null; 
-    const deliveredAt = $('#deliveredAt').val() || null;
+    const shippedAtStr = $('#shippedAt').val();
+    const estimatedDeliveryStr = $('#estimatedDelivery').val(); 
+    const deliveredAtStr = $('#deliveredAt').val();
+    
+    // Convertir fechas string a ISO con zona horaria correcta
+    // Crear fecha a las 12:00 mediodía UTC para que al mostrar en Chile sea mediodía en Chile
+    const convertDateToISO = (dateStr) => {
+        if (!dateStr) return null;
+        const date = new Date(`${dateStr}T12:00:00Z`);
+        return date.toISOString();
+    };
+    
     let orderStatus 
     if ( status === 'pending') {
         orderStatus = 'pending_payment';
@@ -77,34 +88,45 @@ $(document).on('click', '#shippingSubmit', async function() {
     if ( status === 'cancelled') {
         orderStatus = 'cancelled';
     }
-
-
-
-
+    
     const shippingPayload = {
         status,
-        carrier,
-        trackingNumber,
-        shippedAt,
-        estimatedDelivery,
-        deliveredAt
+        carrier: carrier || null,
+        trackingNumber: trackingNumber || null,
+        shippedAt: convertDateToISO(shippedAtStr),
+        estimatedDelivery: convertDateToISO(estimatedDeliveryStr),
+        deliveredAt: convertDateToISO(deliveredAtStr)
     };
+
+    
     
     console.log('currentOrderId:', currentOrderId);
     console.log('currentShippingId:', window.currentShippingId);
     console.log('Payload:', shippingPayload);
     
     try {
+        console.log('📦 Actualizando shipping...');
         await updShipping(currentOrderId, window.currentShippingId, token, shippingPayload);
+        console.log('✓ Shipping actualizado');
+        
         if(orderStatus) {
+            console.log('📋 Actualizando order con status:', orderStatus);
             const orderPayload = { status: orderStatus };
             await updOrder(currentOrderId, orderPayload, token);
+            console.log('✓ Order actualizado');
+        } else {
+            console.warn('⚠️ No hay orderStatus para actualizar');
         }
+        
         showToast('Envío guardado exitosamente', 'success');
         bootstrap.Modal.getInstance(document.getElementById('editShippingModal')).hide();
+        
+        
+        
         loadOrders();
+       
     } catch(error) {
-        console.error('Error guardando shipping:', error);
+        console.error('❌ Error guardando shipping:', error);
         showToast('Error al guardar envío', 'danger');
     }
 });

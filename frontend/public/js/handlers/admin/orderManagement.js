@@ -49,7 +49,7 @@ export function loadOrders( ) {
         success: function (response) {
 
         allOrders = response.data || response;
-        console.log( allOrders )
+        
         buildPages();
         loadPages();
         populateTable( currentPage );
@@ -115,7 +115,7 @@ async function populateTable( pageIndex ) {
         const shipping = response.data[0];  
         const shippingId = shipping._id;
 
-        console.log(shippingId);
+        
         
         const shippingBtn = document.createElement('button')
         shippingBtn.textContent = 'Envío'
@@ -185,23 +185,29 @@ $(document).on('click', '#toggleEdit', function() {
 })
 
 
-$(document).on("click", '#editOrderSubmit', function () {
-  
+$(document).on("click", '#editOrderSubmit', function (e) {
+    e.preventDefault();
     console.log('currentUserId:', currentUserId);
     const status = $('#status').val();
     const addressId = $('#address').val();
+    
+    // Validar que se seleccione una dirección
+    if (!addressId) {
+        showToast('Debes seleccionar una dirección', 'warning');
+        return;
+    }
+    
     const admin = JSON.parse(localStorage.getItem('qs_user'));
-
-  const adminId = admin._id;
+    const adminId = admin._id;
     console.log('current admin id', adminId)
-  let payload = {
-    status,
-    addressId,
-    lastUpdatedBy : adminId
-  }
+    
+    let payload = {
+        status,
+        addressId,
+        lastUpdatedBy : adminId
+    }
   
-  updOrder(  currentOrderId, payload )
-  
+    updOrder(  currentOrderId, payload )
   
 });
 

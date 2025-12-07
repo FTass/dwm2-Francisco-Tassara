@@ -11,8 +11,7 @@ const orderSchema = mongoose.Schema({
     total : {type : Number },
     paymentMethod : {type : String, enum : ['transfer', 'WebPay']},
     lastUpdatedBy : {type : mongoose.Schema.ObjectId , ref : 'user', default: null},
-    receiptUrl: String, 
-    receiptNumber: String,
+    
     generatedAt: Date
 
 }, { timestamps: true });
