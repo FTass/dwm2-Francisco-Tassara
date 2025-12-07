@@ -290,7 +290,6 @@ footer a {
 }
 
 /* ================== seccion catalogos================== */
-
 .card.prod {
   max-width: 90%;          
   margin: 0 auto;                
@@ -318,9 +317,11 @@ footer a {
 
 
 .card-img-top{
-  width:100%;
-  height:100%;
-  object-fit:contain; 
+  width: 100%;
+  height: 100%; 
+  object-fit: contain;
+  background-color: #fff; 
+  border-radius: 8px;
 }
 .product-media{
   background:#fff;          
